@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+import "proto/annotations.proto";
+import "google/api/annotations.proto";
+
+package api.tasks.v1;
+
+service TasksService {
+  option (s12.protobuf.workato.api_limit) = {
+    limits: {
+      key: "public_api",
+      value: {
+        unit: "minute"
+        requests_per_unit: 100
+      }
+    }
+    limits: {
+      key: "private_api",
+      value: {
+        unit: "minute"
+        requests_per_unit: 400
+      }
+    }
+  };
+
+  // CreateTask is used to create a new task.
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+    option (google.api.http) = {
+      post: "/v1/tasks"
+      body: "*"
+    };
+    option (s12.protobuf.workato.limit) = {
+      limits: {
+        key: "public_api",
+        value: {
+          unit: "minute"
+          requests_per_unit: 10
+        }
+      }
+      limits: {
+        key: "private_api",
+        value: {
+          unit: "minute"
+          requests_per_unit: 20
+        }
+      }
+    };
+  }
+
+  // GetTask returns a task by id.
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {
+    option (google.api.http) = {
+      get: "/v1/tasks/{id}"
+    };
+  }
+  // UpdateTask updates a task by id.
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {
+    option (google.api.http) = {
+      put: "/v1/tasks/{id}"
+      body: "*"
+    };
+  }
+  // Delete deletes a task by id.
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {
+    option (google.api.http) = {
+      delete: "/v1/tasks/{id}"
+    };
+  }
+
+  rpc AddComment(AddCommentRequest) returns (AddCommentResponse) {
+    option (s12.protobuf.workato.limit) = {
+      bucket: "TaskComments"
+    };
+    option (google.api.http) = {
+      post: "/v1/tasks/{task_id}/comment"
+      body: "*"
+    };
+  }
+  rpc UpdateComment(AddCommentRequest) returns (AddCommentResponse) {
+    option (s12.protobuf.workato.limit) = {
+      bucket: "TaskComments"
+    };
+    option (google.api.http) = {
+      put: "/v1/tasks/{task_id}/comment/{comment_id}"
+      body: "*"
+    };
+  }
+}
+
+message GetTaskRequest {
+  string id = 1;
+}
+message GetTaskResponse {}
+
+message DeleteTaskRequest {
+  string id = 1;
+}
+message DeleteTaskResponse {}
+
+message UpdateTaskRequest {
+  string id = 1;
+}
+message UpdateTaskResponse {}
+
+message CreateTaskRequest {}
+message CreateTaskResponse {}
+
+message AddCommentRequest {}
+message AddCommentResponse {}

@@ -1,0 +1,184 @@
+ {
+  title: "iAuditor by SafetyCulture",
+
+  # API key authentication example. See more examples at https://docs.workato.com/developing-connectors/sdk/guides/authentication.html
+  connection: {
+    fields: [
+      {
+        name: 'api_key',
+        label: 'API Token',
+        optional: false,
+        control_type: 'password',
+         hint: 'Get your <b>API key</b> <a href="https://app.safetyculture.com/account/api-tokens" target="_blank">here</a>.'
+      }
+    ],
+
+    authorization: {
+      type: 'api_key',
+
+      apply: lambda do |connection|
+        headers('Authorization': "Bearer #{connection['api_key']}")
+        headers('sc-integration-id': "workato")
+        headers('sc-integration-version': "1")
+      end
+    },
+
+    base_uri: lambda do
+      "https://api.safetyculture.io"
+    end
+  },
+
+  test: lambda do |_connection|
+    get('/accounts/user/v1/user:WhoAmI')
+  end,
+
+  object_definitions: {
+    {{- range .ObjectDefinitions }}
+      "{{ .Name }}": {
+        fields: lambda do |connection, config_fields, object_definitions|
+          [
+            {{- range .Fields }}
+            {
+              name: "{{ .Name }}",
+              label: "{{ .Label }}",
+              optional: "{{ .Optional }}",
+              type: "{{ .Type }}",
+              hint: "{{ .Hint }}",
+              {{if .Of}}of: "{{ .Of }}",{{end}}
+              {{if .PropertiesRef}}properties: object_definitions['{{.PropertiesRef}}'],{{end}}
+              {{if .ControlType}}control_type: "{{ .ControlType }}",{{end}}
+              #toggle_hint: "{{ .ToggleHint }}",
+              #toggle_field: "{{ .ToggleField }}",
+              {{if .Default}}default: "{{ .Default }}",{{end}}
+              pick_list: "{{ .Picklist }}",
+              #delimiter: "{{ .Delimiter }}",
+              sticky: true,
+              #render_input: "{{ .RenderInput }}",
+              #parse_output: "{{ .ParseOutput }}",
+              #change_on_blur: "{{ .ChangeOnBlur }}",
+              #support_pills: "{{ .SupportPills }}",
+              #custom: "{{ .Custom }}",
+              #extends_schema: "{{ .ExtendsSchema }}",
+              #list_mode: "{{ .ListMode }}",
+              #list_mode_toggle: "{{ .ListModeToggle }}",
+              #item_label: "{{ .ItemLabel }}",
+              #add_field_label: "{{ .AddFieldLabel }}",
+              #empty_schema_message: "{{ .EmptySchemaMessage }}",
+              #sample_data_type: "{{ .SampleDataType }}",
+              #ng_if: "{{ .NgIf }}",
+            },
+            {{- end}}
+          ]
+        end
+      },
+    {{end}}
+  },
+
+  actions: {
+    {{- range $action := .Actions }}
+      "{{$action.Name}}": {
+        title: "{{ $action.Title }}",
+        subtitle: "{{ $action.Subtitle }}",
+        description: lambda do |input, picklist_label|
+          "{{ $action.Description }}"
+        end,
+
+        config_fields: [
+          {{- range $action.ConfigFields }}
+          {
+            name: "{{ .Name }}",
+            label: "{{ .Label }}",
+            optional: "{{ .Optional }}",
+            type: "{{ .Type }}",
+            hint: "{{ .Hint }}",
+            #of: "{{ .Of }}",
+            # properties: "{{ .Properties }}",
+            control_type: "{{ .ControlType }}",
+            #toggle_hint: "{{ .ToggleHint }}",
+            #toggle_field: "{{ .ToggleField }}",
+            default: "{{ .Default }}",
+            pick_list: "{{ .Picklist }}",
+            #delimiter: "{{ .Delimiter }}",
+            sticky: true,
+            #render_input: "{{ .RenderInput }}",
+            #parse_output: "{{ .ParseOutput }}",
+            #change_on_blur: "{{ .ChangeOnBlur }}",
+            #support_pills: "{{ .SupportPills }}",
+            #custom: "{{ .Custom }}",
+            #extends_schema: "{{ .ExtendsSchema }}",
+            #list_mode: "{{ .ListMode }}",
+            #list_mode_toggle: "{{ .ListModeToggle }}",
+            #item_label: "{{ .ItemLabel }}",
+            #add_field_label: "{{ .AddFieldLabel }}",
+            #empty_schema_message: "{{ .EmptySchemaMessage }}",
+            #sample_data_type: "{{ .SampleDataType }}",
+            #ng_if: "{{ .NgIf }}",
+          },
+          {{- end }}
+        ],
+
+        input_fields: lambda do |object_definitions, connection, config_fields|
+          case config_fields['resource_type']
+          {{- range $name, $object_name := $action.InputFields }}
+          when "{{ $name }}"
+            object_definitions["{{ $object_name }}"]
+          {{- end }}
+          end
+        end,
+
+        execute: lambda do |connection, input, eis, eos, continue|
+          case input['resource_type']
+          {{- range $name, $value := $action.Endpoints }}
+          when "{{ $name }}"
+            excludeKeys = {{ formatStringSlice $value.ExcludeFromQuery }}
+
+            body = input.select {|k,v| k != "resource_type" and not excludeKeys.include? k }
+
+            {{ $value.Func }}
+          {{- end }}
+          end
+        end,
+
+        output_fields: lambda do |object_definitions, connection, config_fields|
+          case config_fields['resource_type']
+          {{- range $name, $object_name := $action.OutputFields }}
+          when "{{ $name }}"
+            object_definitions["{{ $object_name }}"]
+          {{- end }}
+          end
+        end,
+      },
+    {{end}}
+  },
+
+  triggers: {
+    # Dynamic webhook example. Subscribes and unsubscribes webhooks programatically
+    # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
+
+  },
+
+  pick_lists: {
+    {{- range .Picklists }}
+    "{{.Name}}": lambda do
+      [
+        {{- range .Values }}
+        ["{{.Value}}", "{{.Key}}"],
+        {{- end }}
+      ]
+    end,
+    {{- end }}
+
+    # folder: lambda do |connection|
+    #   get("https://www.wrike.com/api/v3/folders")["data"].
+    #     map { |folder| [folder["title"], folder["id"]] }
+    # end
+  },
+
+  # Reusable methods can be called from object_definitions, picklists or actions
+  # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
+  methods: {
+    get_indefinite_article: lambda do |params_word|
+      %w(a e i o u).include?(params_word[0].downcase) ? "an" : "a"
+    end
+  }
+}

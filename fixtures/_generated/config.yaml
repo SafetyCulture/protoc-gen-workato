@@ -1,0 +1,34 @@
+domain: rate_per_user_bucket
+descriptors:
+    - key: api_class
+      value: private_api
+      descriptors:
+        - key: bucket
+          value: /api.tasks.v1.TasksService/CreateTask
+          rate_limit:
+            requests_per_unit: 20
+            unit: minute
+        - key: bucket
+          value: api.tasks.v1.TasksService
+          rate_limit:
+            requests_per_unit: 400
+            unit: minute
+    - key: api_class
+      value: public_api
+      descriptors:
+        - key: bucket
+          value: /api.tasks.v1.TasksService/CreateTask
+          rate_limit:
+            requests_per_unit: 10
+            unit: minute
+        - key: bucket
+          value: api.tasks.v1.TasksService
+          rate_limit:
+            requests_per_unit: 100
+            unit: minute
+    - key: api_class
+      descriptors:
+        - key: bucket
+          rate_limit:
+            requests_per_unit: 1
+            unit: minute
