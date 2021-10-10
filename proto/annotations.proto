@@ -7,60 +7,13 @@ import "google/protobuf/any.proto";
 
 option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
 
-// MethodOptionsworkatos are the rate limiting options for a method.
-message MethodOptionsworkatos {
-  // Rate limits to apply to this method.
-  // Cannot be used with `bucket`.
-  map<string, workato> limits = 1;
-
-  // Bucket to apply to this method, if multiple methods/services need to be rate limited together.
-  // Cannot be used with `limits`.
-  string bucket = 2;
-}
-
-message ServiceOptionsworkatos {
-  // Rate limits to apply to this service.
-  // Cannot be used with `bucket`.
-  map<string, workato> limits = 1;
-
-  // Bucket to apply to this service, if multiple methods/services need to be rate limited together.
-  // Cannot be used with `limits`.
-  string bucket = 2;
-}
-
-// Defines an actual rate limit in terms of requests per unit of time and the unit itself.
-message workato {
-  enum Unit {
-    // The time unit is not known.
-    UNKNOWN = 0;
-
-    // The time unit representing a second.
-    SECOND = 1;
-
-    // The time unit representing a minute.
-    MINUTE = 2;
-
-    // The time unit representing an hour.
-    HOUR = 3;
-
-    // The time unit representing a day.
-    DAY = 4;
-  }
-
-  // The unit of time.
-  string unit = 1;
-  // The number of requests per unit of time.
-  int64 requests_per_unit = 2;
-  // If this limit should be unlimited.
-  bool unlimited = 3;
+// MethodOptionsWorkato ...
+message MethodOptionsWorkato {
+  string resource = 1;
+  string action = 2;
 }
 
 extend google.protobuf.MethodOptions {
-  // See `MethodOptionsworkatos`.
-  MethodOptionsworkatos limit = 50006;
-}
-
-extend google.protobuf.ServiceOptions {
-  // See `ServiceOptionsworkatos`.
-  ServiceOptionsworkatos api_limit = 50007;
+  // See `MethodOptionsWorkato`.
+  MethodOptionsWorkato workato = 50008;
 }

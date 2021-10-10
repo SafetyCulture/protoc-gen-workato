@@ -9,7 +9,8 @@ import (
 
 	tmpl "text/template"
 
-	"github.com/fatih/camelcase"
+	"github.com/Masterminds/sprig"
+	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
@@ -23,7 +24,13 @@ func EscapeActionName(s string) string {
 }
 
 func formatStringSlice(slc []string) string {
-	b, _ := json.Marshal(slc)
+	if slc == nil {
+		return "[]"
+	}
+	b, err := json.Marshal(slc)
+	if err != nil {
+		return "[]"
+	}
 	return string(b)
 }
 
@@ -71,9 +78,9 @@ type ObjectDefinition struct {
 }
 
 type Method struct {
-	Service             *gendoc.Service
-	Method              *gendoc.ServiceMethod
-	GuessedResourceType string
+	Service *gendoc.Service
+	Method  *gendoc.ServiceMethod
+	Action  string
 }
 
 type Endpoint struct {
@@ -155,25 +162,12 @@ func findUsedMessages(
 }
 
 func groupActions(actions map[string][]*Method, service *gendoc.Service, method *gendoc.ServiceMethod) {
-	defaultTypes := []string{
-		"Create",
-		"Update",
-		"Get",
-		"List",
-		"Search",
-		"Delete",
-		"Clone",
-	}
-	for _, t := range defaultTypes {
-		if strings.HasPrefix(method.Name, t) {
-			if actions[t] == nil {
-				actions[t] = make([]*Method, 0)
-			}
-
-			guessedResourceType := strings.Join(camelcase.Split(strings.Replace(method.Name, t, "", 1)), " ")
-
-			actions[t] = append(actions[t], &Method{service, method, guessedResourceType})
+	if opts, ok := method.Option("s12.protobuf.workato.workato").(*workato.MethodOptionsWorkato); ok {
+		if actions[opts.Resource] == nil {
+			actions[opts.Resource] = make([]*Method, 0)
 		}
+
+		actions[opts.Resource] = append(actions[opts.Resource], &Method{service, method, opts.Action})
 	}
 }
 
@@ -193,6 +187,9 @@ func getFieldDef(enums map[string]*gendoc.Enum, messages map[string]*gendoc.Mess
 	// Basic Scalar Types
 	if t, ok := typeMap[field.FullType]; ok {
 		fieldDef.Type = t
+		if t == "boolean" {
+			fieldDef.ControlType = "checkbox"
+		}
 	} else if message, ok := messages[field.FullType]; ok {
 		fieldDef.Type = "object"
 		fieldDef.PropertiesRef = message.FullName
@@ -218,7 +215,7 @@ func getFieldDef(enums map[string]*gendoc.Enum, messages map[string]*gendoc.Mess
 	return fieldDef
 }
 
-func GenerateWorkatoConnector(template *gendoc.Template) ([]byte, error) {
+func GenerateWorkatoConnector(template *gendoc.Template, config *Config) ([]byte, error) {
 	//return json.Marshal(template)
 
 	messages := make(map[string]*gendoc.Message)
@@ -245,7 +242,7 @@ func GenerateWorkatoConnector(template *gendoc.Template) ([]byte, error) {
 
 	for _, file := range template.Files {
 		for _, service := range file.Services {
-			if service.Name == "WebhooksService" || service.Name == "ThePubService" || service.Name == "InspectionService" {
+			if service.Name == "WebhooksService" || service.Name == "ThePubService" || service.Name == "InspectionService" || service.Name == "WoraktoService" {
 				for _, method := range service.Methods {
 					groupActions(actions, service, method)
 					findUsedMessages(
@@ -281,20 +278,20 @@ func GenerateWorkatoConnector(template *gendoc.Template) ([]byte, error) {
 		connectorTemplate.ObjectDefinitions = append(connectorTemplate.ObjectDefinitions, obj)
 	}
 
-	for name, action := range actions {
+	for resource, action := range actions {
 		picklistDef := &PicklistDefinition{
-			Name:   fmt.Sprintf("%s_%s", "resource_type", name),
+			Name:   fmt.Sprintf("%s_%s", "action_name", resource),
 			Values: []PicklistValue{},
 		}
 		actionDef := &ActionDefinition{
-			Name:        name,
-			Title:       fmt.Sprintf("%s <span class='provider'>resource</span> in <span class='provider'>iAuditor</span>", name),
-			Subtitle:    fmt.Sprintf("Use to %s a <span class='provider'>resource</span> in <span class='provider'>iAuditor</span>", name),
-			Description: fmt.Sprintf("%s #{%%w(a e i o u).include?((picklist_label['resource_type'] || 'resource')[0].downcase) ? \"an\" : \"a\"} <span class='provider'>#{picklist_label['resource_type'] || 'resource'}</span> in <span class='provider'>iAuditor</span>", name),
+			Name:        resource,
+			Title:       fmt.Sprintf("Interact with %s %s", indefiniteArticle(resource), resource),
+			Subtitle:    fmt.Sprintf("Allows you to intereact with %s %s in iAuditor", indefiniteArticle(resource), resource),
+			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with'}</span> %s <span class='provider'>%s</span> in <span class='provider'>iAuditor</span>", indefiniteArticle(resource), resource),
 			ConfigFields: []*FieldDefinition{
 				{
-					Name:        "resource_type",
-					Label:       "Resource Type",
+					Name:        "action_name",
+					Label:       "Action",
 					Type:        "string",
 					ControlType: "select",
 					Picklist:    picklistDef.Name,
@@ -308,13 +305,19 @@ func GenerateWorkatoConnector(template *gendoc.Template) ([]byte, error) {
 		for _, method := range action {
 			name := EscapeActionName(fmt.Sprintf("%s/%s", method.Service.FullName, method.Method.Name))
 
-			actionDef.Endpoints[name] = getExecuteCode(messages, method.Service, method.Method)
+			actionDef.Endpoints[name] = getExecuteCode(config, messages, method.Service, method.Method)
 
-			picklistDef.Values = append(picklistDef.Values, PicklistValue{name, method.GuessedResourceType})
+			picklistDef.Values = append(picklistDef.Values, PicklistValue{name, method.Action})
 
 			actionDef.InputFields[name] = method.Method.RequestFullType
 			actionDef.OutputFields[name] = method.Method.ResponseFullType
 		}
+
+		// if configActions != nil {
+		// 	for _, act := range configActions {
+
+		// 	}
+		// }
 
 		connectorTemplate.Actions = append(connectorTemplate.Actions, actionDef)
 		connectorTemplate.Picklists = append(connectorTemplate.Picklists, picklistDef)
@@ -338,7 +341,7 @@ func GenerateWorkatoConnector(template *gendoc.Template) ([]byte, error) {
 		connectorTemplate.Picklists = append(connectorTemplate.Picklists, pickListDef)
 	}
 
-	tp, err := tmpl.New("Connector Template").Funcs(funcMap).Parse(connectorTmpl)
+	tp, err := tmpl.New("Connector Template").Funcs(sprig.TxtFuncMap()).Funcs(funcMap).Parse(connectorTmpl)
 	if err != nil {
 		return nil, err
 	}

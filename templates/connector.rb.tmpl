@@ -118,7 +118,7 @@
         ],
 
         input_fields: lambda do |object_definitions, connection, config_fields|
-          case config_fields['resource_type']
+          case config_fields['action_name']
           {{- range $name, $object_name := $action.InputFields }}
           when "{{ $name }}"
             object_definitions["{{ $object_name }}"]
@@ -127,20 +127,20 @@
         end,
 
         execute: lambda do |connection, input, eis, eos, continue|
-          case input['resource_type']
+          case input['action_name']
           {{- range $name, $value := $action.Endpoints }}
           when "{{ $name }}"
             excludeKeys = {{ formatStringSlice $value.ExcludeFromQuery }}
 
-            body = input.select {|k,v| k != "resource_type" and not excludeKeys.include? k }
+            body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
 
-            {{ $value.Func }}
+            {{ $value.Func | indent 12 | trim }}
           {{- end }}
           end
         end,
 
         output_fields: lambda do |object_definitions, connection, config_fields|
-          case config_fields['resource_type']
+          case config_fields['action_name']
           {{- range $name, $object_name := $action.OutputFields }}
           when "{{ $name }}"
             object_definitions["{{ $object_name }}"]
