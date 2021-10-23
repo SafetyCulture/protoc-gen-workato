@@ -60,15 +60,3 @@ func getExecuteCode(config *Config, messages map[string]*gendoc.Message, service
 		Func: fmt.Sprintf(`post("/%s/%s").payload(body)`, service.FullName, method.Name),
 	}
 }
-
-func indefiniteArticle(in string) string {
-	switch string(in[0]) {
-	case "a":
-	case "e":
-	case "i":
-	case "o":
-		//case "u":
-		return "an"
-	}
-	return "a"
-}

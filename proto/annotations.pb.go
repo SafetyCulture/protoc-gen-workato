@@ -83,7 +83,7 @@ var file_proto_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
 		ExtensionType: (*MethodOptionsWorkato)(nil),
 		Field:         50008,
-		Name:          "s12.protobuf.workato.workato",
+		Name:          "s12.protobuf.workato.action",
 		Tag:           "bytes,50008,opt,name=workato",
 		Filename:      "proto/annotations.proto",
 	},
@@ -143,8 +143,8 @@ var file_proto_annotations_proto_goTypes = []interface{}{
 	(*descriptorpb.MethodOptions)(nil), // 1: google.protobuf.MethodOptions
 }
 var file_proto_annotations_proto_depIdxs = []int32{
-	1, // 0: s12.protobuf.workato.workato:extendee -> google.protobuf.MethodOptions
-	0, // 1: s12.protobuf.workato.workato:type_name -> s12.protobuf.workato.MethodOptionsWorkato
+	1, // 0: s12.protobuf.workato.action:extendee -> google.protobuf.MethodOptions
+	0, // 1: s12.protobuf.workato.action:type_name -> s12.protobuf.workato.MethodOptionsWorkato
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	1, // [1:2] is the sub-list for extension type_name

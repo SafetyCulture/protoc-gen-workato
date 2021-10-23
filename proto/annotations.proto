@@ -8,12 +8,12 @@ import "google/protobuf/any.proto";
 option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
 
 // MethodOptionsWorkato ...
-message MethodOptionsWorkato {
+message MethodOptionsWorkatoAction {
   string resource = 1;
   string action = 2;
 }
 
 extend google.protobuf.MethodOptions {
   // See `MethodOptionsWorkato`.
-  MethodOptionsWorkato workato = 50008;
+  MethodOptionsWorkatoAction action = 50008;
 }

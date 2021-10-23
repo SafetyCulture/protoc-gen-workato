@@ -177,8 +177,5 @@
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {
-    get_indefinite_article: lambda do |params_word|
-      %w(a e i o u).include?(params_word[0].downcase) ? "an" : "a"
-    end
   }
 }

@@ -10,7 +10,6 @@ import (
 	tmpl "text/template"
 
 	"github.com/Masterminds/sprig"
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
@@ -20,7 +19,14 @@ func Escape(s string) string {
 }
 
 func EscapeActionName(s string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(s, ".", "_"), "/", "__")
+	replacer := strings.NewReplacer(
+		".", "_",
+		"/", "_",
+		" ", "_",
+		"&", "and",
+	)
+
+	return replacer.Replace(s)
 }
 
 func formatStringSlice(slc []string) string {
@@ -162,13 +168,21 @@ func findUsedMessages(
 }
 
 func groupActions(actions map[string][]*Method, service *gendoc.Service, method *gendoc.ServiceMethod) {
-	if opts, ok := method.Option("s12.protobuf.workato.workato").(*workato.MethodOptionsWorkato); ok {
-		if actions[opts.Resource] == nil {
-			actions[opts.Resource] = make([]*Method, 0)
-		}
+	var resource string
+	if opts, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
+		for _, tag := range opts.Tags {
 
-		actions[opts.Resource] = append(actions[opts.Resource], &Method{service, method, opts.Action})
+			if tag != "Public" {
+				resource = tag
+			}
+		}
 	}
+
+	if actions[resource] == nil {
+		actions[resource] = make([]*Method, 0)
+	}
+
+	actions[resource] = append(actions[resource], &Method{service, method, method.Description})
 }
 
 func getFieldDef(enums map[string]*gendoc.Enum, messages map[string]*gendoc.Message, field *gendoc.MessageField) *FieldDefinition {
@@ -242,8 +256,17 @@ func GenerateWorkatoConnector(template *gendoc.Template, config *Config) ([]byte
 
 	for _, file := range template.Files {
 		for _, service := range file.Services {
-			if service.Name == "WebhooksService" || service.Name == "ThePubService" || service.Name == "InspectionService" || service.Name == "WoraktoService" {
-				for _, method := range service.Methods {
+			for _, method := range service.Methods {
+				isPublic := false
+				if opts, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
+					for _, tag := range opts.Tags {
+						if tag == "Public" {
+							isPublic = true
+						}
+					}
+				}
+
+				if isPublic {
 					groupActions(actions, service, method)
 					findUsedMessages(
 						usedMessages,
@@ -280,14 +303,14 @@ func GenerateWorkatoConnector(template *gendoc.Template, config *Config) ([]byte
 
 	for resource, action := range actions {
 		picklistDef := &PicklistDefinition{
-			Name:   fmt.Sprintf("%s_%s", "action_name", resource),
+			Name:   fmt.Sprintf("%s_%s", "action_name", EscapeActionName(resource)),
 			Values: []PicklistValue{},
 		}
 		actionDef := &ActionDefinition{
-			Name:        resource,
-			Title:       fmt.Sprintf("Interact with %s %s", indefiniteArticle(resource), resource),
-			Subtitle:    fmt.Sprintf("Allows you to intereact with %s %s in iAuditor", indefiniteArticle(resource), resource),
-			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with'}</span> %s <span class='provider'>%s</span> in <span class='provider'>iAuditor</span>", indefiniteArticle(resource), resource),
+			Name:        EscapeActionName(resource),
+			Title:       resource,
+			Subtitle:    fmt.Sprintf("Interact with %s in iAuditor", resource),
+			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with %s'}</span> in <span class='provider'>iAuditor</span>", resource),
 			ConfigFields: []*FieldDefinition{
 				{
 					Name:        "action_name",
@@ -312,12 +335,6 @@ func GenerateWorkatoConnector(template *gendoc.Template, config *Config) ([]byte
 			actionDef.InputFields[name] = method.Method.RequestFullType
 			actionDef.OutputFields[name] = method.Method.ResponseFullType
 		}
-
-		// if configActions != nil {
-		// 	for _, act := range configActions {
-
-		// 	}
-		// }
 
 		connectorTemplate.Actions = append(connectorTemplate.Actions, actionDef)
 		connectorTemplate.Picklists = append(connectorTemplate.Picklists, picklistDef)
@@ -347,7 +364,6 @@ func GenerateWorkatoConnector(template *gendoc.Template, config *Config) ([]byte
 	}
 
 	var buf bytes.Buffer
-
 	err = tp.Execute(&buf, connectorTemplate)
 	if err != nil {
 		return nil, err

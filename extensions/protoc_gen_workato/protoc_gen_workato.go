@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	extensions.SetTransformer("s12.protobuf.workato.workato", func(payload interface{}) interface{} {
+	extensions.SetTransformer("s12.protobuf.workato.action", func(payload interface{}) interface{} {
 		opt, ok := payload.(*workato.MethodOptionsWorkato)
 		if !ok {
 			return nil
