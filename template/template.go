@@ -67,6 +67,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 	workatoTemplate.groupActions()
 	workatoTemplate.generateObjectDefintions()
 	workatoTemplate.generateActionDefinitions()
+	workatoTemplate.generateEnumPicklists()
 
 	return workatoTemplate
 }

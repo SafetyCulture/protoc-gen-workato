@@ -17,5 +17,4 @@ func (t *WorkatoTemplate) generateEnumPicklists() {
 
 		t.Picklists = append(t.Picklists, pickListDef)
 	}
-
 }
