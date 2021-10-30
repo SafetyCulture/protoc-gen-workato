@@ -1,11 +1,11 @@
 # protoc-gen-workato
 
-This is a Rate Limit generator for Google Protocol Buffers compiler `protoc`. The plugin generates a Lua filter to bucket requests based on their paths, and a descriptor file for [envoyproxy/workato](https://github.com/envoyproxy/workato).
+This is a [Workato Connector](https://docs.workato.com/developing-connectors/sdk.html) generator for Google Protocol Buffers compiler `protoc`. The plugin generates a Connector file based on your publicly tagged methods.
 
 ## Installation
 
 ```bash
-go get -u github.com/SafetyCulture/protoc-gen-workato/cmd/protoc-gen-workato
+go install github.com/SafetyCulture/protoc-gen-workato@latest
 ```
 
 ## Usage
@@ -16,61 +16,10 @@ The plugin is invoked by passing the --workato_out, and --workato_opt options to
 --doc_opt=workato/config.yaml
 ```
 
-Annotations for rate limits can be applied at the service or method level. Here is an example of what that looks like:
+Generation of the actions in workato relies on the usage of [`google.api.http`](https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L46) and [`grpc.gateway.protoc_gen_openapiv2.options`](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-openapiv2/options/annotations.proto) annotations.
 
 ```proto
-service TasksService {
-  option (s12.protobuf.workato.api_limit) = {
-    limits: {
-      key: "public_api",
-      value: {
-        unit: "minute"
-        requests_per_unit: 100
-      }
-    }
-    limits: {
-      key: "private_api",
-      value: {
-        unit: "minute"
-        requests_per_unit: 400
-      }
-    }
-  };
 
-  // CreateTask is used to create a new task.
-  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
-    option (s12.protobuf.workato.limit) = {
-      limits: {
-        key: "public_api",
-        value: {
-          unit: "minute"
-          requests_per_unit: 10
-        }
-      }
-      limits: {
-        key: "private_api",
-        value: {
-          unit: "minute"
-          requests_per_unit: 20
-        }
-      }
-    };
-  }
-
-  // GetTask returns a task by id.
-  rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {}
-
-  rpc AddComment(AddCommentRequest) returns (AddCommentResponse) {
-    option (s12.protobuf.workato.limit) = {
-      bucket: "TaskComments" // Custom bucket, so AddComment and UpdateComment can share a workato
-    };
-  }
-  rpc UpdateComment(AddCommentRequest) returns (AddCommentResponse) {
-    option (s12.protobuf.workato.limit) = {
-      bucket: "TaskComments" // Custom bucket, so AddComment and UpdateComment can share a workato
-    };
-  }
-}
 ```
 
 Additional or default limits can be configured within the configuration file given to protoc-gen-workato.

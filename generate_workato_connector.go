@@ -2,6 +2,7 @@ package genworkato
 
 import (
 	"bytes"
+	"embed"
 	_ "embed"
 	"encoding/json"
 	"strings"
@@ -40,32 +41,42 @@ func formatStringSlice(slc []string) string {
 	return string(b)
 }
 
-var funcMap = tmpl.FuncMap{
-	"escape":            Escape,
-	"escapeActionName":  EscapeActionName,
-	"formatStringSlice": formatStringSlice,
-}
-
 type Action struct {
 	Service *gendoc.Service
 	Method  *gendoc.ServiceMethod
 }
 
-//go:embed templates/connector.rb.tmpl
-var connectorTmpl string
+//go:embed templates/*.tmpl.rb
+var tmpls embed.FS
 
 func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Config) ([]byte, error) {
 	workatoTemplate := template.FromGenDoc(gendoctemplate, cfg)
 
-	tp, err := tmpl.New("Connector Template").Funcs(sprig.TxtFuncMap()).Funcs(funcMap).Parse(connectorTmpl)
-	if err != nil {
+	tp := tmpl.New("Connector Template").
+		Funcs(sprig.TxtFuncMap())
+
+	tp.Funcs(tmpl.FuncMap{
+		"escape":            Escape,
+		"escapeActionName":  EscapeActionName,
+		"formatStringSlice": formatStringSlice,
+		"include": func(name string, data interface{}) (string, error) {
+			buf := bytes.NewBuffer(nil)
+			if err := tp.ExecuteTemplate(buf, name, data); err != nil {
+				return "", err
+			}
+			return buf.String(), nil
+		},
+	})
+
+	var err error
+	if tp, err = tp.ParseFS(tmpls, "templates/*.tmpl.rb"); err != nil {
 		return nil, err
 	}
 
 	// We should sort all of the lists in this template before rendering
 	// This way the result is deterministic and diffing is easy.
 	var buf bytes.Buffer
-	err = tp.Execute(&buf, workatoTemplate)
+	err = tp.ExecuteTemplate(&buf, "connector.tmpl.rb", workatoTemplate)
 	if err != nil {
 		return nil, err
 	}
