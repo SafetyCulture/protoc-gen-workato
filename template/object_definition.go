@@ -77,11 +77,20 @@ func (t *WorkatoTemplate) generateObjectDefintions() {
 func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *FieldDefinition {
 	fieldDef := &FieldDefinition{
 		Name:  field.Name,
-		Label: field.Description,
+		Label: fieldTitleFromName(field.Name),
+		Hint:  field.Description,
 		Type:  "string",
 	}
 
 	if opts, ok := field.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field").(*options.JSONSchema); ok {
+		if opts.Title != "" {
+			fieldDef.Label = opts.Title
+		}
+
+		if opts.Description != "" {
+			fieldDef.Hint = opts.Description
+		}
+
 		if opts.Default != "" {
 			fieldDef.Default = opts.Default
 		}

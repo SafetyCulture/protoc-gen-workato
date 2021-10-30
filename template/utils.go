@@ -25,3 +25,7 @@ func enumPicklistName(enum *gendoc.Enum) string {
 func actionPicklistName(group string) string {
 	return fmt.Sprintf("%s_%s", "action_name", escapeKeyName(group))
 }
+
+func fieldTitleFromName(name string) string {
+	return strings.Title(strings.ReplaceAll(name, "_", " "))
+}
