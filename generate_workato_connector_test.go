@@ -36,8 +36,5 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 	var buf bytes.Buffer
 	buf.Write(f)
 
-	err = os.WriteFile("workato.rb", content, 0777)
-	assert.NilError(t, err)
-
 	assert.Equal(t, buf.String(), string(content))
 }

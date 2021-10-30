@@ -85,17 +85,20 @@ service TasksService {
   }
 }
 
+message Task {
+  // The ID of the task
+  string id = 1;
+  // The name of the task
+  string name = 2;
+}
+
 message GetTaskRequest {
   // The ID of the task
   string id = 1;
 }
 
 message GetTaskResponse {
-  // The ID of the task
-  string id = 1;
-
-  // The name of the task
-  string name = 2;
+  Task task = 1;
 }
 
 message DeleteTaskRequest {

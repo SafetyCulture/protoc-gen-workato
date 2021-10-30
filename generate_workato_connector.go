@@ -5,6 +5,7 @@ import (
 	"embed"
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	tmpl "text/template"
@@ -59,6 +60,21 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 		"escape":            Escape,
 		"escapeActionName":  EscapeActionName,
 		"formatStringSlice": formatStringSlice,
+		"field_key": func(name string, data interface{}) (string, error) {
+			value := ""
+			switch d := data.(type) {
+			case string:
+				if len(d) != 0 {
+					value = fmt.Sprintf("\"%s\"", strings.ReplaceAll(d, `"`, `\"`))
+				}
+			}
+
+			if len(value) == 0 {
+				return "", nil
+			}
+
+			return fmt.Sprintf("%s: %s,\n  ", name, value), nil
+		},
 		"include": func(name string, data interface{}) (string, error) {
 			buf := bytes.NewBuffer(nil)
 			if err := tp.ExecuteTemplate(buf, name, data); err != nil {
