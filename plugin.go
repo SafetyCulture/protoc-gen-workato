@@ -3,6 +3,7 @@ package genworkato
 import (
 	"os"
 
+	"github.com/SafetyCulture/protoc-gen-workato/config"
 	"github.com/golang/protobuf/proto"
 	plugin_go "github.com/golang/protobuf/protoc-gen-go/plugin"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
@@ -14,18 +15,6 @@ import (
 // file are included.
 type PluginOptions struct {
 	ConfigFile string
-}
-
-type ConfigAction struct {
-	// ID   string
-	// Name string
-	Exec string `yaml:"exec"`
-}
-
-// The configuration of the plugin
-type Config struct {
-	Name   string                  `yaml:"name"`
-	Method map[string]ConfigAction `yaml:"method"`
 }
 
 // SupportedFeatures describes a flag setting for supported features.
@@ -47,7 +36,7 @@ func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGen
 		return nil, err
 	}
 
-	var configYaml Config
+	var configYaml config.Config
 	err = yaml.NewDecoder(f).Decode(&configYaml)
 	if err != nil {
 		return nil, err

@@ -128,7 +128,7 @@
 
         execute: lambda do |connection, input, eis, eos, continue|
           case input['action_name']
-          {{- range $name, $value := $action.Endpoints }}
+          {{- range $name, $value := $action.ExecCode }}
           when "{{ $name }}"
             excludeKeys = {{ formatStringSlice $value.ExcludeFromQuery }}
 
