@@ -1,7 +1,7 @@
 package template
 
 func (t *WorkatoTemplate) generateEnumPicklists() {
-	for _, enum := range t.Enums {
+	for _, enum := range t.enums {
 		pickListDef := &PicklistDefinition{
 			Name:   enumPicklistName(enum),
 			Values: []PicklistValue{},

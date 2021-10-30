@@ -6,24 +6,37 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
+// WorkatoTemplate is an interface to use when rendering a workato connector
 type WorkatoTemplate struct {
 	config *config.Config
 
+	// All of the messages from the proto files
 	messageMap map[string]*gendoc.Message
-	enumMap    map[string]*gendoc.Enum
+	// All of the enums from the proto files
+	enumMap map[string]*gendoc.Enum
 
+	// A map of the used messages from included methods
 	usedMessageMap map[string]*gendoc.Message
-	usedEnumMap    map[string]*gendoc.Enum
+	// A map of the used enums from the used messages
+	usedEnumMap map[string]*gendoc.Enum
+	// An ordered slice of the used messages from included methods
+	messages []*gendoc.Message
+	// An ordered slice of the used enums from the used messages
+	enums []*gendoc.Enum
 
-	actions          []*Action
+	// All of the included actions
+	actions []*Action
+	// A map of the actions grouped by their resource
 	groupedActionMap map[string]*ActionGroup
-	groupedActions   []*ActionGroup
+	// An ordered slice of the grouped actions
+	groupedActions []*ActionGroup
 
-	Messages          []*gendoc.Message
-	Enums             []*gendoc.Enum
+	// ObjectDefinitions are Workato formatted definitions of messages
 	ObjectDefinitions []*ObjectDefinition
-	Actions           []*ActionDefinition
-	Picklists         []*PicklistDefinition
+	// Actions are Workato formatted defintions of grouped methods
+	Actions []*ActionDefinition
+	// Picklists are Workato formatted definitions of enums and action groups
+	Picklists []*PicklistDefinition
 }
 
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate {

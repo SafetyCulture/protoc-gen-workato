@@ -36,6 +36,7 @@ type ExecCode struct {
 
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
+		// Group methods by their first tag
 		var resource string
 		if opts, ok := action.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
 			for _, tag := range opts.Tags {
@@ -81,14 +82,14 @@ func (t *WorkatoTemplate) recordUsedMessage(message *gendoc.Message) {
 	}
 
 	t.usedMessageMap[message.FullName] = message
-	t.Messages = append(t.Messages, message)
+	t.messages = append(t.messages, message)
 	for _, field := range message.Fields {
 		if subMessage, ok := t.messageMap[field.FullType]; ok {
 			t.recordUsedMessage(subMessage)
 		} else if _, ok := t.enumMap[field.FullType]; ok {
 			if t.usedEnumMap[field.FullType] == nil {
 				t.usedEnumMap[field.FullType] = t.enumMap[field.FullType]
-				t.Enums = append(t.Enums, t.enumMap[field.FullType])
+				t.enums = append(t.enums, t.enumMap[field.FullType])
 			}
 		}
 	}

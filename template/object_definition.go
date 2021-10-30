@@ -60,7 +60,7 @@ var typeMap = map[string]string{
 }
 
 func (t *WorkatoTemplate) generateObjectDefintions() {
-	for _, message := range t.Messages {
+	for _, message := range t.messages {
 		obj := &ObjectDefinition{
 			// Use the full name so it is unique
 			Name: message.FullName,
