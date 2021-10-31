@@ -40,6 +40,7 @@ type WorkatoTemplate struct {
 	Picklists []*PicklistDefinition
 }
 
+// FromGenDoc converts a protoc-gen-doc template to our template file
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate {
 	workatoTemplate := &WorkatoTemplate{
 		config:           cfg,
