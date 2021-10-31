@@ -35,6 +35,7 @@ type Action struct {
 //go:embed templates/*.tmpl.rb
 var tmpls embed.FS
 
+// GenerateWorkatoConnector generates a Workato SDK Connector from protobufs
 func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Config) ([]byte, error) {
 	workatoTemplate := template.FromGenDoc(gendoctemplate, cfg)
 
