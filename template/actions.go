@@ -7,7 +7,7 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
-// Action group is a grouped set of actions with sub actions
+// ActionGroup is a grouped set of actions with sub actions
 type ActionGroup struct {
 	Name    string
 	Actions []*Action
