@@ -3,7 +3,7 @@ package genworkato
 import (
 	"bytes"
 	"embed"
-	_ "embed"
+
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -25,11 +25,6 @@ func formatStringSlice(slc []string) (string, error) {
 		return "", err
 	}
 	return string(b), nil
-}
-
-type Action struct {
-	Service *gendoc.Service
-	Method  *gendoc.ServiceMethod
 }
 
 //go:embed templates/*.tmpl.rb
