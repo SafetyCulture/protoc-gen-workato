@@ -16,30 +16,15 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
-func Escape(s string) string {
-	return tmpl.HTMLEscapeString(s)
-}
-
-func EscapeActionName(s string) string {
-	replacer := strings.NewReplacer(
-		".", "_",
-		"/", "_",
-		" ", "_",
-		"&", "and",
-	)
-
-	return replacer.Replace(s)
-}
-
-func formatStringSlice(slc []string) string {
+func formatStringSlice(slc []string) (string, error) {
 	if slc == nil {
-		return "[]"
+		return "[]", nil
 	}
 	b, err := json.Marshal(slc)
 	if err != nil {
-		return "[]"
+		return "", err
 	}
-	return string(b)
+	return string(b), nil
 }
 
 type Action struct {
@@ -57,9 +42,7 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 		Funcs(sprig.TxtFuncMap())
 
 	tp.Funcs(tmpl.FuncMap{
-		"escape":            Escape,
-		"escapeActionName":  EscapeActionName,
-		"formatStringSlice": formatStringSlice,
+		"format_string_slice": formatStringSlice,
 		"field_key": func(name string, data interface{}) (string, error) {
 			value := ""
 			switch d := data.(type) {

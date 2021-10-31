@@ -23,7 +23,7 @@
       case input['action_name']
       {{- range $name, $value := $action.ExecCode }}
       when "{{ $name }}"
-        excludeKeys = {{ formatStringSlice $value.ExcludeFromQuery }}
+        excludeKeys = {{ format_string_slice $value.ExcludeFromQuery }}
         body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
         {{ $value.Func | indent 8 | trim }}
       {{- end }}

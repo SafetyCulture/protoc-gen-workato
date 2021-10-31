@@ -7,6 +7,7 @@ import (
 )
 
 // WorkatoTemplate is an interface to use when rendering a workato connector
+// https://docs.workato.com/developing-connectors/sdk/sdk-reference.html
 type WorkatoTemplate struct {
 	config *config.Config
 
