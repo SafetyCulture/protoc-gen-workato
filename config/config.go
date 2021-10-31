@@ -1,12 +1,11 @@
 package config
 
+// ConfigAction is the overwritten code for a specific action
 type ConfigAction struct {
-	// ID   string
-	// Name string
 	Exec string `yaml:"exec"`
 }
 
-// The configuration of the plugin
+// Config is the configuration of the plugin
 type Config struct {
 	TemplateFile string
 	Method       map[string]ConfigAction `yaml:"method"`

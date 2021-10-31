@@ -29,3 +29,4 @@ repos:
     rev: v1.21.0
     hooks:
       - id: golangci-lint
+        exclude: fixtures/_generated/connector.rb
