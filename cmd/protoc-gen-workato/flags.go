@@ -5,22 +5,22 @@ import (
 	"fmt"
 	"io"
 
-	genworkato "github.com/pseudomuto/protoc-gen-doc"
+	genworkato "github.com/SafetyCulture/protoc-gen-workato"
 )
 
 const helpMessage = `
-This is a protoc plugin that is used to generate workatos from your protobuf files. Invocation is controlled by
+This is a protoc plugin that is used to generate a Workato connector from your protobuf files. Invocation is controlled by
 using the workato_opt and workato_out options for protoc.
 
-See https://github.com/pseudomuto/protoc-gen-doc for more details.
+See https://github.com/SafetyCulture/protoc-gen-workato for more details.
 `
 
-// Version returns the currently running version of protoc-gen-doc
+// Version returns the currently running version of protoc-gen-workato
 func Version() string {
 	return genworkato.VERSION
 }
 
-// Flags contains details about the CLI invocation of protoc-gen-doc
+// Flags contains details about the CLI invocation of protoc-gen-workato
 type Flags struct {
 	appName     string
 	flagSet     *flag.FlagSet
