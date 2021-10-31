@@ -5,12 +5,18 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
+// ObjectDefinition is the representation of an object in the Workato SDK
+// https://docs.workato.com/developing-connectors/sdk/sdk-reference/object_definitions.html
 type ObjectDefinition struct {
-	Name string
+	// Object key
+	Key string
 
+	// Fields for the object
 	Fields []*FieldDefinition
 }
 
+// FieldDefinition is the representation of an objects fields in the Workato SDK
+// https://docs.workato.com/developing-connectors/sdk/sdk-reference/schema.html
 type FieldDefinition struct {
 	Name               string
 	Label              string
@@ -63,7 +69,7 @@ func (t *WorkatoTemplate) generateObjectDefintions() {
 	for _, message := range t.messages {
 		obj := &ObjectDefinition{
 			// Use the full name so it is unique
-			Name: message.FullName,
+			Key: message.FullName,
 		}
 
 		for _, field := range message.Fields {

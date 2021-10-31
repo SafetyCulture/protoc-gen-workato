@@ -7,16 +7,20 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
+// Action group is a grouped set of actions with sub actions
 type ActionGroup struct {
 	Name    string
 	Actions []*Action
 }
 
+// Action is a combined service and method defintion
 type Action struct {
 	Service *gendoc.Service
 	Method  *gendoc.ServiceMethod
 }
 
+// ActionDefinition is the representation of an action in the Workato SDK
+// https://docs.workato.com/developing-connectors/sdk/sdk-reference/actions.html
 type ActionDefinition struct {
 	Name        string
 	Title       string
@@ -29,11 +33,14 @@ type ActionDefinition struct {
 	ExecCode     map[string]ExecCode
 }
 
+// ExecCode is the code to be run when executing a function
 type ExecCode struct {
+	// Exclude these fields from the query, because they are passed into the body or as path params
 	ExcludeFromQuery []string
 	Func             string
 }
 
+// Group actions based on their shared resource name
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
 		// Group methods by their first tag
