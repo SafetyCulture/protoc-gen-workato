@@ -58,7 +58,7 @@ default_limits:
   - key: "private_api"
     value:
       unlimited: true
-  
+
   # This customer pays us lots of money, so we given them an increased workato
   - key: "|user_abc122"
     value:
@@ -77,5 +77,5 @@ A complete example can be found in `protos/`.
 
 This repo uses [buf](https://buf.build) to build Protocol Buffers.
 
-To generate the image for fixtures run `buf build -o fixtures/image.bin`.  
+To generate the image for fixtures run `buf build -o fixtures/image.bin`.
 To generate the annotations Go package run `buf generate`.
