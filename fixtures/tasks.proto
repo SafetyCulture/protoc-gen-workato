@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+import "proto/annotations.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+package api.tasks.v1;
+
+service TasksService {
+  // Create a new task
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      post: "/v1/tasks"
+      body: "*"
+    };
+  }
+
+  // Get a task by ID
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      get: "/v1/tasks/{id}"
+    };
+  }
+
+  // Get a task by ID (but privately)
+  rpc PrivateGetTask(GetTaskRequest) returns (GetTaskResponse) {
+    option (google.api.http) = {
+      get: "/v1/private/tasks/{id}"
+    };
+  }
+
+  // Update a task by ID
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      put: "/v1/tasks/{id}"
+      body: "*"
+    };
+  }
+
+  // Delete a task by ID
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      delete: "/v1/tasks/{id}"
+    };
+  }
+
+  // Add a comment to a task
+  rpc AddComment(AddCommentRequest) returns (AddCommentResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Task Comments"]
+    };
+
+    option (google.api.http) = {
+      post: "/v1/tasks/{task_id}/comment"
+      body: "*"
+    };
+  }
+
+  // Update a comment on a task
+  rpc UpdateComment(UpdateCommentRequest) returns (UpdateCommentResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Task Comments"]
+    };
+
+    option (google.api.http) = {
+      put: "/v1/tasks/{task_id}/comment/{comment_id}"
+      body: "*"
+    };
+  }
+}
+
+message Task {
+  // The ID of the task
+  string id = 1;
+  // The name of the task
+  string name = 2;
+}
+
+message GetTaskRequest {
+  // The ID of the task
+  string id = 1;
+}
+
+message GetTaskResponse {
+  Task task = 1;
+}
+
+message DeleteTaskRequest {
+  // The ID of the task
+  string id = 1;
+}
+
+message DeleteTaskResponse {}
+
+message UpdateTaskRequest {
+  // The ID of the task
+  string id = 1;
+
+  // The name of the task
+  string name = 2;
+}
+
+message UpdateTaskResponse {}
+
+message CreateTaskRequest {
+  // The name of the task
+  string name = 1;
+}
+
+message CreateTaskResponse {
+  // The ID of the task
+  string id = 1;
+}
+
+message AddCommentRequest {
+  // The ID of the task
+  string task_id = 1;
+
+  // The comment to add
+  string comment = 2;
+}
+
+message AddCommentResponse {
+  // The ID of the comment
+  string comment_id = 1;
+}
+
+message UpdateCommentRequest {
+  // The ID of the task
+  string task_id = 1;
+
+  // The ID comment to update
+  string comment_id = 2;
+
+  // The updated comment
+  string comment = 3;
+}
+
+message UpdateCommentResponse {}

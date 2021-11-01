@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package s12.protobuf.workato;
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
+
+// MethodOptionsWorkato ...
+message MethodOptionsWorkatoAction {
+  string resource = 1;
+  string action = 2;
+}
+
+extend google.protobuf.MethodOptions {
+  // See `MethodOptionsWorkato`.
+  MethodOptionsWorkatoAction action = 50008;
+}
