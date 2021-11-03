@@ -4,11 +4,11 @@ import (
 	"os"
 
 	"github.com/SafetyCulture/protoc-gen-workato/config"
-	"github.com/golang/protobuf/proto"
-	plugin_go "github.com/golang/protobuf/protoc-gen-go/plugin"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	"github.com/pseudomuto/protokit"
-	"gopkg.in/yaml.v2"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/pluginpb"
+	"gopkg.in/yaml.v3"
 )
 
 // PluginOptions encapsulates options for the plugin. The type of renderer, template file, and the name of the output
@@ -18,14 +18,14 @@ type PluginOptions struct {
 }
 
 // SupportedFeatures describes a flag setting for supported features.
-var SupportedFeatures = uint64(plugin_go.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+var SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
 
 // Plugin describes a protoc code generate plugin. It's an implementation of Plugin from github.com/pseudomuto/protokit
 type Plugin struct{}
 
 // Generate compiles the documentation and generates the CodeGeneratorResponse to send back to protoc. It does this
 // by rendering a template based on the options parsed from the CodeGeneratorRequest.
-func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGeneratorResponse, error) {
+func (p *Plugin) Generate(r *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGeneratorResponse, error) {
 	options, err := ParseOptions(r)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGen
 
 	result := protokit.ParseCodeGenRequest(r)
 
-	resp := new(plugin_go.CodeGeneratorResponse)
+	resp := new(pluginpb.CodeGeneratorResponse)
 	template := gendoc.NewTemplate(result)
 
 	workatoOutput, err := GenerateWorkatoConnector(template, &configYaml)
@@ -52,7 +52,7 @@ func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGen
 		return nil, err
 	}
 
-	resp.File = append(resp.File, &plugin_go.CodeGeneratorResponse_File{
+	resp.File = append(resp.File, &pluginpb.CodeGeneratorResponse_File{
 		Name:    proto.String("workato_connector.rb"),
 		Content: proto.String(string(workatoOutput)),
 	})
@@ -67,7 +67,7 @@ func (p *Plugin) Generate(r *plugin_go.CodeGeneratorRequest) (*plugin_go.CodeGen
 //
 // The parameter (`--workato_opt`) must be of the format <config_file_path>.
 // The file will be written to the directory specified with the `--workato_out` argument to protoc.
-func ParseOptions(req *plugin_go.CodeGeneratorRequest) (*PluginOptions, error) {
+func ParseOptions(req *pluginpb.CodeGeneratorRequest) (*PluginOptions, error) {
 	options := &PluginOptions{
 		ConfigFile: "config.yaml",
 	}

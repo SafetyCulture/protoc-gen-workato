@@ -10,7 +10,7 @@ import (
 
 	tmpl "text/template"
 
-	"github.com/Masterminds/sprig"
+	"github.com/Masterminds/sprig/v3"
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	"github.com/SafetyCulture/protoc-gen-workato/template"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
