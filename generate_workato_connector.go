@@ -68,7 +68,7 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 		return nil, err
 	}
 
-	// We should sort all of the lists in this template before rendering
+	// We should sort all the lists in this template before rendering
 	// This way the result is deterministic and diffing is easy.
 	var buf bytes.Buffer
 	err = tp.ExecuteTemplate(&buf, "connector.tmpl.rb", workatoTemplate)

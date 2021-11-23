@@ -29,12 +29,13 @@ type TriggerDefinition struct {
 func (t *WorkatoTemplate) generateTriggerDefinitions() {
 	for _, trigger := range t.triggers {
 		triggerDef := &TriggerDefinition{
-			Key: "__KEY", //TODO: SHOULD COME FROM PROTO OPTIONS .resource !!!
+			Key: "__KEY", //TODO INTG-1991: SHOULD COME FROM PROTO OPTIONS .resource !!!
 			Value: &TriggerValue{
-				Title:        trigger.Method.Name, //TODO ?
+				Title:        trigger.Method.Name, //TODO INTG-1991 ?
 				Description:  fmt.Sprintf("<span class='provider'>%s</span>", trigger.Method.Description),
 				InputFields:  make(map[string]string),
 				OutputFields: make(map[string]string),
+				// TODO INTG-1991. the other fields
 			},
 		}
 

@@ -10,7 +10,7 @@ service TasksService {
   // Trigger from inspection events
   rpc WorkatoTriggerInspection(TriggerInspectionRequest) returns (TriggerInspectionResponse) {
      option (s12.protobuf.workato.trigger) = {
-       // NOT WORKING!!!
+       //TODO INTG-1991: testing to be sure ^^^ wondering if Buf gen ... has actually a problem with options/extends
        resource: "inspection_event"
      };
   }
