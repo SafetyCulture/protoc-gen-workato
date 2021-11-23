@@ -13,7 +13,17 @@ message MethodOptionsWorkatoAction {
   string action = 2;
 }
 
+message MethodOptionsWorkatoTrigger {
+ repeated string resource = 1;
+}
+
 extend google.protobuf.MethodOptions {
   // See `MethodOptionsWorkato`.
   MethodOptionsWorkatoAction action = 50008;
+}
+
+
+// TODO: NOT WORKING ?
+extend google.protobuf.MethodOptions {
+  MethodOptionsWorkatoTrigger trigger = 50009;
 }

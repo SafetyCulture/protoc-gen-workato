@@ -65,7 +65,7 @@ var typeMap = map[string]string{
 	"google.protobuf.Timestamp": "date_time",
 }
 
-func (t *WorkatoTemplate) generateObjectDefintions() {
+func (t *WorkatoTemplate) generateObjectDefinitions() {
 	for _, message := range t.messages {
 		obj := &ObjectDefinition{
 			// Use the full name so it is unique

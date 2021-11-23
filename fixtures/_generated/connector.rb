@@ -375,6 +375,8 @@
   
   },
 
+  # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
+  # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {
   },
 

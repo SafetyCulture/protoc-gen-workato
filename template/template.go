@@ -4,6 +4,7 @@ import (
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
+	"strings"
 )
 
 // WorkatoTemplate is an interface to use when rendering a workato connector
@@ -25,7 +26,7 @@ type WorkatoTemplate struct {
 	// An ordered slice of the used enums from the used messages
 	enums []*gendoc.Enum
 
-	// All of the included actions
+	// All the included actions
 	actions []*Action
 	// A map of the actions grouped by their resource
 	groupedActionMap map[string]*ActionGroup
@@ -38,6 +39,11 @@ type WorkatoTemplate struct {
 	Actions []*ActionDefinition
 	// Picklists are Workato formatted definitions of enums and action groups
 	Picklists []*PicklistDefinition
+
+	// All triggers
+	triggers []*Trigger
+	// Triggers are Workato formatted definitions of grouped triggers
+	Triggers []*TriggerDefinition
 }
 
 // FromGenDoc converts a protoc-gen-doc template to our template file
@@ -60,7 +66,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 			workatoTemplate.enumMap[enum.FullName] = enum
 		}
 
-		// Find all of the actions we want to expose
+		// Find all the actions we want to expose
 		for _, service := range file.Services {
 			for _, method := range service.Methods {
 				isPublic := false
@@ -75,14 +81,20 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 				if isPublic {
 					workatoTemplate.actions = append(workatoTemplate.actions, &Action{service, method})
 				}
+
+				// WORKAROUND until I find out why option s12.protobuf.workato.trigger is not recognized ...
+				if strings.HasPrefix(method.Name, "WorkatoTrigger") {
+					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
+				}
 			}
 		}
 	}
 
 	workatoTemplate.groupActions()
-	workatoTemplate.generateObjectDefintions()
+	workatoTemplate.generateObjectDefinitions()
 	workatoTemplate.generateActionDefinitions()
 	workatoTemplate.generateEnumPicklists()
+	workatoTemplate.generateTriggerDefinitions()
 
 	return workatoTemplate
 }
