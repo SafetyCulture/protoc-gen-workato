@@ -13,15 +13,17 @@ message MethodOptionsWorkatoAction {
   string action = 2;
 }
 
+// MethodOptionsWorkatoTrigger ...
 message MethodOptionsWorkatoTrigger {
  string resource = 1;
 }
 
 extend google.protobuf.MethodOptions {
-  // See `MethodOptionsWorkato`.
+  // See `MethodOptionsWorkatoAction`.
   MethodOptionsWorkatoAction action = 50008;
 }
 
 extend google.protobuf.MethodOptions {
+  // See `MethodOptionsWorkatoTrigger`.
   MethodOptionsWorkatoTrigger trigger = 50009;
 }
