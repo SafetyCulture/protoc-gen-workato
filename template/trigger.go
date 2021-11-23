@@ -13,9 +13,10 @@ type Trigger struct {
 
 // TriggerValue is the representation of a trigger value in the Workato SDK
 type TriggerValue struct {
-	Title       string
-	Description string
-	InputFields map[string]string
+	Title        string
+	Description  string
+	InputFields  map[string]string
+	OutputFields map[string]string
 }
 
 // TriggerDefinition is the representation of a trigger in the Workato SDK
@@ -30,15 +31,22 @@ func (t *WorkatoTemplate) generateTriggerDefinitions() {
 		triggerDef := &TriggerDefinition{
 			Key: "__KEY", //TODO: SHOULD COME FROM PROTO OPTIONS .resource !!!
 			Value: &TriggerValue{
-				Title:       trigger.Method.Name, //TODO ?
-				Description: fmt.Sprintf("<span class='provider'>%s</span>", trigger.Method.Description),
-				InputFields: make(map[string]string),
+				Title:        trigger.Method.Name, //TODO ?
+				Description:  fmt.Sprintf("<span class='provider'>%s</span>", trigger.Method.Description),
+				InputFields:  make(map[string]string),
+				OutputFields: make(map[string]string),
 			},
 		}
 
 		name := escapeKeyName(fmt.Sprintf("%s/%s", trigger.Service.FullName, trigger.Method.Name))
-		triggerDef.Value.InputFields[name] = trigger.Method.ResponseFullType
-
+		triggerDef.Value.InputFields[name] = trigger.Method.RequestFullType
+		triggerDef.Value.OutputFields[name] = trigger.Method.ResponseFullType
 		t.Triggers = append(t.Triggers, triggerDef)
+		t.recordUsedTrigger(trigger)
 	}
+}
+
+func (t *WorkatoTemplate) recordUsedTrigger(trigger *Trigger) {
+	t.recordUsedMessage(t.messageMap[trigger.Method.RequestFullType])
+	t.recordUsedMessage(t.messageMap[trigger.Method.ResponseFullType])
 }

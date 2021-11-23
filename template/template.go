@@ -58,7 +58,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 	}
 
 	for _, file := range template.Files {
-		// Create a index of all the used messages and enums so it's easy to reference later
+		// Create an index of all the used messages and enums, so it's easy to reference later
 		for _, message := range file.Messages {
 			workatoTemplate.messageMap[message.FullName] = message
 		}
@@ -91,10 +91,10 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 	}
 
 	workatoTemplate.groupActions()
+	workatoTemplate.generateTriggerDefinitions()
 	workatoTemplate.generateObjectDefinitions()
 	workatoTemplate.generateActionDefinitions()
 	workatoTemplate.generateEnumPicklists()
-	workatoTemplate.generateTriggerDefinitions()
 
 	return workatoTemplate
 }

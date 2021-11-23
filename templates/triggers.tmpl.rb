@@ -7,7 +7,7 @@
 
        input_fields: lambda do |object_definitions|
         {{- range $name, $object_name := $trigger.Value.InputFields }}
-          object_definitions["{{ $object_name }}"]
+        object_definitions["{{ $object_name }}"]
         {{- end }}
        end,
 
@@ -37,7 +37,9 @@
        end,
 
        output_fields: lambda do |object_definitions|
-         object_definitions["inspection_event"]
+         {{- range $name, $object_name := $trigger.Value.OutputFields }}
+         object_definitions["{{ $object_name }}"]
+         {{- end }}
        end,
     },
 {{- end }}

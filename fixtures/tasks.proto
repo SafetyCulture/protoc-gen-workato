@@ -163,9 +163,11 @@ message UpdateCommentRequest {
 message UpdateCommentResponse {}
 
 message TriggerInspectionRequest {
-  string test = 1;
+  // TEMP
+  string test_in = 1;
 }
 
 message TriggerInspectionResponse {
-
+  // TEMP
+  string test_out = 1;
 }
