@@ -163,7 +163,7 @@ message UpdateCommentRequest {
 message UpdateCommentResponse {}
 
 message TriggerInspectionRequest {
-
+  string test = 1;
 }
 
 message TriggerInspectionResponse {

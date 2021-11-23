@@ -15,6 +15,7 @@ type Trigger struct {
 type TriggerValue struct {
 	Title       string
 	Description string
+	InputFields map[string]string
 }
 
 // TriggerDefinition is the representation of a trigger in the Workato SDK
@@ -31,8 +32,13 @@ func (t *WorkatoTemplate) generateTriggerDefinitions() {
 			Value: &TriggerValue{
 				Title:       trigger.Method.Name, //TODO ?
 				Description: fmt.Sprintf("<span class='provider'>%s</span>", trigger.Method.Description),
+				InputFields: make(map[string]string),
 			},
 		}
+
+		name := escapeKeyName(fmt.Sprintf("%s/%s", trigger.Service.FullName, trigger.Method.Name))
+		triggerDef.Value.InputFields[name] = trigger.Method.ResponseFullType
+
 		t.Triggers = append(t.Triggers, triggerDef)
 	}
 }
