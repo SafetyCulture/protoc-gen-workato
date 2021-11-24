@@ -2,9 +2,9 @@ package template
 
 import (
 	"github.com/SafetyCulture/protoc-gen-workato/config"
+	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
-	"strings"
 )
 
 // WorkatoTemplate is an interface to use when rendering a workato connector
@@ -82,8 +82,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 					workatoTemplate.actions = append(workatoTemplate.actions, &Action{service, method})
 				}
 
-				// WORKAROUND until I find out why option s12.protobuf.workato.trigger is not recognized ...
-				if strings.HasPrefix(method.Name, "WorkatoTrigger") {
+				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
 					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
 				}
 			}

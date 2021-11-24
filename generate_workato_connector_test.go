@@ -9,6 +9,7 @@ import (
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 
 	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_openapiv2" // imported for side effects
+	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_workato"   // imported for side effects
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	_ "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http" // imported for side effects
 	"github.com/pseudomuto/protokit"
