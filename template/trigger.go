@@ -4,7 +4,6 @@ import (
 	"fmt"
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
-	"log"
 	"strings"
 )
 
@@ -29,32 +28,22 @@ type TriggerDefinition struct {
 	Value *TriggerValue
 }
 
-func (t *WorkatoTemplate) generateTriggerDefinitions() {
+func (t *WorkatoTemplate) generateTriggerDefinitions() error {
 	for _, trigger := range t.triggers {
 		opt, err := trigger.ExtractTriggerOption()
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
-		triggerDef := &TriggerDefinition{
-			Key: opt.Resource,
-			Value: &TriggerValue{
-				Title:        trigger.Method.Name, //TODO INTG-1991 ?
-				Description:  fmt.Sprintf("<span class='provider'>%s</span>", trigger.Method.Description),
-				InputFields:  make(map[string]string),
-				OutputFields: make(map[string]string),
-				// TODO INTG-1991. the other fields
-			},
-		}
-
-		name := escapeKeyName(fmt.Sprintf("%s/%s", trigger.Service.FullName, trigger.Method.Name))
-		triggerDef.Value.InputFields[name] = trigger.Method.RequestFullType
-		triggerDef.Value.OutputFields[name] = trigger.Method.ResponseFullType
+		triggerDef := trigger.MapToWorkatoFormat(opt)
 		t.Triggers = append(t.Triggers, triggerDef)
 		t.recordUsedTrigger(trigger)
 	}
+
+	return nil
 }
 
+// recordUsedTrigger registers the usage of the trigger request and response methods in template message Map
 func (t *WorkatoTemplate) recordUsedTrigger(trigger *Trigger) {
 	t.recordUsedMessage(t.messageMap[trigger.Method.RequestFullType])
 	t.recordUsedMessage(t.messageMap[trigger.Method.ResponseFullType])
@@ -69,7 +58,7 @@ func (t *Trigger) ExtractTriggerOption() (*workato.MethodOptionsWorkatoTrigger, 
 	}
 
 	if valid := isTriggerOptionValid(res); valid == false {
-		return nil, fmt.Errorf("the method %s is not valid", t.Method.Name)
+		return nil, fmt.Errorf("the options passed to the method %s are not valid", t.Method.Name)
 	}
 
 	return res, nil
@@ -82,4 +71,24 @@ func isTriggerOptionValid(t *workato.MethodOptionsWorkatoTrigger) bool {
 		return true
 	}
 	return false
+}
+
+// MapToWorkatoFormat converts to Workato Format
+// It returns pointer to TriggerDefinition
+func (t *Trigger) MapToWorkatoFormat(opt *workato.MethodOptionsWorkatoTrigger) *TriggerDefinition {
+	triggerDef := TriggerDefinition{
+		Key: opt.Resource,
+		Value: &TriggerValue{
+			Title:        t.Method.Name, //TODO INTG-1991 ?
+			Description:  fmt.Sprintf("<span class='provider'>%s</span>", t.Method.Description),
+			InputFields:  make(map[string]string),
+			OutputFields: make(map[string]string),
+			// TODO INTG-1991. the other fields
+		},
+	}
+
+	name := escapeKeyName(fmt.Sprintf("%s/%s", t.Service.FullName, t.Method.Name))
+	triggerDef.Value.InputFields[name] = t.Method.RequestFullType
+	triggerDef.Value.OutputFields[name] = t.Method.ResponseFullType
+	return &triggerDef
 }

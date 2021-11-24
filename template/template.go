@@ -47,7 +47,7 @@ type WorkatoTemplate struct {
 }
 
 // FromGenDoc converts a protoc-gen-doc template to our template file
-func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate {
+func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate, error) {
 	workatoTemplate := &WorkatoTemplate{
 		config:           cfg,
 		messageMap:       make(map[string]*gendoc.Message),
@@ -82,6 +82,8 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 					workatoTemplate.actions = append(workatoTemplate.actions, &Action{service, method})
 				}
 
+				//TODO: INTG-1991 do we need to differentiate between action and trigger? (rpc level)?
+				// now one is using tag public and the other one is using "s12.protobuf.workato.trigger" option
 				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
 					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
 				}
@@ -90,10 +92,12 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) *WorkatoTemplate 
 	}
 
 	workatoTemplate.groupActions()
-	workatoTemplate.generateTriggerDefinitions()
+	if err := workatoTemplate.generateTriggerDefinitions(); err != nil {
+		return nil, err
+	}
 	workatoTemplate.generateObjectDefinitions()
 	workatoTemplate.generateActionDefinitions()
 	workatoTemplate.generateEnumPicklists()
 
-	return workatoTemplate
+	return workatoTemplate, nil
 }
