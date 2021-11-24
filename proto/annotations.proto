@@ -21,6 +21,7 @@ extend google.protobuf.MethodOptions {
 // MethodOptionsWorkatoTrigger ...
 message MethodOptionsWorkatoTrigger {
   string resource = 1;
+  string title = 2;
 }
 
 extend google.protobuf.MethodOptions {

@@ -79,7 +79,7 @@ func (t *Trigger) MapToWorkatoFormat(opt *workato.MethodOptionsWorkatoTrigger) *
 	triggerDef := TriggerDefinition{
 		Key: opt.Resource,
 		Value: &TriggerValue{
-			Title:        t.Method.Name, //TODO INTG-1991 ?
+			Title:        opt.Title,
 			Description:  fmt.Sprintf("<span class='provider'>%s</span>", t.Method.Description),
 			InputFields:  make(map[string]string),
 			OutputFields: make(map[string]string),

@@ -11,6 +11,7 @@ service TasksService {
   rpc TriggerInspection(TriggerInspectionRequest) returns (TriggerInspectionResponse) {
      option (s12.protobuf.workato.trigger) = {
        resource: "inspection_event"
+       title: "Inspection Event"
      };
   }
 

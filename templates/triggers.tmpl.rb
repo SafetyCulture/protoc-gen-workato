@@ -1,9 +1,9 @@
 {{ define "triggers" -}}
 {{- range $trigger := . }}
-    "{{ $trigger.Key }}": {
+    {{ $trigger.Key }}: {
        title: "{{ $trigger.Value.Title }}",
 
-       description: {{ $trigger.Value.Description }},
+       description: "{{ $trigger.Value.Description }}",
 
        input_fields: lambda do |object_definitions|
         {{- range $name, $object_name := $trigger.Value.InputFields }}
