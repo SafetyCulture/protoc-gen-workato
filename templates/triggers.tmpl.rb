@@ -12,16 +12,11 @@
        end,
 
        webhook_subscribe: lambda do |webhook_url, connection, input|
-         post("/workflows")
-           .payload(
-             steps: [
-               {
-                 url: webhook_url,
-                 type: "webhook"
-               }
-             ],
-             trigger_events: input["events"]
-           )
+           post("/webhooks/v1/webhooks")
+             .payload(
+               url: webhook_url,
+               trigger_events: ["#{input['trigger']}"]
+             )
        end,
 
        webhook_notification: lambda do |input, payload|
@@ -29,7 +24,7 @@
        end,
 
        webhook_unsubscribe: lambda do |webhook|
-         delete("/workflows/#{webhook['workflow_id']}")
+         delete("/webhooks/v1/webhooks/#{webhook['workflow_id']}")
        end,
 
        dedup: lambda do |event|
