@@ -23,8 +23,8 @@
          payload
        end,
 
-       webhook_unsubscribe: lambda do |webhook|
-         delete("/webhooks/v1/webhooks/#{webhook['workflow_id']}")
+       webhook_unsubscribe: lambda do |webhook_subscribe_output|
+         delete("/webhooks/v1/webhooks/#{webhook_subscribe_output['webhook']['webhook_id']}")
        end,
 
        dedup: lambda do |event|

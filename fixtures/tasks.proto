@@ -174,4 +174,5 @@ message TriggerInspectionRequest {
 }
 
 message TriggerInspectionResponse {
+  string workflow_id = 1;
 }
