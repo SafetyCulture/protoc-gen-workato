@@ -258,6 +258,38 @@
       end
     },
   
+    "api.tasks.v1.TriggerInspectionRequest": {
+      fields: lambda do |connection, config_fields, object_definitions|
+        [
+          {
+            name: "test_in",
+            label: "Test In",
+            type: "string",
+            hint: "TEMP",
+            
+            sticky: true,
+            
+          },
+        ]
+      end
+    },
+  
+    "api.tasks.v1.TriggerInspectionResponse": {
+      fields: lambda do |connection, config_fields, object_definitions|
+        [
+          {
+            name: "test_out",
+            label: "Test Out",
+            type: "string",
+            hint: "TEMP",
+            
+            sticky: true,
+            
+          },
+        ]
+      end
+    },
+  
   },
 
   actions: {  
@@ -377,7 +409,40 @@
 
   # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
-  triggers: {
+  triggers: {  
+      inspection_event: {
+         title: "Inspection Event",
+  
+         description: "<span class='provider'>Trigger from inspection events</span>",
+  
+         input_fields: lambda do |object_definitions|
+          object_definitions["api.tasks.v1.TriggerInspectionRequest"]
+         end,
+  
+         webhook_subscribe: lambda do |webhook_url, connection, input|
+             post("/webhooks/v1/webhooks")
+               .payload(
+                 url: webhook_url,
+                 trigger_events: ["#{input['trigger']}"]
+               )
+         end,
+  
+         webhook_notification: lambda do |input, payload|
+           payload
+         end,
+  
+         webhook_unsubscribe: lambda do |webhook|
+           delete("/webhooks/v1/webhooks/#{webhook['webhook']['webhook_id']}")
+         end,
+  
+         dedup: lambda do |event|
+          event["workflow_id"] + "@" + event["event"]["date_triggered"]
+         end,
+  
+         output_fields: lambda do |object_definitions|
+           object_definitions["api.tasks.v1.TriggerInspectionResponse"]
+         end,
+      },
   },
 
   pick_lists: {  
