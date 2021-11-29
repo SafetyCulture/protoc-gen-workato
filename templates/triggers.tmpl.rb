@@ -6,9 +6,7 @@
        description: "{{ $trigger.Value.Description }}",
 
        input_fields: lambda do |object_definitions|
-        {{- range $name, $object_name := $trigger.Value.InputFields }}
-        object_definitions["{{ $object_name }}"]
-        {{- end }}
+        object_definitions["{{ $trigger.Value.InputField }}"]
        end,
 
        webhook_subscribe: lambda do |webhook_url, connection, input|
@@ -33,9 +31,7 @@
        end,
 
        output_fields: lambda do |object_definitions|
-         {{- range $name, $object_name := $trigger.Value.OutputFields }}
-         object_definitions["{{ $object_name }}"]
-         {{- end }}
+        object_definitions["{{ $trigger.Value.OutputField }}"]
        end,
     },
 {{- end }}

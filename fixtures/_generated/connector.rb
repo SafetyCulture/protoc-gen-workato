@@ -442,7 +442,7 @@
          end,
   
          output_fields: lambda do |object_definitions|
-           object_definitions["api.tasks.v1.TriggerInspectionResponse"]
+          object_definitions["api.tasks.v1.TriggerInspectionResponse"]
          end,
       },
   },

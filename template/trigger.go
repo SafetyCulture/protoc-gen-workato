@@ -15,10 +15,10 @@ type Trigger struct {
 
 // TriggerValue is the representation of a trigger value in the Workato SDK
 type TriggerValue struct {
-	Title        string
-	Description  string
-	InputFields  map[string]string
-	OutputFields map[string]string
+	Title       string
+	Description string
+	InputField  string
+	OutputField string
 }
 
 // TriggerDefinition is the representation of a trigger in the Workato SDK
@@ -76,15 +76,11 @@ func (t *Trigger) MapToWorkatoFormat(tag string) *TriggerDefinition {
 	triggerDef := TriggerDefinition{
 		Key: tag,
 		Value: &TriggerValue{
-			Title:        t.Method.Description,
-			Description:  fmt.Sprintf("<span class='provider'>Trigger for %s</span>", t.Method.Description),
-			InputFields:  make(map[string]string),
-			OutputFields: make(map[string]string),
+			Title:       t.Method.Description,
+			Description: fmt.Sprintf("<span class='provider'>Trigger for %s</span>", t.Method.Description),
+			InputField:  t.Method.RequestFullType,
+			OutputField: t.Method.ResponseFullType,
 		},
 	}
-
-	name := escapeKeyName(fmt.Sprintf("%s/%s", t.Service.FullName, t.Method.Name))
-	triggerDef.Value.InputFields[name] = t.Method.RequestFullType
-	triggerDef.Value.OutputFields[name] = t.Method.ResponseFullType
 	return &triggerDef
 }
