@@ -40,7 +40,10 @@
     {{- include "actions" .Actions | indent 2}}
   },
 
+  # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
+  # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {
+    {{- include "triggers" .Triggers | indent 2}}
   },
 
   pick_lists: {

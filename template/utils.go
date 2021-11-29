@@ -15,7 +15,7 @@ func escapeKeyName(s string) string {
 		"&", "and",
 	)
 
-	return replacer.Replace(s)
+	return strings.ToLower(replacer.Replace(s))
 }
 
 func enumPicklistName(enum *gendoc.Enum) string {

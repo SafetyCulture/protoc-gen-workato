@@ -32,7 +32,10 @@ var tmpls embed.FS
 
 // GenerateWorkatoConnector generates a Workato SDK Connector from protobufs
 func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Config) ([]byte, error) {
-	workatoTemplate := template.FromGenDoc(gendoctemplate, cfg)
+	workatoTemplate, err := template.FromGenDoc(gendoctemplate, cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	tp := tmpl.New("Connector Template").
 		Funcs(sprig.TxtFuncMap())
@@ -63,12 +66,11 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 		},
 	})
 
-	var err error
 	if tp, err = tp.ParseFS(tmpls, "templates/*.tmpl.rb"); err != nil {
 		return nil, err
 	}
 
-	// We should sort all of the lists in this template before rendering
+	// We should sort all the lists in this template before rendering
 	// This way the result is deterministic and diffing is easy.
 	var buf bytes.Buffer
 	err = tp.ExecuteTemplate(&buf, "connector.tmpl.rb", workatoTemplate)

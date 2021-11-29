@@ -23,6 +23,10 @@ A complete example can be found in `protos/`.
 ## Development
 
 This repo uses [buf](https://buf.build) to build Protocol Buffers.
-
+```bash
+brew tap bufbuild/buf
+brew install buf
+```
 To generate the image for fixtures run `buf build -o fixtures/image.bin`.
 To generate the annotations Go package run `buf generate`.
+Example `buf generate proto/annotations.proto`.

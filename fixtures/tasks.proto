@@ -7,6 +7,15 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 package api.tasks.v1;
 
 service TasksService {
+  // Inspection Event
+  rpc TriggerInspection(TriggerInspectionRequest) returns (TriggerInspectionResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Inspections"]
+    };
+    option (s12.protobuf.workato.trigger) = {
+    };
+  }
+
   // Create a new task
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -153,3 +162,18 @@ message UpdateCommentRequest {
 }
 
 message UpdateCommentResponse {}
+
+message TriggerInspectionRequest {
+  enum InspectionTriggers {
+    TRIGGER_EVENT_INSPECTION_STARTED = 0;
+    TRIGGER_EVENT_INSPECTION_UPDATED = 1;
+    TRIGGER_EVENT_INSPECTION_COMPLETED = 2;
+    TRIGGER_EVENT_INSPECTION_ARCHIVED = 3;
+    TRIGGER_EVENT_INSPECTION_UNARCHIVED = 4;
+  }
+  InspectionTriggers trigger = 1;
+}
+
+message TriggerInspectionResponse {
+  string workflow_id = 1;
+}
