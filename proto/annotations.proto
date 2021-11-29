@@ -18,7 +18,8 @@ extend google.protobuf.MethodOptions {
   MethodOptionsWorkatoAction action = 50008;
 }
 
-// MethodOptionsWorkatoTrigger ...
+// MethodOptionsWorkatoTrigger
+// Groups attributes required for rendering the trigger template
 message MethodOptionsWorkatoTrigger {
   string resource = 1;
   string title = 2;
