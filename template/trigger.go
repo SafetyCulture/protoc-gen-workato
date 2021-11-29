@@ -2,9 +2,9 @@ package template
 
 import (
 	"fmt"
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+
+	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
-	"strings"
 )
 
 // Trigger is a combined service and method definition
@@ -30,12 +30,12 @@ type TriggerDefinition struct {
 
 func (t *WorkatoTemplate) generateTriggerDefinitions() error {
 	for _, trigger := range t.triggers {
-		opt, err := trigger.ExtractTriggerOption()
+		tag, err := trigger.ExtractFirstTag()
 		if err != nil {
 			return err
 		}
 
-		triggerDef := trigger.MapToWorkatoFormat(opt)
+		triggerDef := trigger.MapToWorkatoFormat(tag)
 		t.Triggers = append(t.Triggers, triggerDef)
 		t.recordUsedTrigger(trigger)
 	}
@@ -49,41 +49,37 @@ func (t *WorkatoTemplate) recordUsedTrigger(trigger *Trigger) {
 	t.recordUsedMessage(t.messageMap[trigger.Method.ResponseFullType])
 }
 
-// ExtractTriggerOption Extract and Validates MethodOptionsWorkatoTrigger
-// It returns a pair of MethodOptionsWorkatoTrigger and Error
-func (t *Trigger) ExtractTriggerOption() (*workato.MethodOptionsWorkatoTrigger, error) {
-	res, ok := t.Method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger)
+// ExtractFirstTag Extract and Converts first non-public tag
+func (t *Trigger) ExtractFirstTag() (string, error) {
+	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
 	if ok == false {
-		return nil, fmt.Errorf("cannot extract s12.protobuf.workato.trigger from method %s", t.Method.Name)
+		return "", fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
+	}
+	var tagName string
+	for _, tag := range opts.Tags {
+		if tag != "Public" {
+			tagName = tag
+			break
+		}
 	}
 
-	if valid := isTriggerOptionValid(res); valid == false {
-		return nil, fmt.Errorf("the options passed to the method %s are not valid", t.Method.Name)
+	if tagName == "" {
+		return "", fmt.Errorf("couldn't find any tags for method %s", t.Method.Name)
 	}
 
-	return res, nil
-}
-
-// isTriggerOptionValid validates attributes of MethodOptionsWorkatoTrigger
-// It returns true if is valid, false if is not valid
-func isTriggerOptionValid(t *workato.MethodOptionsWorkatoTrigger) bool {
-	if len(strings.TrimSpace(t.Resource)) > 0 {
-		return true
-	}
-	return false
+	return escapeKeyName(tagName), nil
 }
 
 // MapToWorkatoFormat converts to Workato Format
 // It returns pointer to TriggerDefinition
-func (t *Trigger) MapToWorkatoFormat(opt *workato.MethodOptionsWorkatoTrigger) *TriggerDefinition {
+func (t *Trigger) MapToWorkatoFormat(tag string) *TriggerDefinition {
 	triggerDef := TriggerDefinition{
-		Key: opt.Resource,
+		Key: tag,
 		Value: &TriggerValue{
-			Title:        opt.Title,
-			Description:  fmt.Sprintf("<span class='provider'>%s</span>", t.Method.Description),
+			Title:        t.Method.Description,
+			Description:  fmt.Sprintf("<span class='provider'>Trigger for %s</span>", t.Method.Description),
 			InputFields:  make(map[string]string),
 			OutputFields: make(map[string]string),
-			// TODO INTG-1991. the other fields
 		},
 	}
 

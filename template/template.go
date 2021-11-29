@@ -69,6 +69,11 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		// Find all the actions we want to expose
 		for _, service := range file.Services {
 			for _, method := range service.Methods {
+				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
+					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
+					continue
+				}
+
 				isPublic := false
 				if opts, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
 					for _, tag := range opts.Tags {
@@ -80,12 +85,6 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 
 				if isPublic {
 					workatoTemplate.actions = append(workatoTemplate.actions, &Action{service, method})
-				}
-
-				//TODO: INTG-1991 do we need to differentiate between action and trigger? (rpc level)?
-				// now one is using tag public and the other one is using "s12.protobuf.workato.trigger" option
-				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
-					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
 				}
 			}
 		}

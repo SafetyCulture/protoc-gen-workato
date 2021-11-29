@@ -7,22 +7,8 @@ import "google/protobuf/any.proto";
 
 option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
 
-// MethodOptionsWorkatoAction ...
-message MethodOptionsWorkatoAction {
-  string resource = 1;
-  string action = 2;
-}
-
-extend google.protobuf.MethodOptions {
-  // See `MethodOptionsWorkatoAction`.
-  MethodOptionsWorkatoAction action = 50008;
-}
-
 // MethodOptionsWorkatoTrigger
-// Groups attributes required for rendering the trigger template
 message MethodOptionsWorkatoTrigger {
-  string resource = 1;
-  string title = 2;
 }
 
 extend google.protobuf.MethodOptions {

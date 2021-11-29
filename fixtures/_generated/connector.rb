@@ -262,11 +262,13 @@
       fields: lambda do |connection, config_fields, object_definitions|
         [
           {
-            name: "test_in",
-            label: "Test In",
+            name: "trigger",
+            label: "Trigger",
             type: "string",
-            hint: "TEMP",
             
+            control_type: "select",
+            default: "TRIGGER_EVENT_INSPECTION_STARTED",
+            pick_list: "enum_api_tasks_v1_triggerinspectionrequest_inspectiontriggers",
             sticky: true,
             
           },
@@ -278,10 +280,9 @@
       fields: lambda do |connection, config_fields, object_definitions|
         [
           {
-            name: "test_out",
-            label: "Test Out",
+            name: "workflow_id",
+            label: "Workflow Id",
             type: "string",
-            hint: "TEMP",
             
             sticky: true,
             
@@ -293,7 +294,7 @@
   },
 
   actions: {  
-    "Tasks": {
+    "tasks": {
       title: "Tasks",
       subtitle: "Interact with Tasks in iAuditor",
       description: lambda do |input, picklist_label|
@@ -306,38 +307,38 @@
           type: "string",
           
           control_type: "select",
-          pick_list: "action_name_Tasks",
+          pick_list: "action_name_tasks",
           sticky: true,
           
         },
       ],
       input_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_TasksService_CreateTask"
+        when "api_tasks_v1_tasksservice_createtask"
           object_definitions["api.tasks.v1.CreateTaskRequest"]
-        when "api_tasks_v1_TasksService_DeleteTask"
+        when "api_tasks_v1_tasksservice_deletetask"
           object_definitions["api.tasks.v1.DeleteTaskRequest"]
-        when "api_tasks_v1_TasksService_GetTask"
+        when "api_tasks_v1_tasksservice_gettask"
           object_definitions["api.tasks.v1.GetTaskRequest"]
-        when "api_tasks_v1_TasksService_UpdateTask"
+        when "api_tasks_v1_tasksservice_updatetask"
           object_definitions["api.tasks.v1.UpdateTaskRequest"]
         end
       end,
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
-        when "api_tasks_v1_TasksService_CreateTask"
+        when "api_tasks_v1_tasksservice_createtask"
           excludeKeys = []
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           post("/v1/tasks").payload(body)
-        when "api_tasks_v1_TasksService_DeleteTask"
+        when "api_tasks_v1_tasksservice_deletetask"
           excludeKeys = ["id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           delete("/v1/tasks/#{input['id']}").params(body)
-        when "api_tasks_v1_TasksService_GetTask"
+        when "api_tasks_v1_tasksservice_gettask"
           excludeKeys = ["id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
-        when "api_tasks_v1_TasksService_UpdateTask"
+        when "api_tasks_v1_tasksservice_updatetask"
           excludeKeys = []
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           put("/v1/tasks/#{input['id']}").payload(body)
@@ -345,19 +346,19 @@
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_TasksService_CreateTask"
+        when "api_tasks_v1_tasksservice_createtask"
           object_definitions["api.tasks.v1.CreateTaskResponse"]
-        when "api_tasks_v1_TasksService_DeleteTask"
+        when "api_tasks_v1_tasksservice_deletetask"
           object_definitions["api.tasks.v1.DeleteTaskResponse"]
-        when "api_tasks_v1_TasksService_GetTask"
+        when "api_tasks_v1_tasksservice_gettask"
           object_definitions["api.tasks.v1.GetTaskResponse"]
-        when "api_tasks_v1_TasksService_UpdateTask"
+        when "api_tasks_v1_tasksservice_updatetask"
           object_definitions["api.tasks.v1.UpdateTaskResponse"]
         end
       end,
     },
   
-    "Task_Comments": {
+    "task_comments": {
       title: "Task Comments",
       subtitle: "Interact with Task Comments in iAuditor",
       description: lambda do |input, picklist_label|
@@ -370,26 +371,26 @@
           type: "string",
           
           control_type: "select",
-          pick_list: "action_name_Task_Comments",
+          pick_list: "action_name_task_comments",
           sticky: true,
           
         },
       ],
       input_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_TasksService_AddComment"
+        when "api_tasks_v1_tasksservice_addcomment"
           object_definitions["api.tasks.v1.AddCommentRequest"]
-        when "api_tasks_v1_TasksService_UpdateComment"
+        when "api_tasks_v1_tasksservice_updatecomment"
           object_definitions["api.tasks.v1.UpdateCommentRequest"]
         end
       end,
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
-        when "api_tasks_v1_TasksService_AddComment"
+        when "api_tasks_v1_tasksservice_addcomment"
           excludeKeys = []
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           post("/v1/tasks/#{input['task_id']}/comment").payload(body)
-        when "api_tasks_v1_TasksService_UpdateComment"
+        when "api_tasks_v1_tasksservice_updatecomment"
           excludeKeys = []
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           put("/v1/tasks/#{input['task_id']}/comment/#{input['comment_id']}").payload(body)
@@ -397,9 +398,9 @@
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_TasksService_AddComment"
+        when "api_tasks_v1_tasksservice_addcomment"
           object_definitions["api.tasks.v1.AddCommentResponse"]
-        when "api_tasks_v1_TasksService_UpdateComment"
+        when "api_tasks_v1_tasksservice_updatecomment"
           object_definitions["api.tasks.v1.UpdateCommentResponse"]
         end
       end,
@@ -410,10 +411,10 @@
   # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {  
-      inspection_event: {
+      inspections: {
          title: "Inspection Event",
   
-         description: "<span class='provider'>Trigger from inspection events</span>",
+         description: "<span class='provider'>Trigger for Inspection Event</span>",
   
          input_fields: lambda do |object_definitions|
           object_definitions["api.tasks.v1.TriggerInspectionRequest"]
@@ -446,18 +447,27 @@
   },
 
   pick_lists: {  
-    "action_name_Tasks": lambda do
+    "action_name_tasks": lambda do
       [
-        ["Create a new task", "api_tasks_v1_TasksService_CreateTask"],
-        ["Get a task by ID", "api_tasks_v1_TasksService_GetTask"],
-        ["Update a task by ID", "api_tasks_v1_TasksService_UpdateTask"],
-        ["Delete a task by ID", "api_tasks_v1_TasksService_DeleteTask"],
+        ["Create a new task", "api_tasks_v1_tasksservice_createtask"],
+        ["Get a task by ID", "api_tasks_v1_tasksservice_gettask"],
+        ["Update a task by ID", "api_tasks_v1_tasksservice_updatetask"],
+        ["Delete a task by ID", "api_tasks_v1_tasksservice_deletetask"],
       ]
     end,
-    "action_name_Task_Comments": lambda do
+    "action_name_task_comments": lambda do
       [
-        ["Add a comment to a task", "api_tasks_v1_TasksService_AddComment"],
-        ["Update a comment on a task", "api_tasks_v1_TasksService_UpdateComment"],
+        ["Add a comment to a task", "api_tasks_v1_tasksservice_addcomment"],
+        ["Update a comment on a task", "api_tasks_v1_tasksservice_updatecomment"],
+      ]
+    end,
+    "enum_api_tasks_v1_triggerinspectionrequest_inspectiontriggers": lambda do
+      [
+        ["TRIGGER_EVENT_INSPECTION_STARTED", "TRIGGER_EVENT_INSPECTION_STARTED"],
+        ["TRIGGER_EVENT_INSPECTION_UPDATED", "TRIGGER_EVENT_INSPECTION_UPDATED"],
+        ["TRIGGER_EVENT_INSPECTION_COMPLETED", "TRIGGER_EVENT_INSPECTION_COMPLETED"],
+        ["TRIGGER_EVENT_INSPECTION_ARCHIVED", "TRIGGER_EVENT_INSPECTION_ARCHIVED"],
+        ["TRIGGER_EVENT_INSPECTION_UNARCHIVED", "TRIGGER_EVENT_INSPECTION_UNARCHIVED"],
       ]
     end,
   },

@@ -6,15 +6,6 @@ import (
 )
 
 func init() {
-	extensions.SetTransformer("s12.protobuf.workato.action", func(payload interface{}) interface{} {
-		opt, ok := payload.(*workato.MethodOptionsWorkatoAction)
-		if !ok {
-			return nil
-		}
-
-		return opt
-	})
-
 	extensions.SetTransformer("s12.protobuf.workato.trigger", func(payload interface{}) interface{} {
 		opt, ok := payload.(*workato.MethodOptionsWorkatoTrigger)
 		if !ok {
