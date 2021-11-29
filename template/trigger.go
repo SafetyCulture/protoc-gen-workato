@@ -52,7 +52,7 @@ func (t *WorkatoTemplate) recordUsedTrigger(trigger *Trigger) {
 // ExtractFirstTag Extract and Converts first non-public tag
 func (t *Trigger) ExtractFirstTag() (string, error) {
 	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
-	if ok == false {
+	if !ok {
 		return "", fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
 	}
 	var tagName string
