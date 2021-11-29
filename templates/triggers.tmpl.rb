@@ -12,11 +12,12 @@
        end,
 
        webhook_subscribe: lambda do |webhook_url, connection, input|
-           post("/webhooks/v1/webhooks")
+           result = post("/webhooks/v1/webhooks")
              .payload(
                url: webhook_url,
                trigger_events: ["#{input['trigger']}"]
              )
+           result['webhook']
        end,
 
        webhook_notification: lambda do |input, payload|
@@ -24,7 +25,7 @@
        end,
 
        webhook_unsubscribe: lambda do |webhook|
-         delete("/webhooks/v1/webhooks/#{webhook['webhook']['webhook_id']}")
+         delete("/webhooks/v1/webhooks/#{webhook['webhook_id']}")
        end,
 
        dedup: lambda do |event|
