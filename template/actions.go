@@ -109,7 +109,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			Values: []PicklistValue{},
 		}
 		actionDef := &ActionDefinition{
-			Name:        escapeKeyName(actionGroup.Name),
+			Name:        "action_" + escapeKeyName(actionGroup.Name),
 			Title:       actionGroup.Name,
 			Subtitle:    fmt.Sprintf("Interact with %s in iAuditor", actionGroup.Name),
 			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with %s'}</span> in <span class='provider'>iAuditor</span>", actionGroup.Name),
@@ -128,9 +128,9 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 		}
 
 		for _, action := range actionGroup.Actions {
-			name := escapeKeyName(fmt.Sprintf("%s/%s", action.Service.FullName, action.Method.Name))
+			name := fullActionName(action.Service, action.Method)
 
-			actionDef.ExecCode[name] = t.getExecuteCode(action)
+			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
 			picklistDef.Values = append(picklistDef.Values, PicklistValue{name, action.Method.Description})
 

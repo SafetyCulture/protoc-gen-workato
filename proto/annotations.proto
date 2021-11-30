@@ -1,5 +1,5 @@
-syntax = "proto3";
 
+syntax = "proto3";
 package s12.protobuf.workato;
 
 import "google/protobuf/descriptor.proto";
@@ -11,7 +11,15 @@ option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
 message MethodOptionsWorkatoTrigger {
 }
 
+// MethodOptionsWorkatoTrigger
+message MethodOptionsWorkatoPickList {
+  string label = 1;
+  string value = 2;
+}
+
 extend google.protobuf.MethodOptions {
   // See `MethodOptionsWorkatoTrigger`.
   MethodOptionsWorkatoTrigger trigger = 50009;
+  // See `MethodOptionsWorkatoPickList`.
+  MethodOptionsWorkatoPickList pick_list = 50010;
 }

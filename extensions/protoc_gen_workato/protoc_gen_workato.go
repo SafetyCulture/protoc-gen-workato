@@ -14,4 +14,13 @@ func init() {
 
 		return opt
 	})
+
+	extensions.SetTransformer("s12.protobuf.workato.pick_list", func(payload interface{}) interface{} {
+		opt, ok := payload.(*workato.MethodOptionsWorkatoPickList)
+		if !ok {
+			return nil
+		}
+
+		return opt
+	})
 }

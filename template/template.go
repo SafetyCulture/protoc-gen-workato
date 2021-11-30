@@ -69,6 +69,10 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		// Find all the actions we want to expose
 		for _, service := range file.Services {
 			for _, method := range service.Methods {
+				if _, ok := method.Option("s12.protobuf.workato.pick_list").(*workato.MethodOptionsWorkatoPickList); ok {
+					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.generateDynamicPickList(service, method))
+				}
+
 				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
 					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
 					continue

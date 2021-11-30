@@ -16,6 +16,14 @@ service TasksService {
     };
   }
 
+  // List all of the tasks
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
+    option (s12.protobuf.workato.pick_list) = {
+      label: "tasks.name"
+      value: "tasks.id"
+    };
+  }
+
   // Create a new task
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -99,6 +107,13 @@ message Task {
   string id = 1;
   // The name of the task
   string name = 2;
+}
+
+message ListTasksRequest {
+}
+
+message ListTasksResponse {
+  repeated Task tasks = 1;
 }
 
 message GetTaskRequest {
