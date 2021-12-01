@@ -7,7 +7,10 @@ import (
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
-const unspecified = "_UNSPECIFIED" //add _UNKNOWN
+const (
+	unspecified = "_UNSPECIFIED"
+	unknown     = "_UNKNOWN"
+)
 
 func escapeKeyName(s string) string {
 	replacer := strings.NewReplacer(
@@ -32,15 +35,18 @@ func fieldTitleFromName(name string) string {
 	return strings.Title(strings.ReplaceAll(name, "_", " "))
 }
 
-// shouldIncludeEnum returns true if the name doesn't end in _UNSPECIFIED.
+// enumValueShouldBeExcluded returns true if the name ends in _UNSPECIFIED or in _UNKNOWN.
 // otherwise, returns false
-func shouldIncludeEnum(enum *gendoc.EnumValue) bool {
-	return !strings.HasSuffix(enum.Name, unspecified)
+func enumValueShouldBeExcluded(enum *gendoc.EnumValue) bool {
+	if strings.HasSuffix(enum.Name, unspecified) || strings.HasSuffix(enum.Name, unknown) {
+		return true
+	}
+	return false
 }
 
-// removeUnspecifiedValue removes the _UNSPECIFIED if at index 0
+// removeUnspecifiedValue removes the _UNSPECIFIED or _UNKNOWN if exists at index 0
 func removeUnspecifiedValue(enum *gendoc.Enum) {
-	if len(enum.Values) >= 1 && !shouldIncludeEnum(enum.Values[0]) {
+	if len(enum.Values) >= 1 && enumValueShouldBeExcluded(enum.Values[0]) {
 		enum.Values = enum.Values[1:]
 	}
 }

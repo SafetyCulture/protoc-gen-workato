@@ -43,11 +43,26 @@ func Test_removeUnspecifiedValueDoesntContainAny(t *testing.T) {
 	require.Len(t, fixture.Values, 5, "size should be 5")
 }
 
-func Test_removeUnspecifiedValueWhenContainsOnlyOne(t *testing.T) {
+func Test_removeUnspecifiedValueWhenContainsOnlyOneUnspecified(t *testing.T) {
 	var values = make([]*gendoc.EnumValue, 0)
 
 	values = append(values, &gendoc.EnumValue{
 		Name: "TEST_UNSPECIFIED",
+	})
+
+	var fixture = gendoc.Enum{
+		Values: values,
+	}
+
+	removeUnspecifiedValue(&fixture)
+	require.Len(t, fixture.Values, 0, "size should be 0")
+}
+
+func Test_removeUnspecifiedValueWhenContainsOnlyOneUnknown(t *testing.T) {
+	var values = make([]*gendoc.EnumValue, 0)
+
+	values = append(values, &gendoc.EnumValue{
+		Name: "TEST_UNKNOWN",
 	})
 
 	var fixture = gendoc.Enum{
