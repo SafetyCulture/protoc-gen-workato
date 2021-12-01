@@ -441,7 +441,11 @@
          end,
   
          dedup: lambda do |event|
-          event["workflow_id"] + "@" + event["event"]["date_triggered"]
+           if event.has_key?("workflow_id")
+             event["workflow_id"] + "@" + event["event"]["date_triggered"]
+           else event.has_key?("webhook_id")
+             event["webhook_id"] + "@" + event["event"]["date_triggered"]
+           end
          end,
   
          output_fields: lambda do |object_definitions|
