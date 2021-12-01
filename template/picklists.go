@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
-	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
 // PicklistValue is the value of a picklist item
@@ -22,17 +21,14 @@ type PicklistDefinition struct {
 	Exec   string
 }
 
-func (t *WorkatoTemplate) generateDynamicPickList(service *gendoc.Service, method *gendoc.ServiceMethod) *PicklistDefinition {
-	var opt *workato.MethodOptionsWorkatoPickList
-	var ok bool
-	if opt, ok = method.Option("s12.protobuf.workato.pick_list").(*workato.MethodOptionsWorkatoPickList); !ok {
-		return nil
-	}
+func (t *WorkatoTemplate) generateDynamicPickList(serviceMethod *ServiceMethod, opt *workato.MethodOptionsWorkato) *PicklistDefinition {
+	service := serviceMethod.Service
+	method := serviceMethod.Method
 
 	actionCode := t.getExecuteCode(service, method)
 
-	labelPath := strings.Split(opt.Label, ".")
-	valuePath := strings.Split(opt.Value, ".")
+	labelPath := strings.Split(opt.Picklist.Label, ".")
+	valuePath := strings.Split(opt.Picklist.Value, ".")
 
 	listPath := ""
 	for i, value := range valuePath {

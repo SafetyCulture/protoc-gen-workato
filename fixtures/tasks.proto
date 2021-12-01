@@ -12,15 +12,18 @@ service TasksService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Inspections"]
     };
-    option (s12.protobuf.workato.trigger) = {
+    option (s12.protobuf.workato.method) = {
+      trigger: true
     };
   }
 
   // List all of the tasks
   rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
-    option (s12.protobuf.workato.pick_list) = {
-      label: "tasks.name"
-      value: "tasks.id"
+    option (s12.protobuf.workato.method) = {
+      picklist: {
+        label: "tasks.name"
+        value: "tasks.id"
+      }
     };
   }
 

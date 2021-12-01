@@ -294,7 +294,7 @@
   },
 
   actions: {  
-    "tasks": {
+    "action_tasks": {
       title: "Tasks",
       subtitle: "Interact with Tasks in iAuditor",
       description: lambda do |input, picklist_label|
@@ -358,7 +358,7 @@
       end,
     },
   
-    "task_comments": {
+    "action_task_comments": {
       title: "Task Comments",
       subtitle: "Interact with Task Comments in iAuditor",
       description: lambda do |input, picklist_label|
@@ -411,7 +411,7 @@
   # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {  
-      inspections: {
+      trigger_inspections: {
          title: "Inspection Event",
   
          description: "<span class='provider'>Trigger for Inspection Event</span>",
@@ -448,6 +448,12 @@
   },
 
   pick_lists: {  
+    "dynamic_api_tasks_v1_tasksservice_listtasks": lambda do    
+      body = {}
+      resp = post("/api.tasks.v1.TasksService/ListTasks").payload(body)
+      
+      resp['tasks'].pluck('name', 'id')
+    end,
     "action_name_tasks": lambda do
       [
         ["Create a new task", "api_tasks_v1_tasksservice_createtask"],
