@@ -130,6 +130,8 @@
             type: "string",
             hint: "The ID of the task",
             
+            control_type: "select",
+            pick_list: "dynamic_api_tasks_v1_tasksservice_listtasks",
             sticky: true,
             
           },
