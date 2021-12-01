@@ -265,10 +265,11 @@
             name: "trigger",
             label: "Trigger",
             type: "string",
+            hint: "Trigger event to subscribe to.",
             
             control_type: "select",
             default: "TRIGGER_EVENT_INSPECTION_STARTED",
-            pick_list: "enum_api_tasks_v1_triggerinspectionrequest_inspectiontriggers",
+            pick_list: "enum_api_tasks_v1_triggerinspectionrequest_triggerevent",
             sticky: true,
             
           },
@@ -468,13 +469,13 @@
         ["Update a comment on a task", "api_tasks_v1_tasksservice_updatecomment"],
       ]
     end,
-    "enum_api_tasks_v1_triggerinspectionrequest_inspectiontriggers": lambda do
+    "enum_api_tasks_v1_triggerinspectionrequest_triggerevent": lambda do
       [
-        ["TRIGGER_EVENT_INSPECTION_STARTED", "TRIGGER_EVENT_INSPECTION_STARTED"],
-        ["TRIGGER_EVENT_INSPECTION_UPDATED", "TRIGGER_EVENT_INSPECTION_UPDATED"],
-        ["TRIGGER_EVENT_INSPECTION_COMPLETED", "TRIGGER_EVENT_INSPECTION_COMPLETED"],
-        ["TRIGGER_EVENT_INSPECTION_ARCHIVED", "TRIGGER_EVENT_INSPECTION_ARCHIVED"],
-        ["TRIGGER_EVENT_INSPECTION_UNARCHIVED", "TRIGGER_EVENT_INSPECTION_UNARCHIVED"],
+        ["Inspection Started", "TRIGGER_EVENT_INSPECTION_STARTED"],
+        ["Inspection Updated", "TRIGGER_EVENT_INSPECTION_UPDATED"],
+        ["Inspection Completed", "TRIGGER_EVENT_INSPECTION_COMPLETED"],
+        ["Inspection Archived", "TRIGGER_EVENT_INSPECTION_ARCHIVED"],
+        ["Inspection Unarchived", "TRIGGER_EVENT_INSPECTION_UNARCHIVED"],
       ]
     end,
   },

@@ -7,6 +7,8 @@ func (t *WorkatoTemplate) generateEnumPicklists() {
 			Values: []PicklistValue{},
 		}
 
+		removeUnspecifiedValue(enum)
+
 		for _, value := range enum.Values {
 			desc := value.Description
 			if desc == "" {

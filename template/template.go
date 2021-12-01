@@ -92,6 +92,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 			workatoTemplate.messageMap[message.FullName] = message
 		}
 		for _, enum := range file.Enums {
+			removeUnspecifiedValue(enum)
 			workatoTemplate.enumMap[enum.FullName] = enum
 		}
 
