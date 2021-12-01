@@ -164,14 +164,22 @@ message UpdateCommentRequest {
 message UpdateCommentResponse {}
 
 message TriggerInspectionRequest {
-  enum InspectionTriggers {
-    TRIGGER_EVENT_INSPECTION_STARTED = 0;
-    TRIGGER_EVENT_INSPECTION_UPDATED = 1;
-    TRIGGER_EVENT_INSPECTION_COMPLETED = 2;
-    TRIGGER_EVENT_INSPECTION_ARCHIVED = 3;
-    TRIGGER_EVENT_INSPECTION_UNARCHIVED = 4;
+  enum TriggerEvent {
+    // Unspecified Event
+    TRIGGER_EVENT_UNSPECIFIED = 0;
+    // Inspection Started
+    TRIGGER_EVENT_INSPECTION_STARTED = 1;
+    // Inspection Updated
+    TRIGGER_EVENT_INSPECTION_UPDATED = 2;
+    // Inspection Completed
+    TRIGGER_EVENT_INSPECTION_COMPLETED = 3;
+    // Inspection Archived
+    TRIGGER_EVENT_INSPECTION_ARCHIVED = 4;
+    // Inspection Unarchived
+    TRIGGER_EVENT_INSPECTION_UNARCHIVED = 5;
   }
-  InspectionTriggers trigger = 1;
+  // Trigger event to subscribe to.
+  TriggerEvent trigger = 1;
 }
 
 message TriggerInspectionResponse {
