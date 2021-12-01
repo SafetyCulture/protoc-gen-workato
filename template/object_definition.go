@@ -1,6 +1,9 @@
 package template
 
 import (
+	"fmt"
+
+	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
@@ -127,6 +130,22 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *FieldDefiniti
 		if field.Label == "repeated" {
 			fieldDef.Of = fieldDef.Type
 			fieldDef.Type = "array"
+		}
+	}
+
+	if opts, ok := field.Option("s12.protobuf.workato.field").(*workato.FieldOptionsWorkato); ok {
+		if opts.DynamicPicklist != "" {
+			picklistName := escapeKeyName(opts.DynamicPicklist)
+			picklist, ok := t.dynamicPicklistMap[picklistName]
+			if !ok {
+				panic(fmt.Errorf("invalid dynamic picklist %s for %s", opts.DynamicPicklist, field.Name))
+			}
+
+			fieldDef.ControlType = "select"
+			fieldDef.Picklist = picklist.Name
+			if field.Label == "repeated" {
+				fieldDef.ControlType = "multiselect"
+			}
 		}
 	}
 

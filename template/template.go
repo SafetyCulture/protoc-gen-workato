@@ -1,11 +1,40 @@
 package template
 
 import (
+	"fmt"
+
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
+
+// ServiceMethod is a combined service and method defintion
+type ServiceMethod struct {
+	Service *gendoc.Service
+	Method  *gendoc.ServiceMethod
+}
+
+// ExtractFirstTag Extract and Converts first non-public tag
+func (t *ServiceMethod) extractFirstTag() (string, error) {
+	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
+	if !ok {
+		return "", fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
+	}
+	var tagName string
+	for _, tag := range opts.Tags {
+		if tag != "Public" {
+			tagName = tag
+			break
+		}
+	}
+
+	if tagName == "" {
+		return "", fmt.Errorf("couldn't find any tags for method %s", t.Method.Name)
+	}
+
+	return tagName, nil
+}
 
 // WorkatoTemplate is an interface to use when rendering a workato connector
 // https://docs.workato.com/developing-connectors/sdk/sdk-reference.html
@@ -26,8 +55,10 @@ type WorkatoTemplate struct {
 	// An ordered slice of the used enums from the used messages
 	enums []*gendoc.Enum
 
+	dynamicPicklistMap map[string]*PicklistDefinition
+
 	// All the included actions
-	actions []*Action
+	actions []*ServiceMethod
 	// A map of the actions grouped by their resource
 	groupedActionMap map[string]*ActionGroup
 	// An ordered slice of the grouped actions
@@ -41,7 +72,7 @@ type WorkatoTemplate struct {
 	Picklists []*PicklistDefinition
 
 	// All triggers
-	triggers []*Trigger
+	triggers []*ServiceMethod
 	// Triggers are Workato formatted definitions of grouped triggers
 	Triggers []*TriggerDefinition
 }
@@ -49,12 +80,13 @@ type WorkatoTemplate struct {
 // FromGenDoc converts a protoc-gen-doc template to our template file
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate, error) {
 	workatoTemplate := &WorkatoTemplate{
-		config:           cfg,
-		messageMap:       make(map[string]*gendoc.Message),
-		enumMap:          make(map[string]*gendoc.Enum),
-		usedMessageMap:   make(map[string]*gendoc.Message),
-		usedEnumMap:      make(map[string]*gendoc.Enum),
-		groupedActionMap: make(map[string]*ActionGroup),
+		config:             cfg,
+		messageMap:         make(map[string]*gendoc.Message),
+		enumMap:            make(map[string]*gendoc.Enum),
+		usedMessageMap:     make(map[string]*gendoc.Message),
+		usedEnumMap:        make(map[string]*gendoc.Enum),
+		groupedActionMap:   make(map[string]*ActionGroup),
+		dynamicPicklistMap: make(map[string]*PicklistDefinition),
 	}
 
 	for _, file := range template.Files {
@@ -70,14 +102,21 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		// Find all the actions we want to expose
 		for _, service := range file.Services {
 			for _, method := range service.Methods {
-				if _, ok := method.Option("s12.protobuf.workato.trigger").(*workato.MethodOptionsWorkatoTrigger); ok {
-					workatoTemplate.triggers = append(workatoTemplate.triggers, &Trigger{service, method})
+				seviceMethod := &ServiceMethod{service, method}
+
+				workatoOpt, _ := method.Option("s12.protobuf.workato.method").(*workato.MethodOptionsWorkato)
+				if workatoOpt != nil && workatoOpt.Picklist != nil {
+					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.recordDynamicPicklist(seviceMethod, workatoOpt))
+				}
+
+				if workatoOpt != nil && workatoOpt.Trigger {
+					workatoTemplate.triggers = append(workatoTemplate.triggers, seviceMethod)
 					continue
 				}
 
 				isPublic := false
-				if opts, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
-					for _, tag := range opts.Tags {
+				if openapiOpt, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
+					for _, tag := range openapiOpt.Tags {
 						if tag == "Public" {
 							isPublic = true
 						}
@@ -85,7 +124,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 				}
 
 				if isPublic {
-					workatoTemplate.actions = append(workatoTemplate.actions, &Action{service, method})
+					workatoTemplate.actions = append(workatoTemplate.actions, seviceMethod)
 				}
 			}
 		}

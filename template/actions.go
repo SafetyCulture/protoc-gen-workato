@@ -3,20 +3,13 @@ package template
 import (
 	"fmt"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
 // ActionGroup is a grouped set of actions with sub actions
 type ActionGroup struct {
 	Name    string
-	Actions []*Action
-}
-
-// Action is a combined service and method defintion
-type Action struct {
-	Service *gendoc.Service
-	Method  *gendoc.ServiceMethod
+	Actions []*ServiceMethod
 }
 
 // ActionDefinition is the representation of an action in the Workato SDK
@@ -44,16 +37,8 @@ type ExecCode struct {
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
 		// Group methods by their first tag
-		var resource string
-		if opts, ok := action.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
-			for _, tag := range opts.Tags {
-				if tag != "Public" {
-					resource = tag
-					break
-				}
-			}
-		}
-		if resource == "" {
+		resource, err := action.extractFirstTag()
+		if err != nil {
 			continue
 		}
 
@@ -62,7 +47,7 @@ func (t *WorkatoTemplate) groupActions() {
 		if actionGroup == nil {
 			actionGroup = &ActionGroup{
 				Name:    resource,
-				Actions: make([]*Action, 0),
+				Actions: make([]*ServiceMethod, 0),
 			}
 			t.groupedActionMap[resource] = actionGroup
 			t.groupedActions = append(t.groupedActions, actionGroup)
@@ -73,7 +58,7 @@ func (t *WorkatoTemplate) groupActions() {
 	}
 }
 
-func (t *WorkatoTemplate) recordUsedAction(action *Action) {
+func (t *WorkatoTemplate) recordUsedAction(action *ServiceMethod) {
 	t.recordUsedMessage(t.messageMap[action.Method.RequestFullType])
 	t.recordUsedMessage(t.messageMap[action.Method.ResponseFullType])
 }
@@ -109,7 +94,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			Values: []PicklistValue{},
 		}
 		actionDef := &ActionDefinition{
-			Name:        escapeKeyName(actionGroup.Name),
+			Name:        "action_" + escapeKeyName(actionGroup.Name),
 			Title:       actionGroup.Name,
 			Subtitle:    fmt.Sprintf("Interact with %s in iAuditor", actionGroup.Name),
 			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with %s'}</span> in <span class='provider'>iAuditor</span>", actionGroup.Name),
@@ -128,9 +113,9 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 		}
 
 		for _, action := range actionGroup.Actions {
-			name := escapeKeyName(fmt.Sprintf("%s/%s", action.Service.FullName, action.Method.Name))
+			name := fullActionName(action.Service, action.Method)
 
-			actionDef.ExecCode[name] = t.getExecuteCode(action)
+			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
 			picklistDef.Values = append(picklistDef.Values, PicklistValue{name, action.Method.Description})
 

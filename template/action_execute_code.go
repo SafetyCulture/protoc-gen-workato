@@ -5,15 +5,14 @@ import (
 	"regexp"
 	"strings"
 
+	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	extensions "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http"
 )
 
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({\w+})`)
 
-func (t *WorkatoTemplate) getExecuteCode(action *Action) ExecCode {
-	service, method := action.Service, action.Method
-
+func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc.ServiceMethod) ExecCode {
 	if override, ok := t.config.Method[fmt.Sprintf("%s/%s", service.FullName, method.Name)]; ok {
 		return ExecCode{
 			Func: override.Exec,
