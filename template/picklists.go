@@ -21,7 +21,7 @@ type PicklistDefinition struct {
 	Exec   string
 }
 
-func (t *WorkatoTemplate) generateDynamicPickList(serviceMethod *ServiceMethod, opt *workato.MethodOptionsWorkato) *PicklistDefinition {
+func (t *WorkatoTemplate) recordDynamicPicklist(serviceMethod *ServiceMethod, opt *workato.MethodOptionsWorkato) *PicklistDefinition {
 	service := serviceMethod.Service
 	method := serviceMethod.Method
 
@@ -39,7 +39,7 @@ func (t *WorkatoTemplate) generateDynamicPickList(serviceMethod *ServiceMethod, 
 	}
 
 	if len(labelPath) != len(valuePath) {
-		panic(fmt.Errorf("%s/%s: s12.protobuf.workato.pick_list label and value path not equal depth", service.FullName, method.Name))
+		panic(fmt.Errorf("%s/%s: s12.protobuf.workato.field.picklist label and value path not equal depth", service.FullName, method.Name))
 	}
 
 	execCode := fmt.Sprintf(`
@@ -49,8 +49,14 @@ resp = %s
 resp%s.pluck('%s', '%s')`,
 		actionCode.Func, listPath, labelPath[len(labelPath)-1], valuePath[len(valuePath)-1])
 
-	return &PicklistDefinition{
-		Name: dynamicPickListName(fullActionName(service, method)),
+	name := fullActionName(service, method)
+
+	picklist := &PicklistDefinition{
+		Name: dynamicPicklistName(name),
 		Exec: execCode,
 	}
+
+	t.dynamicPicklistMap[name] = picklist
+
+	return picklist
 }

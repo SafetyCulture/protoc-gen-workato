@@ -35,7 +35,7 @@ func actionPicklistName(group string) string {
 	return fmt.Sprintf("%s_%s", "action_name", escapeKeyName(group))
 }
 
-func dynamicPickListName(actionName string) string {
+func dynamicPicklistName(actionName string) string {
 	return fmt.Sprintf("%s_%s", "dynamic", actionName)
 }
 

@@ -55,6 +55,8 @@ type WorkatoTemplate struct {
 	// An ordered slice of the used enums from the used messages
 	enums []*gendoc.Enum
 
+	dynamicPicklistMap map[string]*PicklistDefinition
+
 	// All the included actions
 	actions []*ServiceMethod
 	// A map of the actions grouped by their resource
@@ -78,12 +80,13 @@ type WorkatoTemplate struct {
 // FromGenDoc converts a protoc-gen-doc template to our template file
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate, error) {
 	workatoTemplate := &WorkatoTemplate{
-		config:           cfg,
-		messageMap:       make(map[string]*gendoc.Message),
-		enumMap:          make(map[string]*gendoc.Enum),
-		usedMessageMap:   make(map[string]*gendoc.Message),
-		usedEnumMap:      make(map[string]*gendoc.Enum),
-		groupedActionMap: make(map[string]*ActionGroup),
+		config:             cfg,
+		messageMap:         make(map[string]*gendoc.Message),
+		enumMap:            make(map[string]*gendoc.Enum),
+		usedMessageMap:     make(map[string]*gendoc.Message),
+		usedEnumMap:        make(map[string]*gendoc.Enum),
+		groupedActionMap:   make(map[string]*ActionGroup),
+		dynamicPicklistMap: make(map[string]*PicklistDefinition),
 	}
 
 	for _, file := range template.Files {
@@ -103,7 +106,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 
 				workatoOpt, _ := method.Option("s12.protobuf.workato.method").(*workato.MethodOptionsWorkato)
 				if workatoOpt != nil && workatoOpt.Picklist != nil {
-					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.generateDynamicPickList(seviceMethod, workatoOpt))
+					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.recordDynamicPicklist(seviceMethod, workatoOpt))
 				}
 
 				if workatoOpt != nil && workatoOpt.Trigger {

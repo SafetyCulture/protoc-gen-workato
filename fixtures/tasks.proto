@@ -137,7 +137,9 @@ message DeleteTaskResponse {}
 
 message UpdateTaskRequest {
   // The ID of the task
-  string id = 1;
+  string id = 1 [(s12.protobuf.workato.field) = {
+    dynamic_picklist: "api.tasks.v1.TasksService/ListTasks"
+  }];
 
   // The name of the task
   string name = 2;
