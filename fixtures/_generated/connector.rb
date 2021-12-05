@@ -270,7 +270,6 @@
             hint: "Trigger event to subscribe to.",
             
             control_type: "select",
-            default: "TRIGGER_EVENT_INSPECTION_STARTED",
             pick_list: "enum_api_tasks_v1_triggerinspectionrequest_triggerevent",
             sticky: true,
             
