@@ -3,6 +3,7 @@ package template
 import (
 	"fmt"
 
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
@@ -10,27 +11,6 @@ import (
 type ActionGroup struct {
 	Name    string
 	Actions []*ServiceMethod
-}
-
-// ActionDefinition is the representation of an action in the Workato SDK
-// https://docs.workato.com/developing-connectors/sdk/sdk-reference/actions.html
-type ActionDefinition struct {
-	Name        string
-	Title       string
-	Subtitle    string
-	Description string
-
-	ConfigFields []*FieldDefinition
-	InputFields  map[string]string
-	OutputFields map[string]string
-	ExecCode     map[string]ExecCode
-}
-
-// ExecCode is the code to be run when executing a function
-type ExecCode struct {
-	// Exclude these fields from the query, because they are passed into the body or as path params
-	ExcludeFromQuery []string
-	Func             string
 }
 
 // Group actions based on their shared resource name
@@ -89,16 +69,16 @@ func (t *WorkatoTemplate) recordUsedMessage(message *gendoc.Message) {
 
 func (t *WorkatoTemplate) generateActionDefinitions() {
 	for _, actionGroup := range t.groupedActions {
-		picklistDef := &PicklistDefinition{
+		picklistDef := &schema.PicklistDefinition{
 			Name:   actionPicklistName(actionGroup.Name),
-			Values: []PicklistValue{},
+			Values: []schema.PicklistValue{},
 		}
-		actionDef := &ActionDefinition{
+		actionDef := &schema.ActionDefinition{
 			Name:        "action_" + escapeKeyName(actionGroup.Name),
 			Title:       actionGroup.Name,
 			Subtitle:    fmt.Sprintf("Interact with %s in iAuditor", actionGroup.Name),
 			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with %s'}</span> in <span class='provider'>iAuditor</span>", actionGroup.Name),
-			ConfigFields: []*FieldDefinition{
+			ConfigFields: []*schema.FieldDefinition{
 				{
 					Name:        "action_name",
 					Label:       "Action",
@@ -109,7 +89,20 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			},
 			InputFields:  make(map[string]string),
 			OutputFields: make(map[string]string),
-			ExecCode:     make(map[string]ExecCode),
+			ExecCode:     make(map[string]schema.ExecCode),
+		}
+
+		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
+			for _, field := range cfg.InputFields {
+				inputField := field
+
+				if inputField.Picklist != "" {
+					if picklist, ok := t.dynamicPicklistMap[escapeKeyName(inputField.Picklist)]; ok {
+						inputField.Picklist = picklist.Name
+					}
+				}
+				actionDef.ConfigFields = append(actionDef.ConfigFields, &inputField)
+			}
 		}
 
 		for _, action := range actionGroup.Actions {
@@ -117,7 +110,10 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 
 			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
-			picklistDef.Values = append(picklistDef.Values, PicklistValue{name, action.Method.Description})
+			picklistDef.Values = append(picklistDef.Values, schema.PicklistValue{
+				Key:   name,
+				Value: action.Method.Description,
+			})
 
 			actionDef.InputFields[name] = action.Method.RequestFullType
 			actionDef.OutputFields[name] = action.Method.ResponseFullType
