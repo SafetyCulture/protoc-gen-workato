@@ -6,11 +6,11 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/golang/protobuf v1.5.2
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.1
 	github.com/pseudomuto/protoc-gen-doc v1.5.0
 	github.com/pseudomuto/protokit v0.2.0
 	github.com/stretchr/testify v1.7.0
-	google.golang.org/genproto v0.0.0-20210903162649-d08c68adba83
+	google.golang.org/genproto v0.0.0-20211129164237-f09f9a12af12
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	gotest.tools v2.2.0+incompatible
