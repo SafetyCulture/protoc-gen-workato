@@ -56,12 +56,12 @@ data.map ...`,
 			{
 				Name:   "does_a_thing",
 				Params: []string{"param_1", "param_2"},
-				Code:   "param_1 + param_2",
+				Exec:   "param_1 + param_2",
 			},
 			{
 				Name:   "does_another_thing",
 				Params: []string{"param_1", "param_2"},
-				Code: `get("/an/api/#{param_1}")
+				Exec: `get("/an/api/#{param_1}")
 .body(param_2)`,
 			},
 		},
