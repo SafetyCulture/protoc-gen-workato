@@ -64,4 +64,4 @@ exclude_patterns:
   - "**/*mock/"
   - "**/*.pb.go"
   - "**/*.pb.*.go"
-  - "**/_generated/*"
+  - "**/.snapshots/*"

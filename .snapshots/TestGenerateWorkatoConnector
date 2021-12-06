@@ -42,6 +42,7 @@
             type: "string",
             hint: "The name of the task",
             
+            
             sticky: true,
             
           },
@@ -57,6 +58,7 @@
             label: "Id",
             type: "string",
             hint: "The ID of the task",
+            
             
             sticky: true,
             
@@ -74,6 +76,7 @@
             type: "string",
             hint: "The ID of the task",
             
+            
             sticky: true,
             
           },
@@ -89,6 +92,7 @@
             label: "Task",
             type: "object",
             properties: object_definitions['api.tasks.v1.Task'],
+            
             sticky: true,
             
           },
@@ -105,6 +109,7 @@
             type: "string",
             hint: "The ID of the task",
             
+            
             sticky: true,
             
           },
@@ -113,6 +118,7 @@
             label: "Name",
             type: "string",
             hint: "The name of the task",
+            
             
             sticky: true,
             
@@ -131,6 +137,7 @@
             hint: "The ID of the task",
             
             control_type: "select",
+            
             pick_list: "dynamic_api_tasks_v1_tasksservice_listtasks",
             sticky: true,
             
@@ -140,6 +147,7 @@
             label: "Name",
             type: "string",
             hint: "The name of the task",
+            
             
             sticky: true,
             
@@ -164,6 +172,7 @@
             type: "string",
             hint: "The ID of the task",
             
+            
             sticky: true,
             
           },
@@ -187,6 +196,7 @@
             type: "string",
             hint: "The ID of the task",
             
+            
             sticky: true,
             
           },
@@ -195,6 +205,7 @@
             label: "Comment",
             type: "string",
             hint: "The comment to add",
+            
             
             sticky: true,
             
@@ -212,6 +223,7 @@
             type: "string",
             hint: "The ID of the comment",
             
+            
             sticky: true,
             
           },
@@ -228,6 +240,7 @@
             type: "string",
             hint: "The ID of the task",
             
+            
             sticky: true,
             
           },
@@ -237,6 +250,7 @@
             type: "string",
             hint: "The ID comment to update",
             
+            
             sticky: true,
             
           },
@@ -245,6 +259,7 @@
             label: "Comment",
             type: "string",
             hint: "The updated comment",
+            
             
             sticky: true,
             
@@ -260,7 +275,21 @@
       end
     },
   
-    "api.tasks.v1.TriggerInspectionRequest": {
+    "api.tasks.v1.CustomActionRequest": {
+      fields: lambda do |connection, config_fields, object_definitions|
+        data = get("/data/for_tasks/#{input['custom_field']}")
+        data.map ...
+      end
+    },
+  
+    "api.tasks.v1.CustomActionResponse": {
+      fields: lambda do |connection, config_fields, object_definitions|
+        [
+        ]
+      end
+    },
+  
+    "api.tasks.v1.TriggerTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
         [
           {
@@ -270,7 +299,8 @@
             hint: "Trigger event to subscribe to.",
             
             control_type: "select",
-            pick_list: "enum_api_tasks_v1_triggerinspectionrequest_triggerevent",
+            
+            pick_list: "enum_api_tasks_v1_triggertaskrequest_triggerevent",
             sticky: true,
             
           },
@@ -278,13 +308,23 @@
       end
     },
   
-    "api.tasks.v1.TriggerInspectionResponse": {
+    "api.tasks.v1.TriggerTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
         [
           {
-            name: "workflow_id",
-            label: "Workflow Id",
+            name: "webhook_id",
+            label: "Webhook Id",
             type: "string",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "task_id",
+            label: "Task Id",
+            type: "string",
+            
             
             sticky: true,
             
@@ -309,8 +349,18 @@
           type: "string",
           
           control_type: "select",
+          
           pick_list: "action_name_tasks",
           sticky: true,
+          
+        },
+        {
+          name: "custom_field",
+          type: "text",
+          
+          
+          sticky: true,
+          ngIf: "input['action'] == 'api_tasks_v1_tasksservice_customaction'",
           
         },
       ],
@@ -318,6 +368,8 @@
         case config_fields['action_name']
         when "api_tasks_v1_tasksservice_createtask"
           object_definitions["api.tasks.v1.CreateTaskRequest"]
+        when "api_tasks_v1_tasksservice_customaction"
+          object_definitions["api.tasks.v1.CustomActionRequest"]
         when "api_tasks_v1_tasksservice_deletetask"
           object_definitions["api.tasks.v1.DeleteTaskRequest"]
         when "api_tasks_v1_tasksservice_gettask"
@@ -332,6 +384,10 @@
           excludeKeys = []
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           post("/v1/tasks").payload(body)
+        when "api_tasks_v1_tasksservice_customaction"
+          excludeKeys = []
+          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+          # does a thing
         when "api_tasks_v1_tasksservice_deletetask"
           excludeKeys = ["id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
@@ -350,6 +406,8 @@
         case config_fields['action_name']
         when "api_tasks_v1_tasksservice_createtask"
           object_definitions["api.tasks.v1.CreateTaskResponse"]
+        when "api_tasks_v1_tasksservice_customaction"
+          object_definitions["api.tasks.v1.CustomActionResponse"]
         when "api_tasks_v1_tasksservice_deletetask"
           object_definitions["api.tasks.v1.DeleteTaskResponse"]
         when "api_tasks_v1_tasksservice_gettask"
@@ -373,6 +431,7 @@
           type: "string",
           
           control_type: "select",
+          
           pick_list: "action_name_task_comments",
           sticky: true,
           
@@ -413,13 +472,13 @@
   # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {  
-      trigger_inspections: {
-         title: "Inspection Event",
+      trigger_tasks: {
+         title: "Task Event",
   
-         description: "<span class='provider'>Trigger for Inspection Event</span>",
+         description: "<span class='provider'>Trigger for Task Event</span>",
   
          input_fields: lambda do |object_definitions|
-          object_definitions["api.tasks.v1.TriggerInspectionRequest"]
+          object_definitions["api.tasks.v1.TriggerTaskRequest"]
          end,
   
          webhook_subscribe: lambda do |webhook_url, connection, input|
@@ -448,7 +507,7 @@
          end,
   
          output_fields: lambda do |object_definitions|
-          object_definitions["api.tasks.v1.TriggerInspectionResponse"]
+          object_definitions["api.tasks.v1.TriggerTaskResponse"]
          end,
       },
   },
@@ -466,6 +525,7 @@
         ["Get a task by ID", "api_tasks_v1_tasksservice_gettask"],
         ["Update a task by ID", "api_tasks_v1_tasksservice_updatetask"],
         ["Delete a task by ID", "api_tasks_v1_tasksservice_deletetask"],
+        ["Custom Action with custom code", "api_tasks_v1_tasksservice_customaction"],
       ]
     end,
     "action_name_task_comments": lambda do
@@ -474,19 +534,25 @@
         ["Update a comment on a task", "api_tasks_v1_tasksservice_updatecomment"],
       ]
     end,
-    "enum_api_tasks_v1_triggerinspectionrequest_triggerevent": lambda do
+    "enum_api_tasks_v1_triggertaskrequest_triggerevent": lambda do
       [
-        ["Inspection Started", "TRIGGER_EVENT_INSPECTION_STARTED"],
-        ["Inspection Updated", "TRIGGER_EVENT_INSPECTION_UPDATED"],
-        ["Inspection Completed", "TRIGGER_EVENT_INSPECTION_COMPLETED"],
-        ["Inspection Archived", "TRIGGER_EVENT_INSPECTION_ARCHIVED"],
-        ["Inspection Unarchived", "TRIGGER_EVENT_INSPECTION_UNARCHIVED"],
+        ["Task Started", "TRIGGER_EVENT_TASK_CREATED"],
+        ["Task Updated", "TRIGGER_EVENT_TASK_UPDATED"],
+        ["Task Closed", "TRIGGER_EVENT_TASK_CLOSED"],
+        ["Task Deleted", "TRIGGER_EVENT_TASK_DELETED"],
       ]
     end,
   },
 
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
-  methods: {
+  methods: {  
+    "does_a_thing": lambda do |param_1, param_2|
+      param_1 + param_2
+    end,
+    "does_another_thing": lambda do |param_1, param_2|
+      get("/an/api/#{param_1}")
+      .body(param_2)
+    end,
   }
 }

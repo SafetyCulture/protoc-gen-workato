@@ -7,10 +7,10 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 package api.tasks.v1;
 
 service TasksService {
-  // Inspection Event
-  rpc TriggerInspection(TriggerInspectionRequest) returns (TriggerInspectionResponse) {
+  // Task Event
+  rpc TriggerTask(TriggerTaskRequest) returns (TriggerTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Inspections"]
+      tags: ["Tasks"]
     };
     option (s12.protobuf.workato.method) = {
       trigger: true
@@ -103,6 +103,13 @@ service TasksService {
       body: "*"
     };
   }
+
+  // Custom Action with custom code
+  rpc CustomAction(CustomActionRequest) returns (CustomActionResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+  }
 }
 
 message Task {
@@ -183,25 +190,31 @@ message UpdateCommentRequest {
 
 message UpdateCommentResponse {}
 
-message TriggerInspectionRequest {
+message TriggerTaskRequest {
   enum TriggerEvent {
     // Unspecified Event
     TRIGGER_EVENT_UNSPECIFIED = 0;
-    // Inspection Started
-    TRIGGER_EVENT_INSPECTION_STARTED = 1;
-    // Inspection Updated
-    TRIGGER_EVENT_INSPECTION_UPDATED = 2;
-    // Inspection Completed
-    TRIGGER_EVENT_INSPECTION_COMPLETED = 3;
-    // Inspection Archived
-    TRIGGER_EVENT_INSPECTION_ARCHIVED = 4;
-    // Inspection Unarchived
-    TRIGGER_EVENT_INSPECTION_UNARCHIVED = 5;
+    // Task Started
+    TRIGGER_EVENT_TASK_CREATED = 1;
+    // Task Updated
+    TRIGGER_EVENT_TASK_UPDATED = 2;
+    // Task Closed
+    TRIGGER_EVENT_TASK_CLOSED = 3;
+    // Task Deleted
+    TRIGGER_EVENT_TASK_DELETED = 4;
   }
   // Trigger event to subscribe to.
   TriggerEvent trigger = 1;
 }
 
-message TriggerInspectionResponse {
-  string workflow_id = 1;
+message TriggerTaskResponse {
+  string webhook_id = 1;
+  string task_id = 2;
+}
+
+message CustomActionRequest {
+
+}
+message CustomActionResponse {
+
 }

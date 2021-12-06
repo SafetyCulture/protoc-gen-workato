@@ -1,10 +1,12 @@
 package template
 
+import "github.com/SafetyCulture/protoc-gen-workato/template/schema"
+
 func (t *WorkatoTemplate) generateEnumPicklists() {
 	for _, enum := range t.enums {
-		pickListDef := &PicklistDefinition{
+		pickListDef := &schema.PicklistDefinition{
 			Name:   enumPicklistName(enum),
-			Values: []PicklistValue{},
+			Values: []schema.PicklistValue{},
 		}
 
 		removeUnspecifiedValue(enum)
@@ -14,7 +16,7 @@ func (t *WorkatoTemplate) generateEnumPicklists() {
 			if desc == "" {
 				desc = value.Name
 			}
-			pickListDef.Values = append(pickListDef.Values, PicklistValue{value.Name, desc})
+			pickListDef.Values = append(pickListDef.Values, schema.PicklistValue{value.Name, desc})
 		}
 
 		t.Picklists = append(t.Picklists, pickListDef)

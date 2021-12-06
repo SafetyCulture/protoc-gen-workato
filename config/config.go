@@ -1,12 +1,28 @@
 package config
 
-// ConfigAction is the overwritten code for a specific action
-type ConfigAction struct {
+import "github.com/SafetyCulture/protoc-gen-workato/template/schema"
+
+// Method allows for customization of a gRPC method
+type Method struct {
 	Exec string `yaml:"exec"`
+}
+
+// Message allows for customization of a gRPC message
+type Message struct {
+	// Custom code for generating the object definition
+	Exec string `yaml:"exec"`
+}
+
+// Action allows for customization of a grouped action
+type Action struct {
+	InputFields []schema.FieldDefinition `yaml:"input_fields"`
 }
 
 // Config is the configuration of the plugin
 type Config struct {
-	TemplateFile string
-	Method       map[string]ConfigAction `yaml:"method"`
+	TemplateFile  string
+	Action        map[string]Action          `yaml:"action"`
+	Method        map[string]Method          `yaml:"method"`
+	Message       map[string]Message         `yaml:"message"`
+	CustomMethods []*schema.MethodDefinition `yaml:"custom_methods"`
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
@@ -55,7 +56,7 @@ type WorkatoTemplate struct {
 	// An ordered slice of the used enums from the used messages
 	enums []*gendoc.Enum
 
-	dynamicPicklistMap map[string]*PicklistDefinition
+	dynamicPicklistMap map[string]*schema.PicklistDefinition
 
 	// All the included actions
 	actions []*ServiceMethod
@@ -65,16 +66,17 @@ type WorkatoTemplate struct {
 	groupedActions []*ActionGroup
 
 	// ObjectDefinitions are Workato formatted definitions of messages
-	ObjectDefinitions []*ObjectDefinition
+	ObjectDefinitions []*schema.ObjectDefinition
 	// Actions are Workato formatted defintions of grouped methods
-	Actions []*ActionDefinition
+	Actions []*schema.ActionDefinition
 	// Picklists are Workato formatted definitions of enums and action groups
-	Picklists []*PicklistDefinition
+	Picklists []*schema.PicklistDefinition
+	Methods   []*schema.MethodDefinition
 
 	// All triggers
 	triggers []*ServiceMethod
 	// Triggers are Workato formatted definitions of grouped triggers
-	Triggers []*TriggerDefinition
+	Triggers []*schema.TriggerDefinition
 }
 
 // FromGenDoc converts a protoc-gen-doc template to our template file
@@ -86,7 +88,8 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		usedMessageMap:     make(map[string]*gendoc.Message),
 		usedEnumMap:        make(map[string]*gendoc.Enum),
 		groupedActionMap:   make(map[string]*ActionGroup),
-		dynamicPicklistMap: make(map[string]*PicklistDefinition),
+		dynamicPicklistMap: make(map[string]*schema.PicklistDefinition),
+		Methods:            cfg.CustomMethods,
 	}
 
 	for _, file := range template.Files {
