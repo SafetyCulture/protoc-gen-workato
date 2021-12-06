@@ -341,7 +341,7 @@
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
         when "api_tasks_v1_tasksservice_updatetask"
-          excludeKeys = []
+          excludeKeys = ["id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           put("/v1/tasks/#{input['id']}").payload(body)
         end
@@ -389,11 +389,11 @@
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
         when "api_tasks_v1_tasksservice_addcomment"
-          excludeKeys = []
+          excludeKeys = ["task_id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           post("/v1/tasks/#{input['task_id']}/comment").payload(body)
         when "api_tasks_v1_tasksservice_updatecomment"
-          excludeKeys = []
+          excludeKeys = ["task_id","comment_id"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           put("/v1/tasks/#{input['task_id']}/comment/#{input['comment_id']}").payload(body)
         end

@@ -38,7 +38,8 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 
 			if rule.Body == "*" {
 				return ExecCode{
-					Func: fmt.Sprintf(`%s("%s").payload(body)`, mthd, path),
+					ExcludeFromQuery: params,
+					Func:             fmt.Sprintf(`%s("%s").payload(body)`, mthd, path),
 				}
 			}
 
