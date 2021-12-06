@@ -10,7 +10,7 @@ type ObjectDefinition struct {
 	Fields []*FieldDefinition
 
 	// Custom code, if set `Fields` will be ignored
-	CustomCode string
+	Exec string
 }
 
 // FieldDefinition is the representation of an objects fields in the Workato SDK

@@ -34,7 +34,7 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 		}
 
 		if cfg, ok := t.config.Message[message.FullName]; ok && cfg.Exec != "" {
-			obj.CustomCode = cfg.Exec
+			obj.Exec = cfg.Exec
 		}
 
 		for _, field := range message.Fields {

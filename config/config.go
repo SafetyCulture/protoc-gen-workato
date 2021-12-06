@@ -2,15 +2,18 @@ package config
 
 import "github.com/SafetyCulture/protoc-gen-workato/template/schema"
 
-// ConfigMethod is the overwritten code for a specific method
+// ConfigMethod allows for customization of a gRPC method
 type ConfigMethod struct {
 	Exec string `yaml:"exec"`
 }
 
+// ConfigMessage allows for customization of a gRPC message
 type ConfigMessage struct {
+	// Custom code for generating the object definition
 	Exec string `yaml:"exec"`
 }
 
+// ConfigAction allows for customization of a grouped action
 type ConfigAction struct {
 	InputFields []schema.FieldDefinition `yaml:"input_fields"`
 }

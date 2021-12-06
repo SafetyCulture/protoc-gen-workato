@@ -1,15 +1,15 @@
 package genworkato_test
 
 import (
-	"bytes"
-	"os"
 	"testing"
 
 	genworkato "github.com/SafetyCulture/protoc-gen-workato"
 	"github.com/SafetyCulture/protoc-gen-workato/config"
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 
 	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_openapiv2" // imported for side effects
 	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_workato"   // imported for side effects
+	"github.com/bradleyjkemp/cupaloy"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	_ "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http" // imported for side effects
 	"github.com/pseudomuto/protokit"
@@ -28,14 +28,44 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 
 	template := gendoc.NewTemplate(result)
 
-	content, err := genworkato.GenerateWorkatoConnector(template, &config.Config{})
+	content, err := genworkato.GenerateWorkatoConnector(template, &config.Config{
+		Action: map[string]config.ConfigAction{
+			"Tasks": {
+				InputFields: []schema.FieldDefinition{
+					{
+						Name: "custom_field",
+						Type: "text",
+						NgIf: "input['action'] == 'api_tasks_v1_tasksservice_customaction'",
+					},
+				},
+			},
+		},
+		Method: map[string]config.ConfigMethod{
+			"api.tasks.v1.TasksService/CustomAction": {
+				Exec: "# does a thing",
+			},
+		},
+		Message: map[string]config.ConfigMessage{
+			"api.tasks.v1.CustomActionRequest": {
+				Exec: `data = get("/data/for_tasks/#{input['custom_field']}")
+data.map ...`,
+			},
+		},
+		CustomMethods: []*schema.MethodDefinition{
+			{
+				Name:   "does_a_thing",
+				Params: []string{"param_1", "param_2"},
+				Code:   "param_1 + param_2",
+			},
+			{
+				Name:   "does_another_thing",
+				Params: []string{"param_1", "param_2"},
+				Code: `get("/an/api/#{param_1}")
+.body(param_2)`,
+			},
+		},
+	})
 	assert.NilError(t, err)
 
-	f, err := os.ReadFile("./fixtures/_generated/connector.rb")
-	assert.NilError(t, err)
-
-	var buf bytes.Buffer
-	buf.Write(f)
-
-	assert.Equal(t, buf.String(), string(content))
+	cupaloy.SnapshotT(t, string(content))
 }

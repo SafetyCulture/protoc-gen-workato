@@ -2,8 +2,8 @@
 {{- range . }}
   "{{ .Key }}": {
     fields: lambda do |connection, config_fields, object_definitions|
-      {{- if .CustomCode }}
-        {{- .CustomCode | nindent 6 }}
+      {{- if .Exec }}
+        {{- .Exec | nindent 6 }}
       {{- else }}
       [
         {{- range .Fields }}
