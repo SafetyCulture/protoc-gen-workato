@@ -30,7 +30,7 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 	template := gendoc.NewTemplate(result)
 
 	content, err := genworkato.GenerateWorkatoConnector(template, &config.Config{
-		Action: map[string]config.ConfigAction{
+		Action: map[string]config.Action{
 			"Tasks": {
 				InputFields: []schema.FieldDefinition{
 					{
@@ -41,12 +41,12 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 				},
 			},
 		},
-		Method: map[string]config.ConfigMethod{
+		Method: map[string]config.Method{
 			"api.tasks.v1.TasksService/CustomAction": {
 				Exec: "# does a thing",
 			},
 		},
-		Message: map[string]config.ConfigMessage{
+		Message: map[string]config.Message{
 			"api.tasks.v1.CustomActionRequest": {
 				Exec: `data = get("/data/for_tasks/#{input['custom_field']}")
 data.map ...`,
