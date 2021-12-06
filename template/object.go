@@ -83,10 +83,6 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 		fieldDef.Picklist = enumPicklistName(enum)
 		if field.Label == "repeated" {
 			fieldDef.ControlType = "multiselect"
-		} else {
-			if fieldDef.Default == "" {
-				fieldDef.Default = enum.Values[0].Name
-			}
 		}
 	} else {
 		if field.Label == "repeated" {

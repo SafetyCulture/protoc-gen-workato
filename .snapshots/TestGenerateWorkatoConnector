@@ -300,7 +300,6 @@
             
             control_type: "select",
             
-            default: "TRIGGER_EVENT_TASK_CREATED",
             pick_list: "enum_api_tasks_v1_triggertaskrequest_triggerevent",
             sticky: true,
             
