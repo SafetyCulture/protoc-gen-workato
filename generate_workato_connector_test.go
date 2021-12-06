@@ -1,6 +1,7 @@
 package genworkato_test
 
 import (
+	"strings"
 	"testing"
 
 	genworkato "github.com/SafetyCulture/protoc-gen-workato"
@@ -67,5 +68,5 @@ data.map ...`,
 	})
 	assert.NilError(t, err)
 
-	cupaloy.SnapshotT(t, string(content))
+	cupaloy.SnapshotT(t, strings.TrimSpace(string(content)))
 }
