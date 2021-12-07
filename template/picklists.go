@@ -5,23 +5,10 @@ import (
 	"strings"
 
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 )
 
-// PicklistValue is the value of a picklist item
-type PicklistValue struct {
-	Key   string
-	Value string
-}
-
-// PicklistDefinition is the definition of a picklist
-// https://docs.workato.com/developing-connectors/sdk/sdk-reference/picklists.html
-type PicklistDefinition struct {
-	Name   string
-	Values []PicklistValue
-	Exec   string
-}
-
-func (t *WorkatoTemplate) recordDynamicPicklist(serviceMethod *ServiceMethod, opt *workato.MethodOptionsWorkato) *PicklistDefinition {
+func (t *WorkatoTemplate) recordDynamicPicklist(serviceMethod *ServiceMethod, opt *workato.MethodOptionsWorkato) *schema.PicklistDefinition {
 	service := serviceMethod.Service
 	method := serviceMethod.Method
 
@@ -51,7 +38,7 @@ resp%s.pluck('%s', '%s')`,
 
 	name := fullActionName(service, method)
 
-	picklist := &PicklistDefinition{
+	picklist := &schema.PicklistDefinition{
 		Name: dynamicPicklistName(name),
 		Exec: execCode,
 	}

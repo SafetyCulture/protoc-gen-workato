@@ -2,22 +2,9 @@ package template
 
 import (
 	"fmt"
+
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 )
-
-// TriggerValue is the representation of a trigger value in the Workato SDK
-type TriggerValue struct {
-	Title       string
-	Description string
-	InputField  string
-	OutputField string
-}
-
-// TriggerDefinition is the representation of a trigger in the Workato SDK
-// https://docs.workato.com/developing-connectors/sdk/sdk-reference/triggers.html
-type TriggerDefinition struct {
-	Key   string
-	Value *TriggerValue
-}
 
 func (t *WorkatoTemplate) generateTriggerDefinitions() error {
 	for _, trigger := range t.triggers {
@@ -42,10 +29,10 @@ func (t *WorkatoTemplate) recordUsedTrigger(trigger *ServiceMethod) {
 
 // mapToWorkatoTrigger converts to Workato Format
 // It returns pointer to TriggerDefinition
-func (t *ServiceMethod) mapToWorkatoTrigger(tag string) *TriggerDefinition {
-	triggerDef := TriggerDefinition{
+func (t *ServiceMethod) mapToWorkatoTrigger(tag string) *schema.TriggerDefinition {
+	triggerDef := schema.TriggerDefinition{
 		Key: escapeKeyName("trigger_" + tag),
-		Value: &TriggerValue{
+		Value: &schema.TriggerValue{
 			Title:       t.Method.Description,
 			Description: fmt.Sprintf("<span class='provider'>Trigger for %s</span>", t.Method.Description),
 			InputField:  t.Method.RequestFullType,

@@ -6,10 +6,10 @@
   {{ field_key "type" .Type -}}
   {{ field_key "hint" .Hint -}}
   {{ field_key "of" .Of -}}
-  {{if .PropertiesRef}}properties: object_definitions['{{.PropertiesRef}}'],{{end}}
+  {{ if .PropertiesRef }}properties: object_definitions['{{.PropertiesRef}}'],{{ end }}
   {{ field_key "control_type" .ControlType -}}
   {{ field_key "toggle_hint" .ToggleHint -}}
-  {{ field_key "toggle_field" .ToggleField -}}
+  {{ if .ToggleField }}toggle_field: {{ include "field" .ToggleField | indent 2 }},{{ end }}
   {{ field_key "default" .Default -}}
   {{ field_key "pick_list" .Picklist -}}
   {{ field_key "delimiter" .Delimiter -}}
@@ -26,6 +26,6 @@
   {{ field_key "add_field_label" .AddFieldLabel -}}
   {{ field_key "empty_schema_message" .EmptySchemaMessage -}}
   {{ field_key "sample_data_type" .SampleDataType -}}
-  {{ field_key "ng_if" .NgIf }}
+  {{ field_key "ngIf" .NgIf }}
 }
 {{- end }}

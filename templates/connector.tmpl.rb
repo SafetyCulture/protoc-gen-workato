@@ -53,5 +53,6 @@
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {
+    {{- include "methods" .Methods | indent 2}}
   }
 }

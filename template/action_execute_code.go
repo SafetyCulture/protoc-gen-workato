@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 	extensions "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http"
 )
@@ -12,9 +13,9 @@ import (
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({\w+})`)
 
-func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc.ServiceMethod) ExecCode {
+func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc.ServiceMethod) schema.ExecCode {
 	if override, ok := t.config.Method[fmt.Sprintf("%s/%s", service.FullName, method.Name)]; ok {
-		return ExecCode{
+		return schema.ExecCode{
 			Func: override.Exec,
 		}
 	}
@@ -37,27 +38,27 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 			}
 
 			if rule.Body == "*" {
-				return ExecCode{
+				return schema.ExecCode{
 					ExcludeFromQuery: params,
 					Func:             fmt.Sprintf(`%s("%s").payload(body)`, mthd, path),
 				}
 			}
 
 			if rule.Body != "" {
-				return ExecCode{
+				return schema.ExecCode{
 					ExcludeFromQuery: append(params, rule.Body),
 					Func:             fmt.Sprintf(`%s("%s").payload(input['%s']).params(body)`, mthd, path, rule.Body),
 				}
 			}
 
-			return ExecCode{
+			return schema.ExecCode{
 				ExcludeFromQuery: params,
 				Func:             fmt.Sprintf(`%s("%s").params(body)`, mthd, path),
 			}
 		}
 	}
 
-	return ExecCode{
+	return schema.ExecCode{
 		Func: fmt.Sprintf(`post("/%s/%s").payload(body)`, service.FullName, method.Name),
 	}
 }

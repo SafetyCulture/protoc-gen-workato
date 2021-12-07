@@ -4,52 +4,10 @@ import (
 	"fmt"
 
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
-
-// ObjectDefinition is the representation of an object in the Workato SDK
-// https://docs.workato.com/developing-connectors/sdk/sdk-reference/object_definitions.html
-type ObjectDefinition struct {
-	// Object key
-	Key string
-
-	// Fields for the object
-	Fields []*FieldDefinition
-}
-
-// FieldDefinition is the representation of an objects fields in the Workato SDK
-// https://docs.workato.com/developing-connectors/sdk/sdk-reference/schema.html
-type FieldDefinition struct {
-	Name               string
-	Label              string
-	Optional           bool
-	Type               string
-	Hint               string
-	Of                 string
-	PropertiesRef      string
-	Properties         []*ObjectDefinition
-	ControlType        string
-	ToggleHint         string
-	ToggleField        *ObjectDefinition
-	Default            string
-	Picklist           string
-	Delimiter          string
-	Sticky             bool
-	RenderInput        string
-	ParseOutput        string
-	ChangeOnBlur       bool
-	SupportPills       bool
-	Custom             bool
-	ExtendsSchema      bool
-	ListMode           string
-	ListModeToggle     bool
-	ItemLabel          string
-	AddFieldLabel      string
-	EmptySchemaMessage string
-	SampleDataType     string
-	NgIf               string
-}
 
 var typeMap = map[string]string{
 	"double":                    "number",
@@ -70,9 +28,13 @@ var typeMap = map[string]string{
 
 func (t *WorkatoTemplate) generateObjectDefinitions() {
 	for _, message := range t.messages {
-		obj := &ObjectDefinition{
+		obj := &schema.ObjectDefinition{
 			// Use the full name so it is unique
 			Key: message.FullName,
+		}
+
+		if cfg, ok := t.config.Message[message.FullName]; ok && cfg.Exec != "" {
+			obj.Exec = cfg.Exec
 		}
 
 		for _, field := range message.Fields {
@@ -83,8 +45,8 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 	}
 }
 
-func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *FieldDefinition {
-	fieldDef := &FieldDefinition{
+func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldDefinition {
+	fieldDef := &schema.FieldDefinition{
 		Name:  field.Name,
 		Label: fieldTitleFromName(field.Name),
 		Hint:  field.Description,
