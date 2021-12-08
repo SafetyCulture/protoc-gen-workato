@@ -35,7 +35,7 @@
   object_definitions: {  
     "api.tasks.v1.CreateTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "name",
             label: "Name",
@@ -47,12 +47,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.CreateTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "id",
             label: "Id",
@@ -64,12 +65,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.GetTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "id",
             label: "Id",
@@ -81,12 +83,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.GetTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "task",
             label: "Task",
@@ -97,12 +100,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.Task": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "id",
             label: "Id",
@@ -124,12 +128,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.UpdateTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "id",
             label: "Id",
@@ -153,19 +158,21 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.UpdateTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
         ]
+        definition
       end
     },
   
     "api.tasks.v1.DeleteTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "id",
             label: "Id",
@@ -177,19 +184,21 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.DeleteTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
         ]
+        definition
       end
     },
   
     "api.tasks.v1.AddCommentRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "task_id",
             label: "Task Id",
@@ -211,12 +220,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.AddCommentResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "comment_id",
             label: "Comment Id",
@@ -228,12 +238,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.UpdateCommentRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "task_id",
             label: "Task Id",
@@ -265,18 +276,22 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.UpdateCommentResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
         ]
+        definition
       end
     },
   
     "api.tasks.v1.CustomActionRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+        ]
         data = get("/data/for_tasks/#{input['custom_field']}")
         data.map ...
       end
@@ -284,14 +299,15 @@
   
     "api.tasks.v1.CustomActionResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
         ]
+        definition
       end
     },
   
     "api.tasks.v1.TriggerTaskRequest": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "trigger",
             label: "Trigger",
@@ -305,12 +321,13 @@
             
           },
         ]
+        definition
       end
     },
   
     "api.tasks.v1.TriggerTaskResponse": {
       fields: lambda do |connection, config_fields, object_definitions|
-        [
+        definition = [
           {
             name: "webhook_id",
             label: "Webhook Id",
@@ -330,6 +347,7 @@
             
           },
         ]
+        definition
       end
     },
   
