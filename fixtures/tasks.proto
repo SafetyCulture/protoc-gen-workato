@@ -160,6 +160,12 @@ message CreateTaskRequest {
 
   // The description of the task
   string description = 2 [(s12.protobuf.workato.field) = { excluded: true }];
+
+  // Should send sms confirmation
+  bool sms_confirmation = 3;
+
+  // Number of SMS retries
+  uint32 sms_retries = 4;
 }
 
 message CreateTaskResponse {

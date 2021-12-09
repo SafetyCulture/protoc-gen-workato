@@ -4,6 +4,7 @@
   {{ field_key "label" .Label -}}
   {{ field_key "optional" .Optional -}}
   {{ field_key "type" .Type -}}
+  {{ if .ConvertInput }}convert_input: {{ .ConvertInput | printf "\"%s\"" -}},{{ end }}
   {{ field_key "hint" .Hint -}}
   {{ field_key "of" .Of -}}
   {{ if .PropertiesRef }}properties: object_definitions['{{.PropertiesRef}}'],{{ end }}

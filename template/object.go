@@ -75,8 +75,12 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 	// Basic Scalar Types
 	if fieldType, ok := typeMap[field.FullType]; ok {
 		fieldDef.Type = fieldType
-		if fieldType == "boolean" {
+		switch fieldType {
+		case "boolean":
 			fieldDef.ControlType = "checkbox"
+			fieldDef.ConvertInput = "boolean_conversion"
+		case "integer":
+			fieldDef.ConvertInput = "integer_conversion"
 		}
 	} else if message, ok := t.messageMap[field.FullType]; ok {
 		fieldDef.Type = "object"
