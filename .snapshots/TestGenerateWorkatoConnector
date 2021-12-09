@@ -40,7 +40,31 @@
             name: "name",
             label: "Name",
             type: "string",
+            
             hint: "The name of the task",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "sms_confirmation",
+            label: "Sms Confirmation",
+            type: "boolean",
+            convert_input: "boolean_conversion",
+            hint: "Should send sms confirmation",
+            
+            control_type: "checkbox",
+            
+            sticky: true,
+            
+          },
+          {
+            name: "sms_retries",
+            label: "Sms Retries",
+            type: "integer",
+            convert_input: "integer_conversion",
+            hint: "Number of SMS retries",
             
             
             sticky: true,
@@ -58,6 +82,7 @@
             name: "id",
             label: "Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -76,6 +101,7 @@
             name: "id",
             label: "Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -94,6 +120,7 @@
             name: "task",
             label: "Task",
             type: "object",
+            
             properties: object_definitions['api.tasks.v1.Task'],
             
             sticky: true,
@@ -111,6 +138,7 @@
             name: "id",
             label: "Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -121,6 +149,7 @@
             name: "name",
             label: "Name",
             type: "string",
+            
             hint: "The name of the task",
             
             
@@ -139,6 +168,7 @@
             name: "id",
             label: "Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             control_type: "select",
@@ -151,6 +181,7 @@
             name: "name",
             label: "Name",
             type: "string",
+            
             hint: "The name of the task",
             
             
@@ -177,6 +208,7 @@
             name: "id",
             label: "Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -203,6 +235,7 @@
             name: "task_id",
             label: "Task Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -213,6 +246,7 @@
             name: "comment",
             label: "Comment",
             type: "string",
+            
             hint: "The comment to add",
             
             
@@ -231,6 +265,7 @@
             name: "comment_id",
             label: "Comment Id",
             type: "string",
+            
             hint: "The ID of the comment",
             
             
@@ -249,6 +284,7 @@
             name: "task_id",
             label: "Task Id",
             type: "string",
+            
             hint: "The ID of the task",
             
             
@@ -259,6 +295,7 @@
             name: "comment_id",
             label: "Comment Id",
             type: "string",
+            
             hint: "The ID comment to update",
             
             
@@ -269,6 +306,7 @@
             name: "comment",
             label: "Comment",
             type: "string",
+            
             hint: "The updated comment",
             
             
@@ -312,6 +350,7 @@
             name: "trigger",
             label: "Trigger",
             type: "string",
+            
             hint: "Trigger event to subscribe to.",
             
             control_type: "select",
@@ -334,6 +373,7 @@
             type: "string",
             
             
+            
             sticky: true,
             
           },
@@ -341,6 +381,7 @@
             name: "task_id",
             label: "Task Id",
             type: "string",
+            
             
             
             sticky: true,
@@ -366,6 +407,7 @@
           label: "Action",
           type: "string",
           
+          
           control_type: "select",
           
           pick_list: "action_name_tasks",
@@ -375,6 +417,7 @@
         {
           name: "custom_field",
           type: "text",
+          
           
           
           sticky: true,
@@ -447,6 +490,7 @@
           name: "action_name",
           label: "Action",
           type: "string",
+          
           
           control_type: "select",
           
