@@ -157,6 +157,9 @@ message UpdateTaskResponse {}
 message CreateTaskRequest {
   // The name of the task
   string name = 1;
+
+  // The description of the task
+  string description = 2 [(s12.protobuf.workato.field) = { excluded: true }];
 }
 
 message CreateTaskResponse {

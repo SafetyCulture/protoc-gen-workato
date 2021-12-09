@@ -21,6 +21,7 @@ message MethodOptionsWorkato {
 // FieldOptionsWorkato
 message FieldOptionsWorkato {
   string dynamic_picklist = 1;
+  bool excluded = 2;
 }
 
 extend google.protobuf.MethodOptions {
