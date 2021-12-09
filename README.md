@@ -30,3 +30,9 @@ brew install buf
 To generate the image for fixtures run `buf build -o fixtures/image.bin`.
 To generate the annotations Go package run `buf generate`.
 Example `buf generate proto/annotations.proto`.
+
+## Testing
+After you are happy with the results, to update the snapshot run this command:
+```bash
+UPDATE_SNAPSHOTS=true go test -v -run TestGenerateWorkatoConnector
+```

@@ -44,4 +44,5 @@ type FieldDefinition struct {
 	EmptySchemaMessage string             `yaml:"empty_schema_message"`
 	SampleDataType     string             `yaml:"sample_data_type"`
 	NgIf               string             `yaml:"ng_if"`
+	ConvertInput       string             `yaml:"convert_input"`
 }

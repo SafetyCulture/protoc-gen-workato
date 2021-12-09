@@ -46,6 +46,29 @@
             sticky: true,
             
           },
+          {
+            name: "sms_confirmation",
+            label: "Sms Confirmation",
+            type: "boolean",
+            convert_input: "boolean_conversion",
+            hint: "Should send sms confirmation",
+            
+            control_type: "checkbox",
+            
+            sticky: true,
+            
+          },
+          {
+            name: "sms_retries",
+            label: "Sms Retries",
+            type: "integer",
+            convert_input: "integer_conversion",
+            hint: "Number of SMS retries",
+            
+            
+            sticky: true,
+            
+          },
         ]
         definition
       end
