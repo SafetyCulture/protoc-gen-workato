@@ -51,6 +51,9 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 				Exec: `data = get("/data/for_tasks/#{input['custom_field']}")
 data.map ...`,
 			},
+			"api.tasks.v1.UnusedButIncluded": {
+				Include: true,
+			},
 		},
 		CustomMethods: []*schema.MethodDefinition{
 			{

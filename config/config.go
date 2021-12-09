@@ -9,6 +9,8 @@ type Method struct {
 
 // Message allows for customization of a gRPC message
 type Message struct {
+	// Always include this message, even if it is not used by a method directly
+	Include bool `yaml:"include"`
 	// Custom code for generating the object definition
 	Exec string `yaml:"exec"`
 }

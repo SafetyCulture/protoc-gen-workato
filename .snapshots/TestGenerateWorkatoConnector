@@ -374,6 +374,23 @@
       end
     },
   
+    "api.tasks.v1.UnusedButIncluded": {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "abc",
+            label: "Abc",
+            type: "string",
+            
+            
+            sticky: true,
+            
+          },
+        ]
+        definition
+      end
+    },
+  
   },
 
   actions: {  

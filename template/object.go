@@ -26,6 +26,14 @@ var typeMap = map[string]string{
 	"google.protobuf.Timestamp": "date_time",
 }
 
+// capture messages that are manually included via the config
+func (t *WorkatoTemplate) captureIncludedMessages() {
+	for msg, cfg := range t.config.Message {
+		if message, ok := t.messageMap[msg]; cfg.Include && ok {
+			t.recordUsedMessage(message)
+		}
+	}
+}
 func (t *WorkatoTemplate) generateObjectDefinitions() {
 	for _, message := range t.messages {
 		obj := &schema.ObjectDefinition{

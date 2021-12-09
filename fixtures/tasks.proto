@@ -227,3 +227,11 @@ message CustomActionRequest {
 message CustomActionResponse {
 
 }
+
+message UnusedButIncluded {
+  string abc = 1;
+}
+
+message UnusedMessage {
+  string xyz = 1;
+}
