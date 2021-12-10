@@ -137,6 +137,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 	if err := workatoTemplate.generateTriggerDefinitions(); err != nil {
 		return nil, err
 	}
+	workatoTemplate.captureIncludedMessages()
 	workatoTemplate.generateObjectDefinitions()
 	workatoTemplate.generateActionDefinitions()
 	workatoTemplate.generateEnumPicklists()
