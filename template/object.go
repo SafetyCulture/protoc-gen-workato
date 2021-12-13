@@ -118,9 +118,17 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 
 			fieldDef.ControlType = "select"
 			fieldDef.Picklist = picklist.Name
+			fieldDef.ToggleHint = "Select from list"
 			if field.Label == "repeated" {
 				fieldDef.ControlType = "multiselect"
 			}
+
+			toggleFieldDef := *fieldDef
+			toggleFieldDef.ControlType = ""
+			toggleFieldDef.Picklist = ""
+			toggleFieldDef.ToggleHint = "Use ID"
+
+			fieldDef.ToggleField = &toggleFieldDef
 		}
 	}
 

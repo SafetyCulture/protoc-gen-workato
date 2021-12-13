@@ -165,7 +165,18 @@
             hint: "The ID of the task",
             
             control_type: "select",
-            
+            toggle_hint: "Select from list",
+            toggle_field:   {
+              name: "id",
+              label: "Id",
+              type: "string",
+              hint: "The ID of the task",
+              
+              toggle_hint: "Use ID",
+              
+              sticky: true,
+              
+            },
             pick_list: "dynamic_api_tasks_v1_tasksservice_listtasks",
             sticky: true,
             
