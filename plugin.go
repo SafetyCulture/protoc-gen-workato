@@ -31,7 +31,7 @@ func (p *Plugin) Generate(r *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGener
 		return nil, err
 	}
 
-	f, err := os.OpenFile(options.ConfigFile, os.O_RDONLY, 0666)
+	f, err := os.Open(options.ConfigFile)
 	if err != nil {
 		return nil, err
 	}
