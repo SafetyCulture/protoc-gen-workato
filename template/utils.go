@@ -12,15 +12,15 @@ const (
 	unknown     = "_UNKNOWN"
 )
 
-func escapeKeyName(s string) string {
-	replacer := strings.NewReplacer(
-		".", "_",
-		"/", "_",
-		" ", "_",
-		"&", "and",
-	)
+var keyNameReplacer = strings.NewReplacer(
+	".", "_",
+	"/", "_",
+	" ", "_",
+	"&", "and",
+)
 
-	return strings.ToLower(replacer.Replace(s))
+func escapeKeyName(s string) string {
+	return strings.ToLower(keyNameReplacer.Replace(s))
 }
 
 func fullActionName(service *gendoc.Service, method *gendoc.ServiceMethod) string {

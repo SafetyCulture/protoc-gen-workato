@@ -18,7 +18,7 @@ The plugin is invoked by passing the --workato_out, and --workato_opt options to
 
 Generation of the actions in workato relies on the usage of [`google.api.http`](https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L46) and [`grpc.gateway.protoc_gen_openapiv2.options`](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-openapiv2/options/annotations.proto) annotations.
 
-A complete example can be found in `protos/`.
+A complete example can be found in `proto/`.
 
 ## Development
 

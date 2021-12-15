@@ -66,8 +66,6 @@ func TestPrintVersion(t *testing.T) {
 	f := ParseFlags(buf, []string{"app"})
 	f.PrintVersion()
 
-	// Normally, I'm not a fan of using constants like this in tests. However, having this break everytime the version
-	// changes is kinda poop, so I've used VERSION here.
 	require.Equal(t, fmt.Sprintf("app version %s\n", Version()), buf.String())
 }
 

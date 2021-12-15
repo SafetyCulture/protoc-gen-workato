@@ -6,7 +6,7 @@
 //
 //     protoc --workato_out=. --doc_opt=workato/config.yaml protos/*.proto
 //
-// For more details, check out the README at https://github.com/pseudomuto/protoc-gen-doc
+// For more details, check out the README at https://github.com/SafetyCulture/protoc-gen-workato
 package main
 
 import (
