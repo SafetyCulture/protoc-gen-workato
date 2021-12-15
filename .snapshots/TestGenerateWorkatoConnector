@@ -584,8 +584,8 @@
   pick_lists: {  
     "dynamic_api_tasks_v1_tasksservice_listtasks": lambda do    
       body = {}
-      resp = post("/api.tasks.v1.TasksService/ListTasks").payload(body)
-      
+      qparams = call('encode_array_to_query_params', body)
+      resp = get("/v1/tasks?#{qparams}")
       resp['tasks'].pluck('name', 'id')
     end,
     "action_name_tasks": lambda do
@@ -616,6 +616,14 @@
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {  
+    "encode_array_to_query_params": lambda do | val |
+      val.each do |key, value|
+        if value.is_a? String and value[0] == "[" and value[-1] == "]"
+          val[key] = parse_json(value)
+        end
+      end
+      val.encode_www_form
+    end,
     "does_a_thing": lambda do |param_1, param_2|
       param_1 + param_2
     end,

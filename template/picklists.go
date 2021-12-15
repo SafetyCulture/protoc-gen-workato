@@ -31,10 +31,10 @@ func (t *WorkatoTemplate) recordDynamicPicklist(serviceMethod *ServiceMethod, op
 
 	execCode := fmt.Sprintf(`
 body = {}
+%s
 resp = %s
-
 resp%s.pluck('%s', '%s')`,
-		actionCode.Func, listPath, labelPath[len(labelPath)-1], valuePath[len(valuePath)-1])
+		actionCode.Body, actionCode.Func, listPath, labelPath[len(labelPath)-1], valuePath[len(valuePath)-1])
 
 	name := fullActionName(service, method)
 
