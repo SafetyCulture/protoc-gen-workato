@@ -19,7 +19,7 @@ const (
 var paramMatch = regexp.MustCompile(`({\w+})`)
 
 func hasRepeatedType(message *gendoc.Message) bool {
-	if message.HasFields == false {
+	if !message.HasFields {
 		return false
 	}
 
