@@ -25,7 +25,7 @@
       when "{{ $name }}"
         excludeKeys = {{ format_string_slice $value.ExcludeFromQuery }}
         body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
-        {{ $value.Func | indent 8 | trim }}
+        {{ $value.Aggregate | indent 8 | trim }}
       {{- end }}
       end
     end,

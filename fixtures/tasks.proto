@@ -25,6 +25,10 @@ service TasksService {
         value: "tasks.id"
       }
     };
+
+    option (google.api.http) = {
+      get: "/v1/tasks"
+    };
   }
 
   // Create a new task
@@ -120,6 +124,21 @@ message Task {
 }
 
 message ListTasksRequest {
+
+  enum Status {
+    UNKNOWN = 0;
+    ACTIVE = 1;
+    ARCHIVED = 2;
+  }
+
+  // Filter Tasks to those with one of the the given status
+  repeated Status statuses = 1;
+
+  // Filter Tasks by ID
+  repeated string ids = 2;
+
+  // Limit page size
+  uint32 page_size = 3;
 }
 
 message ListTasksResponse {

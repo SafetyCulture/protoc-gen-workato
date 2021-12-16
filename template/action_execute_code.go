@@ -10,8 +10,26 @@ import (
 	extensions "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http"
 )
 
+const (
+	httpGet    = "get"
+	pbRepeated = "repeated"
+)
+
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({\w+})`)
+
+func hasRepeatedType(message *gendoc.Message) bool {
+	if !message.HasFields {
+		return false
+	}
+
+	for _, s := range message.Fields {
+		if s.Label == pbRepeated {
+			return true
+		}
+	}
+	return false
+}
 
 func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc.ServiceMethod) schema.ExecCode {
 	if override, ok := t.config.Method[fmt.Sprintf("%s/%s", service.FullName, method.Name)]; ok {
@@ -51,9 +69,17 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 				}
 			}
 
-			return schema.ExecCode{
-				ExcludeFromQuery: params,
-				Func:             fmt.Sprintf(`%s("%s").params(body)`, mthd, path),
+			if mthd == httpGet && hasRepeatedType(t.messageMap[method.RequestFullType]) {
+				return schema.ExecCode{
+					ExcludeFromQuery: params,
+					Body:             "qparams = call('encode_array_to_query_params', body)",
+					Func:             fmt.Sprintf(`%s("%s?#{qparams}")`, mthd, path),
+				}
+			} else {
+				return schema.ExecCode{
+					ExcludeFromQuery: params,
+					Func:             fmt.Sprintf(`%s("%s").params(body)`, mthd, path),
+				}
 			}
 		}
 	}
