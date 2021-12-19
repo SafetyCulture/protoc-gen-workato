@@ -12,6 +12,7 @@ import (
 
 const (
 	httpGet    = "get"
+	httpDelete = "delete"
 	pbRepeated = "repeated"
 )
 
@@ -69,7 +70,7 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 				}
 			}
 
-			if mthd == httpGet && hasRepeatedType(t.messageMap[method.RequestFullType]) {
+			if (mthd == httpGet || mthd == httpDelete) && hasRepeatedType(t.messageMap[method.RequestFullType]) {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
 					Body:             "qparams = call('encode_array_to_query_params', body)",
