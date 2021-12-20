@@ -53,7 +53,7 @@ func (p *Plugin) Generate(r *pluginpb.CodeGeneratorRequest) (*pluginpb.CodeGener
 	}
 
 	resp.File = append(resp.File, &pluginpb.CodeGeneratorResponse_File{
-		Name:    proto.String("workato_connector.rb"),
+		Name:    proto.String("connector.rb"),
 		Content: proto.String(string(workatoOutput)),
 	})
 
