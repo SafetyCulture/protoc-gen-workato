@@ -2,7 +2,6 @@ package template
 
 import (
 	"fmt"
-
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
@@ -108,6 +107,12 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 				seviceMethod := &ServiceMethod{service, method}
 
 				workatoOpt, _ := method.Option("s12.protobuf.workato.method").(*workato.MethodOptionsWorkato)
+
+				// Will exclude all the actions which have extension method with excluded flag set
+				if workatoOpt != nil && workatoOpt.Excluded {
+					continue
+				}
+
 				if workatoOpt != nil && workatoOpt.Picklist != nil {
 					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.recordDynamicPicklist(seviceMethod, workatoOpt))
 				}
