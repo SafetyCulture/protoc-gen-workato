@@ -10,10 +10,7 @@ import (
 	extensions "github.com/pseudomuto/protoc-gen-doc/extensions/google_api_http"
 )
 
-const (
-	httpGet    = "get"
-	pbRepeated = "repeated"
-)
+const pbRepeated = "repeated"
 
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({\w+})`)
@@ -69,7 +66,7 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 				}
 			}
 
-			if mthd == httpGet && hasRepeatedType(t.messageMap[method.RequestFullType]) {
+			if hasRepeatedType(t.messageMap[method.RequestFullType]) {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
 					Body:             "qparams = call('encode_array_to_query_params', body)",
