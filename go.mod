@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/golang/protobuf v1.5.2
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.1
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.2
 	github.com/pseudomuto/protoc-gen-doc v1.5.0
 	github.com/pseudomuto/protokit v0.2.0
 	github.com/stretchr/testify v1.7.0
