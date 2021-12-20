@@ -114,6 +114,20 @@ service TasksService {
       tags: ["Public", "Tasks"]
     };
   }
+
+  // Generate tasks report
+  rpc GenerateReport(GenerateReportRequest) returns (GenerateReportResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+    option (s12.protobuf.workato.method) = {
+      excluded: true
+    };
+    option (google.api.http) = {
+      post: "/v1/tasks/action=generateReport"
+      body: "*"
+    };
+  }
 }
 
 message Task {
@@ -253,4 +267,47 @@ message UnusedButIncluded {
 
 message UnusedMessage {
   string xyz = 1;
+}
+
+// Request object for GenerateReport
+message GenerateReportRequest {
+
+  // Wrapper for ReportFormat
+  message ReportFormatWrapper {
+    enum ReportFormat {
+      UNKNOWN = 0;
+
+      // CSV Format
+      CSV = 1;
+
+      // TSV Format
+      TSV = 2;
+    }
+  }
+
+  // Wrapper for DeliveryMethod
+  message DeliveryMethodWrapper {
+    enum DeliveryMethod {
+      UNKNOWN = 0;
+
+      // PDF Format
+      EMAIL_PDF = 1;
+
+      // HTML Format
+      EMAIL_HTML = 2;
+    }
+  }
+
+  // Include active tasks only
+  bool active_tasks_only = 1;
+
+  // Report format
+  ReportFormatWrapper.ReportFormat format = 2;
+
+  // Report delivery method
+  DeliveryMethodWrapper.DeliveryMethod delivery = 3;
+}
+
+// Response object for GenerateReport
+message GenerateReportResponse {
 }

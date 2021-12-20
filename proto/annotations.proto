@@ -16,6 +16,7 @@ message PicklistOptions {
 message MethodOptionsWorkato {
   bool trigger = 1;
   PicklistOptions picklist = 2;
+  bool excluded = 3;
 }
 
 // FieldOptionsWorkato
