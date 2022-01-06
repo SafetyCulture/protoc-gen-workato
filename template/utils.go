@@ -3,6 +3,8 @@ package template
 import (
 	"fmt"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
@@ -57,4 +59,12 @@ func removeUnspecifiedValue(enum *gendoc.Enum) {
 	if len(enum.Values) >= 1 && enumValueShouldBeExcluded(enum.Values[0]) {
 		enum.Values = enum.Values[1:]
 	}
+}
+
+func upperFirst(s string) string {
+	if s == "" {
+		return ""
+	}
+	r, n := utf8.DecodeRuneInString(s)
+	return string(unicode.ToUpper(r)) + s[n:]
 }

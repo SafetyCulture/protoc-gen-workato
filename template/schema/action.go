@@ -14,6 +14,7 @@ type ActionDefinition struct {
 	InputFields  map[string]string
 	OutputFields map[string]string
 	ExecCode     map[string]ExecCode
+	HelpMessages map[string]string
 }
 
 // ExecCode is the code to be run when executing a function
