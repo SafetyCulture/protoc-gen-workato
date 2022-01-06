@@ -4,6 +4,8 @@ import (
 	"fmt"
 
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	"github.com/iancoleman/strcase"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
@@ -90,6 +92,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			InputFields:  make(map[string]string),
 			OutputFields: make(map[string]string),
 			ExecCode:     make(map[string]schema.ExecCode),
+			HelpMessages: make(map[string]string),
 		}
 
 		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
@@ -110,13 +113,28 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 
 			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
+			title := action.Method.Name
+			description := action.Method.Description
+			opts, ok := action.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
+			if ok {
+				if opts.Summary != "" {
+					title = opts.Summary
+				}
+				if opts.Description != "" {
+					description = opts.Description
+				}
+			}
+
+			title = upperFirst(strcase.ToDelimited(title, ' '))
+
 			picklistDef.Values = append(picklistDef.Values, schema.PicklistValue{
 				Key:   name,
-				Value: action.Method.Description,
+				Value: title,
 			})
 
 			actionDef.InputFields[name] = action.Method.RequestFullType
 			actionDef.OutputFields[name] = action.Method.ResponseFullType
+			actionDef.HelpMessages[name] = description
 		}
 
 		t.Actions = append(t.Actions, actionDef)

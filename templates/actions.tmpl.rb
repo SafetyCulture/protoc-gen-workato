@@ -6,6 +6,14 @@
     description: lambda do |input, picklist_label|
       "{{ $action.Description }}"
     end,
+    help: lambda do |input, picklist_label|
+      case input['action_name']
+      {{- range $name, $message := $action.HelpMessages }}
+      when "{{ $name }}"
+        "{{ $message }}"
+      {{- end }}
+      end
+    end,
     config_fields: [
       {{- range $action.ConfigFields }}
         {{- include "field" . | nindent 6 }},

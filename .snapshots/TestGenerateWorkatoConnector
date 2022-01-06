@@ -411,6 +411,24 @@
       description: lambda do |input, picklist_label|
         "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tasks'}</span> in <span class='provider'>iAuditor</span>"
       end,
+      help: lambda do |input, picklist_label|
+        case input['action_name']
+        when "api_tasks_v1_tasksservice_createtask"
+          "Create a new task from the supplied input.
+  
+  Allows the user to create a new task and this is a really long multiline description."
+        when "api_tasks_v1_tasksservice_customaction"
+          "Custom Action with custom code"
+        when "api_tasks_v1_tasksservice_deletetask"
+          "Delete a task by ID"
+        when "api_tasks_v1_tasksservice_gettask"
+          "This description comes from the OpenAPI tag
+  abc
+  123"
+        when "api_tasks_v1_tasksservice_updatetask"
+          "Update a task by ID"
+        end
+      end,
       config_fields: [
         {
           name: "action_name",
@@ -492,6 +510,14 @@
       subtitle: "Interact with Task Comments in iAuditor",
       description: lambda do |input, picklist_label|
         "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Task Comments'}</span> in <span class='provider'>iAuditor</span>"
+      end,
+      help: lambda do |input, picklist_label|
+        case input['action_name']
+        when "api_tasks_v1_tasksservice_addcomment"
+          "Add a comment to a task"
+        when "api_tasks_v1_tasksservice_updatecomment"
+          "Update a comment on a task"
+        end
       end,
       config_fields: [
         {
@@ -590,17 +616,17 @@
     end,
     "action_name_tasks": lambda do
       [
-        ["Create a new task", "api_tasks_v1_tasksservice_createtask"],
-        ["Get a task by ID", "api_tasks_v1_tasksservice_gettask"],
-        ["Update a task by ID", "api_tasks_v1_tasksservice_updatetask"],
-        ["Delete a task by ID", "api_tasks_v1_tasksservice_deletetask"],
-        ["Custom Action with custom code", "api_tasks_v1_tasksservice_customaction"],
+        ["Create task", "api_tasks_v1_tasksservice_createtask"],
+        ["Get a task", "api_tasks_v1_tasksservice_gettask"],
+        ["Update task", "api_tasks_v1_tasksservice_updatetask"],
+        ["Delete task", "api_tasks_v1_tasksservice_deletetask"],
+        ["Custom action", "api_tasks_v1_tasksservice_customaction"],
       ]
     end,
     "action_name_task_comments": lambda do
       [
-        ["Add a comment to a task", "api_tasks_v1_tasksservice_addcomment"],
-        ["Update a comment on a task", "api_tasks_v1_tasksservice_updatecomment"],
+        ["Add comment", "api_tasks_v1_tasksservice_addcomment"],
+        ["Update comment", "api_tasks_v1_tasksservice_updatecomment"],
       ]
     end,
     "enum_api_tasks_v1_triggertaskrequest_triggerevent": lambda do
