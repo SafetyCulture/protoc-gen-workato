@@ -32,6 +32,11 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 	content, err := genworkato.GenerateWorkatoConnector(template, &config.Config{
 		Action: map[string]config.Action{
 			"Tasks": {
+				DefaultHelpMessage: &schema.HelpMessage{
+					Body:          "Tasks allow you to define work to be done an assign it to someone.",
+					LearnMoreText: "Learn more about tasks",
+					LearnMoreURL:  "https://google.com",
+				},
 				InputFields: []schema.FieldDefinition{
 					{
 						Name: "custom_field",

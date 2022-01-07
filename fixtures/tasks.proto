@@ -81,6 +81,10 @@ service TasksService {
   rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Public", "Tasks"]
+      external_docs: {
+        url: "https://google.com"
+        description: "Check out these docs to learn more"
+      }
     };
 
     option (google.api.http) = {
@@ -92,6 +96,9 @@ service TasksService {
   rpc AddComment(AddCommentRequest) returns (AddCommentResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Public", "Task Comments"]
+      external_docs: {
+        url: "https://google.com"
+      }
     };
 
     option (google.api.http) = {

@@ -414,19 +414,45 @@
       help: lambda do |input, picklist_label|
         case input['action_name']
         when "api_tasks_v1_tasksservice_createtask"
-          "Create a new task from the supplied input.
+          {
+            body: "Create a new task from the supplied input.
   
-  Allows the user to create a new task and this is a really long multiline description."
+  Allows the user to create a new task and this is a really long multiline description.",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
         when "api_tasks_v1_tasksservice_customaction"
-          "Custom Action with custom code"
+          {
+            body: "Custom Action with custom code",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
         when "api_tasks_v1_tasksservice_deletetask"
-          "Delete a task by ID"
+          {
+            body: "Delete a task by ID",
+            learn_more_url: "https://google.com",
+            learn_more_text: "Check out these docs to learn more"
+          }
         when "api_tasks_v1_tasksservice_gettask"
-          "This description comes from the OpenAPI tag
+          {
+            body: "This description comes from the OpenAPI tag
   abc
-  123"
+  123",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
         when "api_tasks_v1_tasksservice_updatetask"
-          "Update a task by ID"
+          {
+            body: "Update a task by ID",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
+        else
+          {
+            body: "Tasks allow you to define work to be done an assign it to someone.",
+            learn_more_url: "https://google.com",
+            learn_more_text: "Learn more about tasks"
+          }
         end
       end,
       config_fields: [
@@ -514,9 +540,23 @@
       help: lambda do |input, picklist_label|
         case input['action_name']
         when "api_tasks_v1_tasksservice_addcomment"
-          "Add a comment to a task"
+          {
+            body: "Add a comment to a task",
+            learn_more_url: "https://google.com",
+            learn_more_text: ""
+          }
         when "api_tasks_v1_tasksservice_updatecomment"
-          "Update a comment on a task"
+          {
+            body: "Update a comment on a task",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
+        else
+          {
+            body: "",
+            learn_more_url: "",
+            learn_more_text: ""
+          }
         end
       end,
       config_fields: [

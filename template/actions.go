@@ -92,7 +92,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			InputFields:  make(map[string]string),
 			OutputFields: make(map[string]string),
 			ExecCode:     make(map[string]schema.ExecCode),
-			HelpMessages: make(map[string]string),
+			HelpMessages: make(map[string]schema.HelpMessage),
 		}
 
 		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
@@ -106,6 +106,10 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 				}
 				actionDef.ConfigFields = append(actionDef.ConfigFields, &inputField)
 			}
+
+			if cfg.DefaultHelpMessage != nil {
+				actionDef.DefaultHelpMessage = *cfg.DefaultHelpMessage
+			}
 		}
 
 		for _, action := range actionGroup.Actions {
@@ -114,14 +118,22 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
 			title := action.Method.Name
-			description := action.Method.Description
+			helpMessage := schema.HelpMessage{
+				Body: action.Method.Description,
+			}
 			opts, ok := action.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
 			if ok {
 				if opts.Summary != "" {
 					title = opts.Summary
 				}
 				if opts.Description != "" {
-					description = opts.Description
+					helpMessage.Body = opts.Description
+				}
+				if opts.ExternalDocs != nil {
+					if opts.ExternalDocs.Description != "" {
+						helpMessage.LearnMoreText = opts.ExternalDocs.Description
+					}
+					helpMessage.LearnMoreURL = opts.ExternalDocs.Url
 				}
 			}
 
@@ -134,7 +146,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 
 			actionDef.InputFields[name] = action.Method.RequestFullType
 			actionDef.OutputFields[name] = action.Method.ResponseFullType
-			actionDef.HelpMessages[name] = description
+			actionDef.HelpMessages[name] = helpMessage
 		}
 
 		t.Actions = append(t.Actions, actionDef)

@@ -10,11 +10,12 @@ type ActionDefinition struct {
 	Subtitle    string
 	Description string
 
-	ConfigFields []*FieldDefinition
-	InputFields  map[string]string
-	OutputFields map[string]string
-	ExecCode     map[string]ExecCode
-	HelpMessages map[string]string
+	ConfigFields       []*FieldDefinition
+	InputFields        map[string]string
+	OutputFields       map[string]string
+	ExecCode           map[string]ExecCode
+	HelpMessages       map[string]HelpMessage
+	DefaultHelpMessage HelpMessage
 }
 
 // ExecCode is the code to be run when executing a function
@@ -23,6 +24,13 @@ type ExecCode struct {
 	ExcludeFromQuery []string
 	Body             string
 	Func             string
+}
+
+// HelpMessage is the help message shown when a user selects an action.
+type HelpMessage struct {
+	Body          string `yaml:"body"`
+	LearnMoreURL  string `yaml:"learn_more_url"`
+	LearnMoreText string `yaml:"learn_more_text"`
 }
 
 // Aggregate combines Body and Func on 2 separate lines
