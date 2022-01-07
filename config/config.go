@@ -17,7 +17,8 @@ type Message struct {
 
 // Action allows for customization of a grouped action
 type Action struct {
-	InputFields []schema.FieldDefinition `yaml:"input_fields"`
+	InputFields        []schema.FieldDefinition `yaml:"input_fields"`
+	DefaultHelpMessage *schema.HelpMessage      `yaml:"default_help_message"`
 }
 
 // Config is the configuration of the plugin

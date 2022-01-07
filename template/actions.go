@@ -94,9 +94,6 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			ExecCode:     make(map[string]schema.ExecCode),
 			HelpMessages: make(map[string]schema.HelpMessage),
 		}
-		actionDef.DefaultHelpMessage = schema.HelpMessage{
-			Body: "Default Body",
-		}
 
 		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
 			for _, field := range cfg.InputFields {
@@ -108,6 +105,10 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 					}
 				}
 				actionDef.ConfigFields = append(actionDef.ConfigFields, &inputField)
+			}
+
+			if cfg.DefaultHelpMessage != nil {
+				actionDef.DefaultHelpMessage = *cfg.DefaultHelpMessage
 			}
 		}
 
