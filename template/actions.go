@@ -130,7 +130,6 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 					helpMessage.Body = opts.Description
 				}
 				if opts.ExternalDocs != nil {
-					helpMessage.LearnMoreText = "Learn more"
 					if opts.ExternalDocs.Description != "" {
 						helpMessage.LearnMoreText = opts.ExternalDocs.Description
 					}
