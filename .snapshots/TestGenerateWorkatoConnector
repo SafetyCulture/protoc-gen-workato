@@ -430,8 +430,8 @@
         when "api_tasks_v1_tasksservice_deletetask"
           {
             body: "Delete a task by ID",
-            learn_more_url: "",
-            learn_more_text: ""
+            learn_more_url: "https://google.com",
+            learn_more_text: "Check out these docs to learn more"
           }
         when "api_tasks_v1_tasksservice_gettask"
           {
