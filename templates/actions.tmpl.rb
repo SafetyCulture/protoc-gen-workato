@@ -10,8 +10,18 @@
       case input['action_name']
       {{- range $name, $message := $action.HelpMessages }}
       when "{{ $name }}"
-        "{{ $message }}"
+        {
+          body: "{{ $message.Body }}",
+          learn_more_url: "{{ $message.LearnMoreURL }}",
+          learn_more_text: "{{ $message.LearnMoreText }}"
+        }
       {{- end }}
+      else
+        {
+          body: "{{ $action.DefaultHelpMessage.Body }}",
+          learn_more_url: "{{ $action.DefaultHelpMessage.LearnMoreURL }}",
+          learn_more_text: "{{ $action.DefaultHelpMessage.LearnMoreText }}"
+        }
       end
     end,
     config_fields: [
