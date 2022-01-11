@@ -19,6 +19,7 @@ type Message struct {
 type Action struct {
 	InputFields        []schema.FieldDefinition `yaml:"input_fields"`
 	DefaultHelpMessage *schema.HelpMessage      `yaml:"default_help_message"`
+	Execute            *schema.Execute          `yaml:"execute"`
 }
 
 // Config is the configuration of the plugin
