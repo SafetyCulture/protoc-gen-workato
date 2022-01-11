@@ -95,9 +95,12 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			HelpMessages: make(map[string]schema.HelpMessage),
 		}
 
+		var keysToExclude []string
+
 		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
 			for _, field := range cfg.InputFields {
 				inputField := field
+				keysToExclude = append(keysToExclude, inputField.Name)
 
 				if inputField.Picklist != "" {
 					if picklist, ok := t.dynamicPicklistMap[escapeKeyName(inputField.Picklist)]; ok {
@@ -114,8 +117,6 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 
 		for _, action := range actionGroup.Actions {
 			name := fullActionName(action.Service, action.Method)
-
-			actionDef.ExecCode[name] = t.getExecuteCode(action.Service, action.Method)
 
 			title := action.Method.Name
 			helpMessage := schema.HelpMessage{
@@ -144,6 +145,10 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 				Value: title,
 			})
 
+			var execCode = t.getExecuteCode(action.Service, action.Method)
+			execCode.ExcludeFromQuery = append(execCode.ExcludeFromQuery, keysToExclude...)
+
+			actionDef.ExecCode[name] = execCode
 			actionDef.InputFields[name] = action.Method.RequestFullType
 			actionDef.OutputFields[name] = action.Method.ResponseFullType
 			actionDef.HelpMessages[name] = helpMessage
