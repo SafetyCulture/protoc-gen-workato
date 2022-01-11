@@ -22,7 +22,7 @@
     },
 
     base_uri: lambda do
-      "https://api.example.com"
+      "https://api-2.example.com"
     end
   },
 
