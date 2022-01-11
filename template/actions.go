@@ -100,6 +100,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 		if cfg, ok := t.config.Action[actionGroup.Name]; ok {
 			for _, field := range cfg.InputFields {
 				inputField := field
+				keysToExclude = append(keysToExclude, inputField.Name)
 
 				if inputField.Picklist != "" {
 					if picklist, ok := t.dynamicPicklistMap[escapeKeyName(inputField.Picklist)]; ok {
@@ -112,8 +113,6 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			if cfg.DefaultHelpMessage != nil {
 				actionDef.DefaultHelpMessage = *cfg.DefaultHelpMessage
 			}
-
-			keysToExclude = append(keysToExclude, cfg.GetExecute().ExcludeKeys...)
 		}
 
 		for _, action := range actionGroup.Actions {

@@ -33,11 +33,6 @@ type HelpMessage struct {
 	LearnMoreText string `yaml:"learn_more_text"`
 }
 
-type Execute struct {
-	// Values that will be added to the excludeKeys list
-	ExcludeKeys []string `yaml:"exclude_keys"`
-}
-
 // Aggregate combines Body and Func on 2 separate lines
 func (e ExecCode) Aggregate() string {
 	return fmt.Sprintf("%s\n%s", e.Body, e.Func)

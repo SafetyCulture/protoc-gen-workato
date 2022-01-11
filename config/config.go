@@ -19,16 +19,6 @@ type Message struct {
 type Action struct {
 	InputFields        []schema.FieldDefinition `yaml:"input_fields"`
 	DefaultHelpMessage *schema.HelpMessage      `yaml:"default_help_message"`
-	Execute            *schema.Execute          `yaml:"execute"`
-}
-
-func (a *Action) GetExecute() *schema.Execute {
-	if a.Execute == nil {
-		return &schema.Execute{
-			ExcludeKeys: []string{},
-		}
-	}
-	return a.Execute
 }
 
 // Config is the configuration of the plugin
