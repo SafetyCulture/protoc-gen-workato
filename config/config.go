@@ -22,6 +22,15 @@ type Action struct {
 	Execute            *schema.Execute          `yaml:"execute"`
 }
 
+func (a *Action) GetExecute() *schema.Execute {
+	if a.Execute == nil {
+		return &schema.Execute{
+			ExcludeKeys: []string{},
+		}
+	}
+	return a.Execute
+}
+
 // Config is the configuration of the plugin
 type Config struct {
 	TemplateFile  string

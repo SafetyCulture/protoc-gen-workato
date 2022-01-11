@@ -44,6 +44,9 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 						NgIf: "input['action'] == 'api_tasks_v1_tasksservice_customaction'",
 					},
 				},
+				Execute: &schema.Execute{
+					ExcludeKeys: []string{"field_1", "field_2"},
+				},
 			},
 		},
 		Method: map[string]config.Method{

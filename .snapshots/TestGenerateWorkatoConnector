@@ -494,23 +494,23 @@
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
         when "api_tasks_v1_tasksservice_createtask"
-          excludeKeys = []
+          excludeKeys = ["field_1","field_2"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           post("/v1/tasks").payload(body)
         when "api_tasks_v1_tasksservice_customaction"
-          excludeKeys = []
+          excludeKeys = ["field_1","field_2"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           # does a thing
         when "api_tasks_v1_tasksservice_deletetask"
-          excludeKeys = ["id"]
+          excludeKeys = ["id","field_1","field_2"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           delete("/v1/tasks/#{input['id']}").params(body)
         when "api_tasks_v1_tasksservice_gettask"
-          excludeKeys = ["id"]
+          excludeKeys = ["id","field_1","field_2"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
         when "api_tasks_v1_tasksservice_updatetask"
-          excludeKeys = ["id"]
+          excludeKeys = ["id","field_1","field_2"]
           body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
           put("/v1/tasks/#{input['id']}").payload(body)
         end
