@@ -23,6 +23,7 @@ type Action struct {
 
 // Config is the configuration of the plugin
 type Config struct {
+	Name          string
 	TemplateFile  string
 	Action        map[string]Action          `yaml:"action"`
 	Method        map[string]Method          `yaml:"method"`

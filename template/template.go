@@ -2,6 +2,7 @@ package template
 
 import (
 	"fmt"
+
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
@@ -64,6 +65,9 @@ type WorkatoTemplate struct {
 	// An ordered slice of the grouped actions
 	groupedActions []*ActionGroup
 
+	// Name is the name of the connector
+	Name string
+
 	// ObjectDefinitions are Workato formatted definitions of messages
 	ObjectDefinitions []*schema.ObjectDefinition
 	// Actions are Workato formatted defintions of grouped methods
@@ -88,6 +92,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		usedEnumMap:        make(map[string]*gendoc.Enum),
 		groupedActionMap:   make(map[string]*ActionGroup),
 		dynamicPicklistMap: make(map[string]*schema.PicklistDefinition),
+		Name:               cfg.Name,
 		Methods:            cfg.CustomMethods,
 	}
 
