@@ -30,8 +30,6 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 	template := gendoc.NewTemplate(result)
 
 	content, err := genworkato.GenerateWorkatoConnector(template, &config.Config{
-		Name:         "My Workato Connector",
-		TemplateFile: "fixtures/connector_template.rb",
 		Action: map[string]config.Action{
 			"Tasks": {
 				DefaultHelpMessage: &schema.HelpMessage{

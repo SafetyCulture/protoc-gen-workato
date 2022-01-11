@@ -3,7 +3,6 @@ package genworkato
 import (
 	"bytes"
 	"embed"
-	"io/ioutil"
 
 	"encoding/json"
 	"fmt"
@@ -71,24 +70,10 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 		return nil, err
 	}
 
-	templateName := "connector.tmpl.rb"
-	if cfg.TemplateFile != "" {
-		templateName = "custom_template"
-		customTp := tp.New(templateName)
-		b, err := ioutil.ReadFile(cfg.TemplateFile)
-		if err != nil {
-			return nil, err
-		}
-		_, err = customTp.Parse(string(b))
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	// We should sort all the lists in this template before rendering
 	// This way the result is deterministic and diffing is easy.
 	var buf bytes.Buffer
-	err = tp.ExecuteTemplate(&buf, templateName, workatoTemplate)
+	err = tp.ExecuteTemplate(&buf, "connector.tmpl.rb", workatoTemplate)
 	if err != nil {
 		return nil, err
 	}
