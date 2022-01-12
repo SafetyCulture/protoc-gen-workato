@@ -109,15 +109,20 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 	}
 
 	if opts, ok := field.Option("s12.protobuf.workato.field").(*workato.FieldOptionsWorkato); ok {
-		if opts.DynamicPicklist != "" {
-			picklistName := escapeKeyName(opts.DynamicPicklist)
-			picklist, ok := t.dynamicPicklistMap[picklistName]
-			if !ok {
-				panic(fmt.Errorf("invalid dynamic picklist %s for %s", opts.DynamicPicklist, field.Name))
+		if opts.DynamicPicklist != "" || opts.Picklist != "" {
+			picklistName := opts.Picklist
+			if opts.DynamicPicklist != "" {
+				picklistName = escapeKeyName(opts.DynamicPicklist)
+				picklist, ok := t.dynamicPicklistMap[picklistName]
+				if !ok {
+					panic(fmt.Errorf("invalid dynamic picklist %s for %s", opts.DynamicPicklist, field.Name))
+				}
+				// This name is prefixed, so we need to use the right one.
+				picklistName = picklist.Name
 			}
 
 			fieldDef.ControlType = "select"
-			fieldDef.Picklist = picklist.Name
+			fieldDef.Picklist = picklistName
 			fieldDef.ToggleHint = "Select from list"
 			if field.Label == "repeated" {
 				fieldDef.ControlType = "multiselect"

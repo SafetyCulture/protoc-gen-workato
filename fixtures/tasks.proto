@@ -239,6 +239,8 @@ message UpdateCommentRequest {
 
   // The updated comment
   string comment = 3;
+
+  string timezone = 4 [(s12.protobuf.workato.field) = { picklist: "timezones" }];
 }
 
 message UpdateCommentResponse {}

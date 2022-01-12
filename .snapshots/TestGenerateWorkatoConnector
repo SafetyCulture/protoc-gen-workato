@@ -307,6 +307,27 @@
             sticky: true,
             
           },
+          {
+            name: "timezone",
+            label: "Timezone",
+            type: "string",
+            
+            control_type: "select",
+            toggle_hint: "Select from list",
+            toggle_field:   {
+              name: "timezone",
+              label: "Timezone",
+              type: "string",
+              
+              toggle_hint: "Use ID",
+              
+              sticky: true,
+              
+            },
+            pick_list: "timezones",
+            sticky: true,
+            
+          },
         ]
         definition
       end
