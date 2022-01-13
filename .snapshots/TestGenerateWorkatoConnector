@@ -37,23 +37,16 @@
           {
             name: "name",
             label: "Name",
-            optional: true,
             type: "string",
             hint: "The name of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "sms_confirmation",
             label: "Sms Confirmation",
-            optional: true,
             type: "boolean",
             convert_input: "boolean_conversion",
             hint: "Should send sms confirmation",
@@ -61,28 +54,17 @@
             control_type: "checkbox",
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "sms_retries",
             label: "Sms Retries",
-            optional: true,
             type: "integer",
             convert_input: "integer_conversion",
             hint: "Number of SMS retries",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -96,17 +78,11 @@
           {
             name: "id",
             label: "Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -120,17 +96,11 @@
           {
             name: "id",
             label: "Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -144,16 +114,10 @@
           {
             name: "task",
             label: "Task",
-            optional: true,
             type: "object",
             properties: object_definitions['api.tasks.v1.Task'],
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -167,33 +131,21 @@
           {
             name: "id",
             label: "Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "name",
             label: "Name",
-            optional: true,
             type: "string",
             hint: "The name of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -207,7 +159,6 @@
           {
             name: "id",
             label: "Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
@@ -216,43 +167,26 @@
             toggle_field:   {
               name: "id",
               label: "Id",
-              optional: true,
               type: "string",
               hint: "The ID of the task",
               
               toggle_hint: "Use ID",
               
               sticky: true,
-              change_on_blur: false,
-              support_pills: true,
-              custom: false,
-              extends_schema: false,
-              list_mode_toggle: true,
               
             },
             pick_list: "dynamic_api_tasks_v1_tasksservice_listtasks",
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "name",
             label: "Name",
-            optional: true,
             type: "string",
             hint: "The name of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -274,17 +208,11 @@
           {
             name: "id",
             label: "Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -312,27 +240,16 @@
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "comment",
             label: "Comment",
-            optional: true,
             type: "string",
             hint: "The comment to add",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -346,17 +263,11 @@
           {
             name: "comment_id",
             label: "Comment Id",
-            optional: true,
             type: "string",
             hint: "The ID of the comment",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -370,55 +281,36 @@
           {
             name: "task_id",
             label: "Task Id",
-            optional: true,
             type: "string",
             hint: "The ID of the task",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "comment_id",
             label: "Comment Id",
-            optional: true,
             type: "string",
             hint: "The ID comment to update",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "comment",
             label: "Comment",
-            optional: true,
             type: "string",
             hint: "The updated comment",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "timezone",
             label: "Timezone",
-            optional: true,
             type: "string",
             
             control_type: "select",
@@ -426,26 +318,15 @@
             toggle_field:   {
               name: "timezone",
               label: "Timezone",
-              optional: true,
               type: "string",
               
               toggle_hint: "Use ID",
               
               sticky: true,
-              change_on_blur: false,
-              support_pills: true,
-              custom: false,
-              extends_schema: false,
-              list_mode_toggle: true,
               
             },
             pick_list: "timezones",
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -484,7 +365,6 @@
           {
             name: "trigger",
             label: "Trigger",
-            optional: true,
             type: "string",
             hint: "Trigger event to subscribe to.",
             
@@ -492,11 +372,6 @@
             
             pick_list: "enum_api_tasks_v1_triggertaskrequest_triggerevent",
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -510,31 +385,19 @@
           {
             name: "webhook_id",
             label: "Webhook Id",
-            optional: true,
             type: "string",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
           {
             name: "task_id",
             label: "Task Id",
-            optional: true,
             type: "string",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -548,16 +411,10 @@
           {
             name: "abc",
             label: "Abc",
-            optional: true,
             type: "string",
             
             
             sticky: true,
-            change_on_blur: false,
-            support_pills: true,
-            custom: false,
-            extends_schema: false,
-            list_mode_toggle: true,
             
           },
         ]
@@ -622,32 +479,20 @@
         {
           name: "action_name",
           label: "Action",
-          optional: false,
           type: "string",
           
           control_type: "select",
           
           pick_list: "action_name_tasks",
           sticky: true,
-          change_on_blur: false,
-          support_pills: false,
-          custom: false,
-          extends_schema: false,
-          list_mode_toggle: false,
           
         },
         {
           name: "custom_field",
-          optional: false,
           type: "text",
           
           
           sticky: true,
-          change_on_blur: false,
-          support_pills: false,
-          custom: false,
-          extends_schema: false,
-          list_mode_toggle: false,
           ngIf: "input['action'] == 'api_tasks_v1_tasksservice_customaction'",
           
         },
@@ -738,18 +583,12 @@
         {
           name: "action_name",
           label: "Action",
-          optional: false,
           type: "string",
           
           control_type: "select",
           
           pick_list: "action_name_task_comments",
           sticky: true,
-          change_on_blur: false,
-          support_pills: false,
-          custom: false,
-          extends_schema: false,
-          list_mode_toggle: false,
           
         },
       ],

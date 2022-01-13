@@ -61,13 +61,10 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 
 func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldDefinition {
 	fieldDef := &schema.FieldDefinition{
-		Name:           field.Name,
-		Label:          fieldTitleFromName(field.Name),
-		Hint:           field.Description,
-		Type:           "string",
-		Optional:       true,
-		SupportPills:   true,
-		ListModeToggle: true,
+		Name:  field.Name,
+		Label: fieldTitleFromName(field.Name),
+		Hint:  field.Description,
+		Type:  "string",
 	}
 
 	if opts, ok := field.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field").(*options.JSONSchema); ok {
@@ -145,7 +142,7 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 		for _, behaviour := range fieldBehavior {
 			switch behaviour {
 			case annotations.FieldBehavior_REQUIRED:
-				fieldDef.Optional = false
+				fieldDef.Optional = boolPtr(false)
 			default:
 			}
 		}

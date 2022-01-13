@@ -68,3 +68,7 @@ func upperFirst(s string) string {
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToUpper(r)) + s[n:]
 }
+
+func boolPtr(v bool) *bool {
+	return &v
+}
