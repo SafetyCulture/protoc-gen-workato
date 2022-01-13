@@ -8,6 +8,7 @@ import (
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 
+	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/google_api"           // imported for side effects
 	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_openapiv2" // imported for side effects
 	_ "github.com/SafetyCulture/protoc-gen-workato/extensions/protoc_gen_workato"   // imported for side effects
 	"github.com/bradleyjkemp/cupaloy"
