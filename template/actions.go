@@ -120,7 +120,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 
 			title := action.Method.Name
 			helpMessage := schema.HelpMessage{
-				Body: action.Method.Description,
+				Body: markdownToHTML(action.Method.Description),
 			}
 			opts, ok := action.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
 			if ok {
@@ -128,7 +128,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 					title = opts.Summary
 				}
 				if opts.Description != "" {
-					helpMessage.Body = opts.Description
+					helpMessage.Body = markdownToHTML(opts.Description)
 				}
 				if opts.ExternalDocs != nil {
 					if opts.ExternalDocs.Description != "" {

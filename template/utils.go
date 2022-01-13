@@ -6,6 +6,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
 )
 
@@ -67,4 +70,17 @@ func upperFirst(s string) string {
 	}
 	r, n := utf8.DecodeRuneInString(s)
 	return string(unicode.ToUpper(r)) + s[n:]
+}
+
+func markdownToHTML(md string) string {
+	mdParser := parser.NewWithExtensions(parser.CommonExtensions | parser.AutoHeadingIDs | parser.HardLineBreak)
+	renderer := html.NewRenderer(html.RendererOptions{
+		Flags: html.CommonFlags | html.HrefTargetBlank,
+	})
+
+	if strings.TrimSpace(md) == "" {
+		return ""
+	}
+	html := markdown.ToHTML([]byte(md), mdParser, renderer)
+	return strings.TrimSpace(string(html))
 }

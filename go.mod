@@ -6,12 +6,13 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/golang/protobuf v1.5.2
+	github.com/gomarkdown/markdown v0.0.0-20211212230626-5af6ad2f47df
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.2
 	github.com/iancoleman/strcase v0.2.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.0
 	github.com/pseudomuto/protokit v0.2.0
 	github.com/stretchr/testify v1.7.0
-	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
+	google.golang.org/genproto v0.0.0-20220112215332-a9c7c0acf9f2
 	google.golang.org/protobuf v1.27.1
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	gotest.tools v2.2.0+incompatible
@@ -34,6 +35,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
-	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e // indirect
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
