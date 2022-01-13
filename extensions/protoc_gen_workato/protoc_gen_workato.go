@@ -1,7 +1,7 @@
 package extensions
 
 import (
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	workato "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato"
 	"github.com/pseudomuto/protoc-gen-doc/extensions"
 )
 

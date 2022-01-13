@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	workato "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 )
 

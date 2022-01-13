@@ -3,7 +3,7 @@ package template
 import (
 	"fmt"
 
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	workato "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
