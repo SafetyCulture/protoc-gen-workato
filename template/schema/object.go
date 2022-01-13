@@ -18,7 +18,7 @@ type ObjectDefinition struct {
 type FieldDefinition struct {
 	Name               string             `yaml:"name"`
 	Label              string             `yaml:"label"`
-	Optional           bool               `yaml:"optional"`
+	Optional           *bool              `yaml:"optional"`
 	Type               string             `yaml:"type"`
 	Hint               string             `yaml:"hint"`
 	Of                 string             `yaml:"of"`
@@ -30,15 +30,15 @@ type FieldDefinition struct {
 	Default            string             `yaml:"default"`
 	Picklist           string             `yaml:"picklist"`
 	Delimiter          string             `yaml:"delimiter"`
-	Sticky             bool               `yaml:"sticky"`
+	Sticky             *bool              `yaml:"sticky"`
 	RenderInput        string             `yaml:"render_input"`
 	ParseOutput        string             `yaml:"parse_output"`
-	ChangeOnBlur       bool               `yaml:"change_on_blur"`
-	SupportPills       bool               `yaml:"support_pills"`
-	Custom             bool               `yaml:"custom"`
-	ExtendsSchema      bool               `yaml:"extends_schema"`
+	ChangeOnBlur       *bool              `yaml:"change_on_blur"`
+	SupportPills       *bool              `yaml:"support_pills"`
+	Custom             *bool              `yaml:"custom"`
+	ExtendsSchema      *bool              `yaml:"extends_schema"`
 	ListMode           string             `yaml:"list_mode"`
-	ListModeToggle     bool               `yaml:"list_mode_toggle"`
+	ListModeToggle     *bool              `yaml:"list_mode_toggle"`
 	ItemLabel          string             `yaml:"item_label"`
 	AddFieldLabel      string             `yaml:"add_field_label"`
 	EmptySchemaMessage string             `yaml:"empty_schema_message"`

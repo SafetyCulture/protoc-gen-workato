@@ -3,10 +3,11 @@ package template
 import (
 	"fmt"
 
-	workato "github.com/SafetyCulture/protoc-gen-workato/proto"
+	workato "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
+	"google.golang.org/genproto/googleapis/api/annotations"
 )
 
 var typeMap = map[string]string{
@@ -134,6 +135,16 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 			toggleFieldDef.ToggleHint = "Use ID"
 
 			fieldDef.ToggleField = &toggleFieldDef
+		}
+	}
+
+	if fieldBehavior, ok := field.Option("google.api.field_behavior").([]annotations.FieldBehavior); ok {
+		for _, behaviour := range fieldBehavior {
+			switch behaviour {
+			case annotations.FieldBehavior_REQUIRED:
+				fieldDef.Optional = boolPtr(false)
+			default:
+			}
 		}
 	}
 

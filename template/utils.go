@@ -84,3 +84,7 @@ func markdownToHTML(md string) string {
 	html := markdown.ToHTML([]byte(md), mdParser, renderer)
 	return strings.TrimSpace(string(html))
 }
+
+func boolPtr(v bool) *bool {
+	return &v
+}
