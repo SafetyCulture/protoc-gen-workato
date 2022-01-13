@@ -53,7 +53,7 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 			case *bool:
 				if d != nil {
 					value = "false"
-					if *d == true {
+					if *d {
 						value = "true"
 					}
 				}
