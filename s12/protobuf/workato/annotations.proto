@@ -5,7 +5,7 @@ package s12.protobuf.workato;
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/any.proto";
 
-option go_package = "github.com/SafetyCulture/protoc-gen-workato/proto;workato";
+option go_package = "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato;workato";
 
 message PicklistOptions {
   string label = 1;
