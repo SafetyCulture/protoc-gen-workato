@@ -7,7 +7,7 @@ import (
 
 func init() {
 	extensions.SetTransformer("google.api.field_behavior", func(payload interface{}) interface{} {
-		opt, ok := payload.(annotations.FieldBehavior)
+		opt, ok := payload.([]annotations.FieldBehavior)
 		if !ok {
 			return nil
 		}

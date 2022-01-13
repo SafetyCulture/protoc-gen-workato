@@ -141,11 +141,13 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 		}
 	}
 
-	if fieldBehavior, ok := field.Option("google.api.field_behavior").(annotations.FieldBehavior); ok {
-		switch fieldBehavior {
-		case annotations.FieldBehavior_REQUIRED:
-			fieldDef.Optional = false
-		default:
+	if fieldBehavior, ok := field.Option("google.api.field_behavior").([]annotations.FieldBehavior); ok {
+		for _, behaviour := range fieldBehavior {
+			switch behaviour {
+			case annotations.FieldBehavior_REQUIRED:
+				fieldDef.Optional = false
+			default:
+			}
 		}
 	}
 
