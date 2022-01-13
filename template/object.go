@@ -7,6 +7,7 @@ import (
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
+	"google.golang.org/genproto/googleapis/api/annotations"
 )
 
 var typeMap = map[string]string{
@@ -60,10 +61,13 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 
 func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldDefinition {
 	fieldDef := &schema.FieldDefinition{
-		Name:  field.Name,
-		Label: fieldTitleFromName(field.Name),
-		Hint:  field.Description,
-		Type:  "string",
+		Name:           field.Name,
+		Label:          fieldTitleFromName(field.Name),
+		Hint:           field.Description,
+		Type:           "string",
+		Optional:       true,
+		SupportPills:   true,
+		ListModeToggle: true,
 	}
 
 	if opts, ok := field.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field").(*options.JSONSchema); ok {
@@ -134,6 +138,14 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 			toggleFieldDef.ToggleHint = "Use ID"
 
 			fieldDef.ToggleField = &toggleFieldDef
+		}
+	}
+
+	if fieldBehavior, ok := field.Option("google.api.field_behavior").(annotations.FieldBehavior); ok {
+		switch fieldBehavior {
+		case annotations.FieldBehavior_REQUIRED:
+			fieldDef.Optional = false
+		default:
 		}
 	}
 

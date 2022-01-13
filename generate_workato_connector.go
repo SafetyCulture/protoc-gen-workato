@@ -50,6 +50,11 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 				if len(d) != 0 {
 					value = fmt.Sprintf("\"%s\"", strings.ReplaceAll(d, `"`, `\"`))
 				}
+			case bool:
+				value = "false"
+				if d {
+					value = "true"
+				}
 			}
 
 			if len(value) == 0 {
