@@ -63,7 +63,7 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 	fieldDef := &schema.FieldDefinition{
 		Name:  field.Name,
 		Label: fieldTitleFromName(field.Name),
-		Hint:  field.Description,
+		Hint:  markdownToHTML(field.Description),
 		Type:  "string",
 	}
 

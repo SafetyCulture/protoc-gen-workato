@@ -38,7 +38,7 @@
             name: "name",
             label: "Name",
             type: "string",
-            hint: "The name of the task",
+            hint: "<p>The name of the task</p>",
             
             
             sticky: true,
@@ -49,7 +49,7 @@
             label: "Sms Confirmation",
             type: "boolean",
             convert_input: "boolean_conversion",
-            hint: "Should send sms confirmation",
+            hint: "<p>Should send sms confirmation</p>",
             
             control_type: "checkbox",
             
@@ -61,7 +61,7 @@
             label: "Sms Retries",
             type: "integer",
             convert_input: "integer_conversion",
-            hint: "Number of SMS retries",
+            hint: "<p>Number of SMS retries</p>",
             
             
             sticky: true,
@@ -79,7 +79,7 @@
             name: "id",
             label: "Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -97,7 +97,7 @@
             name: "id",
             label: "Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -132,7 +132,7 @@
             name: "id",
             label: "Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -142,7 +142,7 @@
             name: "name",
             label: "Name",
             type: "string",
-            hint: "The name of the task",
+            hint: "<p>The name of the task</p>",
             
             
             sticky: true,
@@ -160,7 +160,7 @@
             name: "id",
             label: "Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             control_type: "select",
             toggle_hint: "Select from list",
@@ -168,7 +168,7 @@
               name: "id",
               label: "Id",
               type: "string",
-              hint: "The ID of the task",
+              hint: "<p>The ID of the task</p>",
               
               toggle_hint: "Use ID",
               
@@ -183,7 +183,7 @@
             name: "name",
             label: "Name",
             type: "string",
-            hint: "The name of the task",
+            hint: "<p>The name of the task</p>",
             
             
             sticky: true,
@@ -209,7 +209,7 @@
             name: "id",
             label: "Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -236,7 +236,7 @@
             label: "Task Id",
             optional: false,
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -246,7 +246,7 @@
             name: "comment",
             label: "Comment",
             type: "string",
-            hint: "The comment to add",
+            hint: "<p>The comment to add</p>",
             
             
             sticky: true,
@@ -264,7 +264,7 @@
             name: "comment_id",
             label: "Comment Id",
             type: "string",
-            hint: "The ID of the comment",
+            hint: "<p>The ID of the comment</p>",
             
             
             sticky: true,
@@ -282,7 +282,7 @@
             name: "task_id",
             label: "Task Id",
             type: "string",
-            hint: "The ID of the task",
+            hint: "<p>The ID of the task</p>",
             
             
             sticky: true,
@@ -292,7 +292,7 @@
             name: "comment_id",
             label: "Comment Id",
             type: "string",
-            hint: "The ID comment to update",
+            hint: "<p>The ID comment to update</p>",
             
             
             sticky: true,
@@ -302,7 +302,7 @@
             name: "comment",
             label: "Comment",
             type: "string",
-            hint: "The updated comment",
+            hint: "<p>The updated comment</p>",
             
             
             sticky: true,
@@ -366,7 +366,7 @@
             name: "trigger",
             label: "Trigger",
             type: "string",
-            hint: "Trigger event to subscribe to.",
+            hint: "<p>Trigger event to subscribe to.</p>",
             
             control_type: "select",
             
@@ -435,35 +435,36 @@
         case input['action_name']
         when "api_tasks_v1_tasksservice_createtask"
           {
-            body: "Create a new task from the supplied input.
+            body: "<p>Create a new task from the supplied input.</p>
   
-  Allows the user to create a new task and this is a really long multiline description.",
+  <p>Allows the user to create a new task and this is a really long multiline description.</p>",
             learn_more_url: "",
             learn_more_text: ""
           }
         when "api_tasks_v1_tasksservice_customaction"
           {
-            body: "Custom Action with custom code",
+            body: "<p>Custom Action with custom code</p>",
             learn_more_url: "",
             learn_more_text: ""
           }
         when "api_tasks_v1_tasksservice_deletetask"
           {
-            body: "Delete a task by ID",
+            body: "<p>Delete a task by ID</p>",
             learn_more_url: "https://google.com",
             learn_more_text: "Check out these docs to learn more"
           }
         when "api_tasks_v1_tasksservice_gettask"
           {
-            body: "This description comes from the OpenAPI tag
-  abc
-  123",
+            body: "<p>This description comes from the OpenAPI tag<br>
+  abc<br>
+  123</p>",
             learn_more_url: "",
             learn_more_text: ""
           }
         when "api_tasks_v1_tasksservice_updatetask"
           {
-            body: "Update a task by ID",
+            body: "<p>Update a task by ID<br>
+  This hint includes a <a href="https://google.com" target="_blank">link</a></p>",
             learn_more_url: "",
             learn_more_text: ""
           }
@@ -561,13 +562,13 @@
         case input['action_name']
         when "api_tasks_v1_tasksservice_addcomment"
           {
-            body: "Add a comment to a task",
+            body: "<p>Add a comment to a task</p>",
             learn_more_url: "https://google.com",
             learn_more_text: ""
           }
         when "api_tasks_v1_tasksservice_updatecomment"
           {
-            body: "Update a comment on a task",
+            body: "<p>Update a comment on a task</p>",
             learn_more_url: "",
             learn_more_text: ""
           }

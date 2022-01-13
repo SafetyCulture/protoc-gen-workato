@@ -67,6 +67,7 @@ service TasksService {
   }
 
   // Update a task by ID
+  // This hint includes a [link](https://google.com)
   rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: ["Public", "Tasks"]
