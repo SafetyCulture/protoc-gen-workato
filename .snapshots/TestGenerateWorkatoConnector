@@ -234,6 +234,7 @@
           {
             name: "task_id",
             label: "Task Id",
+            optional: false,
             type: "string",
             hint: "The ID of the task",
             
