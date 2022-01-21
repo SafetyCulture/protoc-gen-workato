@@ -6,16 +6,16 @@
        description: "{{ $trigger.Value.Description }}",
 
        input_fields: lambda do |object_definitions|
-        object_definitions['{{ $trigger.Value.InputField }}']
+         object_definitions['{{ $trigger.Value.InputField }}']
        end,
 
        webhook_subscribe: lambda do |webhook_url, connection, input|
-           result = post('/webhooks/v1/webhooks')
-             .payload(
-               url: webhook_url,
-               trigger_events: ["#{input['trigger']}"]
-             )
-           result['webhook']
+         result = post('/webhooks/v1/webhooks')
+           .payload(
+             url: webhook_url,
+             trigger_events: ["#{input['trigger']}"]
+           )
+         result['webhook']
        end,
 
        webhook_notification: lambda do |input, payload|
