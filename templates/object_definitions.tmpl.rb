@@ -1,6 +1,6 @@
 {{ define "object_definitions" -}}
 {{- range . }}
-  "{{ .Key }}": {
+  '{{ .Key }}': {
     fields: lambda do |connection, config_fields, object_definitions|
       definition = [
         {{- range .Fields }}

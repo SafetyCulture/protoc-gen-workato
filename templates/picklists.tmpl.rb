@@ -6,7 +6,7 @@
     {{- else }}
     [
       {{- range .Values }}
-      ["{{.Value}}", "{{.Key}}"],
+      ['{{.Value}}', '{{.Key}}'],
       {{- end }}
     ]
     {{- end }}
