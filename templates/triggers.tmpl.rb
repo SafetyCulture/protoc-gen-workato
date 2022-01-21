@@ -35,7 +35,7 @@
        end,
 
        output_fields: lambda do |object_definitions|
-        object_definitions['{{ $trigger.Value.OutputField }}']
+         object_definitions['{{ $trigger.Value.OutputField }}']
        end,
     },
 {{- end }}

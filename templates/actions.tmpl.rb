@@ -41,8 +41,8 @@
       case input['action_name']
       {{- range $name, $value := $action.ExecCode }}
       when '{{ $name }}'
-        excludeKeys = {{ format_string_slice $value.ExcludeFromQuery }}
-        body = input.select {|k,v| k != 'action_name' and not excludeKeys.include? k }
+        exclude_keys = {{ format_string_slice $value.ExcludeFromQuery }}
+        body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
         {{ $value.Aggregate | indent 8 | trim }}
       {{- end }}
       end
