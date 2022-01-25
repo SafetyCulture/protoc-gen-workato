@@ -72,7 +72,7 @@
           {
             name: 'path',
             hint: 'Base URI is <b>' \
-            '{APP_BASE_URI}' \
+            'https://api.example.com' \
             '</b> - path will be appended to this URI. Use absolute URI to ' \
             'override this base URI.',
             optional: false
@@ -627,20 +627,20 @@
 
   actions: {  
     custom_action: {
-      title "Custom Action"
-      subtitle: 'Build your own iAuditor action with a HTTP request',
+      title: 'Custom Action',
+      subtitle: 'Build your own My Workato Connector action with a HTTP request',
   
       description: lambda do |object_value, _object_label|
         "<span class='provider'>" \
         "#{object_value[:action_name] || 'Custom action'}</span> in " \
-        "<span class='provider'>iAuditor</span>"
+        "<span class='provider'>My Workato Connector</span>"
       end,
   
       help: {
-        body: 'Build your own iAuditor action with a HTTP request. ' \
-        'The request will be authorized with your iAuditor connection.',
-        learn_more_url: 'https://developer.safetyculture.com',
-        learn_more_text: 'iAuditor API documentation'
+        body: 'Build your own My Workato Connector action with a HTTP request. ' \
+        'The request will be authorized with your My Workato Connector connection.',
+        learn_more_url: 'https://developer.example.com',
+        learn_more_text: 'My Workato Connector API documentation'
       },
   
       config_fields: [

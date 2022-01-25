@@ -1,5 +1,5 @@
 {{ define "triggers" -}}
-{{- range $trigger := . }}
+{{- range $trigger := .Triggers }}
     {{ $trigger.Key }}: {
        title: '{{ $trigger.Value.Title }}',
 

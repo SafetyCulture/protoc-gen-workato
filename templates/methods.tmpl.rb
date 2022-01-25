@@ -81,7 +81,7 @@
       response
     end
   end,
-{{- range . }}
+{{- range .Methods }}
   "{{.Name}}": lambda do |{{ .Params | join ", " }}|
     {{- .Exec | nindent 4 }}
   end,

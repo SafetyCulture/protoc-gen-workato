@@ -40,7 +40,7 @@
         {
           name: 'path',
           hint: 'Base URI is <b>' \
-          'https://api.safetyculture.io' \
+          '{{ .AppBaseURL }}' \
           '</b> - path will be appended to this URI. Use absolute URI to ' \
           'override this base URI.',
           optional: false
@@ -199,7 +199,7 @@
       ].compact
     end
   },
-{{ range . }}
+{{ range .ObjectDefinitions }}
   '{{ .Key }}': {
     fields: lambda do |connection, config_fields, object_definitions|
       definition = [

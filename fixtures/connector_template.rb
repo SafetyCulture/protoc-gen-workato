@@ -31,26 +31,26 @@
   end,
 
   object_definitions: {
-    {{- include "object_definitions" .ObjectDefinitions | indent 2}}
+    {{- include "object_definitions" . | indent 2}}
   },
 
   actions: {
-    {{- include "actions" .Actions | indent 2}}
+    {{- include "actions" . | indent 2}}
   },
 
   # Dynamic webhook example. Subscribes and unsubscribes webhooks programmatically
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {
-    {{- include "triggers" .Triggers | indent 2}}
+    {{- include "triggers" . | indent 2}}
   },
 
   pick_lists: {
-    {{- include "picklists" .Picklists | indent 2}}
+    {{- include "picklists" . | indent 2}}
   },
 
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {
-    {{- include "methods" .Methods | indent 2}}
+    {{- include "methods" . | indent 2}}
   }
 }

@@ -1,5 +1,5 @@
 {{ define "picklists" -}}
-{{- range . }}
+{{- range .Picklists }}
   "{{.Name}}": lambda do
     {{- if .Exec }}
       {{- .Exec | indent 4 }}

@@ -1,19 +1,19 @@
 {{ define "actions" }}
   custom_action: {
     title: 'Custom Action',
-    subtitle: 'Build your own iAuditor action with a HTTP request',
+    subtitle: 'Build your own {{ .Name }} action with a HTTP request',
 
     description: lambda do |object_value, _object_label|
       "<span class='provider'>" \
       "#{object_value[:action_name] || 'Custom action'}</span> in " \
-      "<span class='provider'>iAuditor</span>"
+      "<span class='provider'>{{ .Name }}</span>"
     end,
 
     help: {
-      body: 'Build your own iAuditor action with a HTTP request. ' \
-      'The request will be authorized with your iAuditor connection.',
-      learn_more_url: 'https://developer.safetyculture.com',
-      learn_more_text: 'iAuditor API documentation'
+      body: 'Build your own {{ .Name }} action with a HTTP request. ' \
+      'The request will be authorized with your {{ .Name }} connection.',
+      learn_more_url: '{{ .DeveloperDocsURL }}',
+      learn_more_text: '{{ .Name }} API documentation'
     },
 
     config_fields: [
@@ -119,7 +119,7 @@
       object_definition['custom_action_output']
     end
   },
-{{ range $action := . }}
+{{ range $action := .Actions }}
   "{{$action.Name}}": {
     title: "{{ $action.Title }}",
     subtitle: "{{ $action.Subtitle }}",
