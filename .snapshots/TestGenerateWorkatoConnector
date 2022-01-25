@@ -31,7 +31,7 @@
   end,
 
   object_definitions: {  
-    "api.tasks.v1.CreateTaskRequest": {
+    'api.tasks.v1.CreateTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -72,7 +72,7 @@
       end
     },
   
-    "api.tasks.v1.CreateTaskResponse": {
+    'api.tasks.v1.CreateTaskResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -90,7 +90,7 @@
       end
     },
   
-    "api.tasks.v1.GetTaskRequest": {
+    'api.tasks.v1.GetTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -108,7 +108,7 @@
       end
     },
   
-    "api.tasks.v1.GetTaskResponse": {
+    'api.tasks.v1.GetTaskResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -125,7 +125,7 @@
       end
     },
   
-    "api.tasks.v1.Task": {
+    'api.tasks.v1.Task': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -153,7 +153,7 @@
       end
     },
   
-    "api.tasks.v1.UpdateTaskRequest": {
+    'api.tasks.v1.UpdateTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -194,7 +194,7 @@
       end
     },
   
-    "api.tasks.v1.UpdateTaskResponse": {
+    'api.tasks.v1.UpdateTaskResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
         ]
@@ -202,7 +202,7 @@
       end
     },
   
-    "api.tasks.v1.DeleteTaskRequest": {
+    'api.tasks.v1.DeleteTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -220,7 +220,7 @@
       end
     },
   
-    "api.tasks.v1.DeleteTaskResponse": {
+    'api.tasks.v1.DeleteTaskResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
         ]
@@ -228,7 +228,7 @@
       end
     },
   
-    "api.tasks.v1.AddCommentRequest": {
+    'api.tasks.v1.AddCommentRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -257,7 +257,7 @@
       end
     },
   
-    "api.tasks.v1.AddCommentResponse": {
+    'api.tasks.v1.AddCommentResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -275,7 +275,7 @@
       end
     },
   
-    "api.tasks.v1.UpdateCommentRequest": {
+    'api.tasks.v1.UpdateCommentRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -334,7 +334,7 @@
       end
     },
   
-    "api.tasks.v1.UpdateCommentResponse": {
+    'api.tasks.v1.UpdateCommentResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
         ]
@@ -342,7 +342,7 @@
       end
     },
   
-    "api.tasks.v1.CustomActionRequest": {
+    'api.tasks.v1.CustomActionRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
         ]
@@ -351,7 +351,7 @@
       end
     },
   
-    "api.tasks.v1.CustomActionResponse": {
+    'api.tasks.v1.CustomActionResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
         ]
@@ -359,7 +359,7 @@
       end
     },
   
-    "api.tasks.v1.TriggerTaskRequest": {
+    'api.tasks.v1.TriggerTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -379,7 +379,7 @@
       end
     },
   
-    "api.tasks.v1.TriggerTaskResponse": {
+    'api.tasks.v1.TriggerTaskResponse': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -405,7 +405,7 @@
       end
     },
   
-    "api.tasks.v1.UnusedButIncluded": {
+    'api.tasks.v1.UnusedButIncluded': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
           {
@@ -433,46 +433,46 @@
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
-        when "api_tasks_v1_tasksservice_createtask"
+        when 'api_tasks_v1_tasksservice_createtask'
           {
-            body: "<p>Create a new task from the supplied input.</p>
+            body: '<p>Create a new task from the supplied input.</p>
   
-  <p>Allows the user to create a new task and this is a really long multiline description.</p>",
-            learn_more_url: "",
-            learn_more_text: ""
+  <p>Allows the user to create a new task and this is a really long multiline description.</p>',
+            learn_more_url: '',
+            learn_more_text: ''
           }
-        when "api_tasks_v1_tasksservice_customaction"
+        when 'api_tasks_v1_tasksservice_customaction'
           {
-            body: "<p>Custom Action with custom code</p>",
-            learn_more_url: "",
-            learn_more_text: ""
+            body: '<p>Custom Action with custom code</p>',
+            learn_more_url: '',
+            learn_more_text: ''
           }
-        when "api_tasks_v1_tasksservice_deletetask"
+        when 'api_tasks_v1_tasksservice_deletetask'
           {
-            body: "<p>Delete a task by ID</p>",
-            learn_more_url: "https://google.com",
-            learn_more_text: "Check out these docs to learn more"
+            body: '<p>Delete a task by ID</p>',
+            learn_more_url: 'https://google.com',
+            learn_more_text: 'Check out these docs to learn more'
           }
-        when "api_tasks_v1_tasksservice_gettask"
+        when 'api_tasks_v1_tasksservice_gettask'
           {
-            body: "<p>This description comes from the OpenAPI tag<br>
+            body: '<p>This description comes from the OpenAPI tag<br>
   abc<br>
-  123</p>",
-            learn_more_url: "",
-            learn_more_text: ""
+  123</p>',
+            learn_more_url: '',
+            learn_more_text: ''
           }
-        when "api_tasks_v1_tasksservice_updatetask"
+        when 'api_tasks_v1_tasksservice_updatetask'
           {
-            body: "<p>Update a task by ID<br>
-  This hint includes a <a href="https://google.com" target="_blank">link</a></p>",
-            learn_more_url: "",
-            learn_more_text: ""
+            body: '<p>Update a task by ID<br>
+  This hint includes a <a href="https://google.com" target="_blank">link</a></p>',
+            learn_more_url: '',
+            learn_more_text: ''
           }
         else
           {
-            body: "Tasks allow you to define work to be done an assign it to someone.",
-            learn_more_url: "https://google.com",
-            learn_more_text: "Learn more about tasks"
+            body: 'Tasks allow you to define work to be done an assign it to someone.',
+            learn_more_url: 'https://google.com',
+            learn_more_text: 'Learn more about tasks'
           }
         end
       end,
@@ -500,54 +500,54 @@
       ],
       input_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_tasksservice_createtask"
-          object_definitions["api.tasks.v1.CreateTaskRequest"]
-        when "api_tasks_v1_tasksservice_customaction"
-          object_definitions["api.tasks.v1.CustomActionRequest"]
-        when "api_tasks_v1_tasksservice_deletetask"
-          object_definitions["api.tasks.v1.DeleteTaskRequest"]
-        when "api_tasks_v1_tasksservice_gettask"
-          object_definitions["api.tasks.v1.GetTaskRequest"]
-        when "api_tasks_v1_tasksservice_updatetask"
-          object_definitions["api.tasks.v1.UpdateTaskRequest"]
+        when 'api_tasks_v1_tasksservice_createtask'
+          object_definitions['api.tasks.v1.CreateTaskRequest']
+        when 'api_tasks_v1_tasksservice_customaction'
+          object_definitions['api.tasks.v1.CustomActionRequest']
+        when 'api_tasks_v1_tasksservice_deletetask'
+          object_definitions['api.tasks.v1.DeleteTaskRequest']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskRequest']
+        when 'api_tasks_v1_tasksservice_updatetask'
+          object_definitions['api.tasks.v1.UpdateTaskRequest']
         end
       end,
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
-        when "api_tasks_v1_tasksservice_createtask"
-          excludeKeys = ["custom_field"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_createtask'
+          exclude_keys = ["custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           post("/v1/tasks").payload(body)
-        when "api_tasks_v1_tasksservice_customaction"
-          excludeKeys = ["custom_field"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_customaction'
+          exclude_keys = ["custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           # does a thing
-        when "api_tasks_v1_tasksservice_deletetask"
-          excludeKeys = ["id","custom_field"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_deletetask'
+          exclude_keys = ["id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           delete("/v1/tasks/#{input['id']}").params(body)
-        when "api_tasks_v1_tasksservice_gettask"
-          excludeKeys = ["id","custom_field"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_gettask'
+          exclude_keys = ["id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
-        when "api_tasks_v1_tasksservice_updatetask"
-          excludeKeys = ["id","custom_field"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_updatetask'
+          exclude_keys = ["id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           put("/v1/tasks/#{input['id']}").payload(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_tasksservice_createtask"
-          object_definitions["api.tasks.v1.CreateTaskResponse"]
-        when "api_tasks_v1_tasksservice_customaction"
-          object_definitions["api.tasks.v1.CustomActionResponse"]
-        when "api_tasks_v1_tasksservice_deletetask"
-          object_definitions["api.tasks.v1.DeleteTaskResponse"]
-        when "api_tasks_v1_tasksservice_gettask"
-          object_definitions["api.tasks.v1.GetTaskResponse"]
-        when "api_tasks_v1_tasksservice_updatetask"
-          object_definitions["api.tasks.v1.UpdateTaskResponse"]
+        when 'api_tasks_v1_tasksservice_createtask'
+          object_definitions['api.tasks.v1.CreateTaskResponse']
+        when 'api_tasks_v1_tasksservice_customaction'
+          object_definitions['api.tasks.v1.CustomActionResponse']
+        when 'api_tasks_v1_tasksservice_deletetask'
+          object_definitions['api.tasks.v1.DeleteTaskResponse']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskResponse']
+        when 'api_tasks_v1_tasksservice_updatetask'
+          object_definitions['api.tasks.v1.UpdateTaskResponse']
         end
       end,
     },
@@ -560,23 +560,23 @@
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
-        when "api_tasks_v1_tasksservice_addcomment"
+        when 'api_tasks_v1_tasksservice_addcomment'
           {
-            body: "<p>Add a comment to a task</p>",
-            learn_more_url: "https://google.com",
-            learn_more_text: ""
+            body: '<p>Add a comment to a task</p>',
+            learn_more_url: 'https://google.com',
+            learn_more_text: ''
           }
-        when "api_tasks_v1_tasksservice_updatecomment"
+        when 'api_tasks_v1_tasksservice_updatecomment'
           {
-            body: "<p>Update a comment on a task</p>",
-            learn_more_url: "",
-            learn_more_text: ""
+            body: '<p>Update a comment on a task</p>',
+            learn_more_url: '',
+            learn_more_text: ''
           }
         else
           {
-            body: "",
-            learn_more_url: "",
-            learn_more_text: ""
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
           }
         end
       end,
@@ -595,30 +595,30 @@
       ],
       input_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_tasksservice_addcomment"
-          object_definitions["api.tasks.v1.AddCommentRequest"]
-        when "api_tasks_v1_tasksservice_updatecomment"
-          object_definitions["api.tasks.v1.UpdateCommentRequest"]
+        when 'api_tasks_v1_tasksservice_addcomment'
+          object_definitions['api.tasks.v1.AddCommentRequest']
+        when 'api_tasks_v1_tasksservice_updatecomment'
+          object_definitions['api.tasks.v1.UpdateCommentRequest']
         end
       end,
       execute: lambda do |connection, input, eis, eos, continue|
         case input['action_name']
-        when "api_tasks_v1_tasksservice_addcomment"
-          excludeKeys = ["task_id"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_addcomment'
+          exclude_keys = ["task_id"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           post("/v1/tasks/#{input['task_id']}/comment").payload(body)
-        when "api_tasks_v1_tasksservice_updatecomment"
-          excludeKeys = ["task_id","comment_id"]
-          body = input.select {|k,v| k != "action_name" and not excludeKeys.include? k }
+        when 'api_tasks_v1_tasksservice_updatecomment'
+          exclude_keys = ["task_id","comment_id"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           put("/v1/tasks/#{input['task_id']}/comment/#{input['comment_id']}").payload(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
         case config_fields['action_name']
-        when "api_tasks_v1_tasksservice_addcomment"
-          object_definitions["api.tasks.v1.AddCommentResponse"]
-        when "api_tasks_v1_tasksservice_updatecomment"
-          object_definitions["api.tasks.v1.UpdateCommentResponse"]
+        when 'api_tasks_v1_tasksservice_addcomment'
+          object_definitions['api.tasks.v1.AddCommentResponse']
+        when 'api_tasks_v1_tasksservice_updatecomment'
+          object_definitions['api.tasks.v1.UpdateCommentResponse']
         end
       end,
     },
@@ -629,21 +629,21 @@
   # see more at https://docs.workato.com/developing-connectors/sdk/guides/building-triggers/dynamic-webhook.html
   triggers: {  
       trigger_tasks: {
-         title: "Task Event",
+         title: 'Task Event',
   
          description: "<span class='provider'>Trigger for Task Event</span>",
   
          input_fields: lambda do |object_definitions|
-          object_definitions["api.tasks.v1.TriggerTaskRequest"]
+           object_definitions['api.tasks.v1.TriggerTaskRequest']
          end,
   
          webhook_subscribe: lambda do |webhook_url, connection, input|
-             result = post("/webhooks/v1/webhooks")
-               .payload(
-                 url: webhook_url,
-                 trigger_events: ["#{input['trigger']}"]
-               )
-             result['webhook']
+           result = post('/webhooks/v1/webhooks')
+             .payload(
+               url: webhook_url,
+               trigger_events: ["#{input['trigger']}"]
+             )
+           result['webhook']
          end,
   
          webhook_notification: lambda do |input, payload|
@@ -655,15 +655,15 @@
          end,
   
          dedup: lambda do |event|
-           if event.has_key?("workflow_id")
-             event["workflow_id"] + "@" + event["event"]["date_triggered"]
-           else event.has_key?("webhook_id")
-             event["webhook_id"] + "@" + event["event"]["date_triggered"]
+           if event.has_key?('workflow_id')
+             event['workflow_id'] + '@' + event['event']['date_triggered']
+           elsif event.has_key?('webhook_id')
+             event['webhook_id'] + '@' + event['event']['date_triggered']
            end
          end,
   
          output_fields: lambda do |object_definitions|
-          object_definitions["api.tasks.v1.TriggerTaskResponse"]
+           object_definitions['api.tasks.v1.TriggerTaskResponse']
          end,
       },
   },
@@ -677,25 +677,25 @@
     end,
     "action_name_tasks": lambda do
       [
-        ["Create task", "api_tasks_v1_tasksservice_createtask"],
-        ["Get a task", "api_tasks_v1_tasksservice_gettask"],
-        ["Update task", "api_tasks_v1_tasksservice_updatetask"],
-        ["Delete task", "api_tasks_v1_tasksservice_deletetask"],
-        ["Custom action", "api_tasks_v1_tasksservice_customaction"],
+        ['Create task', 'api_tasks_v1_tasksservice_createtask'],
+        ['Get a task', 'api_tasks_v1_tasksservice_gettask'],
+        ['Update task', 'api_tasks_v1_tasksservice_updatetask'],
+        ['Delete task', 'api_tasks_v1_tasksservice_deletetask'],
+        ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
       ]
     end,
     "action_name_task_comments": lambda do
       [
-        ["Add comment", "api_tasks_v1_tasksservice_addcomment"],
-        ["Update comment", "api_tasks_v1_tasksservice_updatecomment"],
+        ['Add comment', 'api_tasks_v1_tasksservice_addcomment'],
+        ['Update comment', 'api_tasks_v1_tasksservice_updatecomment'],
       ]
     end,
     "enum_api_tasks_v1_triggertaskrequest_triggerevent": lambda do
       [
-        ["Task Started", "TRIGGER_EVENT_TASK_CREATED"],
-        ["Task Updated", "TRIGGER_EVENT_TASK_UPDATED"],
-        ["Task Closed", "TRIGGER_EVENT_TASK_CLOSED"],
-        ["Task Deleted", "TRIGGER_EVENT_TASK_DELETED"],
+        ['Task Started', 'TRIGGER_EVENT_TASK_CREATED'],
+        ['Task Updated', 'TRIGGER_EVENT_TASK_UPDATED'],
+        ['Task Closed', 'TRIGGER_EVENT_TASK_CLOSED'],
+        ['Task Deleted', 'TRIGGER_EVENT_TASK_DELETED'],
       ]
     end,
   },
@@ -703,9 +703,9 @@
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {  
-    "encode_array_to_query_params": lambda do | val |
+    "encode_array_to_query_params": lambda do |val|
       val.each do |key, value|
-        if value.is_a? String and value[0] == "[" and value[-1] == "]"
+        if (value.is_a? String) && (value[0] == '[') && (value[-1] == ']')
           val[key] = parse_json(value)
         end
       end
