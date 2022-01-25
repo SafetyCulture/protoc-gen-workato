@@ -749,9 +749,9 @@
   
     "action_tasks": {
       title: "Tasks",
-      subtitle: "Interact with Tasks in iAuditor",
+      subtitle: "Interact with Tasks in My Workato Connector",
       description: lambda do |input, picklist_label|
-        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tasks'}</span> in <span class='provider'>iAuditor</span>"
+        "#{'<span class='provider'>' + picklist_label['action_name'] + '</span>' || 'Interact with <span class='provider'>Tasks</span>'} in <span class='provider'>My Workato Connector</span>"
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
@@ -876,9 +876,9 @@
   
     "action_task_comments": {
       title: "Task Comments",
-      subtitle: "Interact with Task Comments in iAuditor",
+      subtitle: "Interact with Task Comments in My Workato Connector",
       description: lambda do |input, picklist_label|
-        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Task Comments'}</span> in <span class='provider'>iAuditor</span>"
+        "#{'<span class='provider'>' + picklist_label['action_name'] + '</span>' || 'Interact with <span class='provider'>Task Comments</span>'} in <span class='provider'>My Workato Connector</span>"
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
