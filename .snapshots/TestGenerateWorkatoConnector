@@ -31,6 +31,207 @@
   end,
 
   object_definitions: {  
+    custom_action_input: {
+      fields: lambda do |_connection, config_fields|
+        verb = config_fields['verb']
+        input_schema = parse_json(config_fields.dig('input', 'schema') || '[]')
+        data_props =
+          input_schema.map do |field|
+            if config_fields['request_type'] == 'multipart' &&
+              field['binary_content'] == 'true'
+              field['type'] = 'object'
+              field['properties'] = [
+                { name: 'file_content', optional: false },
+                {
+                  name: 'content_type',
+                  default: 'text/plain',
+                  sticky: true
+                },
+                { name: 'original_filename', sticky: true }
+              ]
+            end
+            field
+          end
+        data_props = call('make_schema_builder_fields_sticky', data_props)
+        input_data =
+          if input_schema.present?
+            if input_schema.dig(0, 'type') == 'array' &&
+              input_schema.dig(0, 'details', 'fake_array')
+              {
+                name: 'data',
+                type: 'array',
+                of: 'object',
+                properties: data_props.dig(0, 'properties')
+              }
+            else
+              { name: 'data', type: 'object', properties: data_props }
+            end
+          end
+  
+        [
+          {
+            name: 'path',
+            hint: 'Base URI is <b>' \
+            'https://api.example.com' \
+            '</b> - path will be appended to this URI. Use absolute URI to ' \
+            'override this base URI.',
+            optional: false
+          },
+          if %w[post put patch].include?(verb)
+            {
+              name: 'request_type',
+              default: 'json',
+              sticky: true,
+              extends_schema: true,
+              control_type: 'select',
+              pick_list: [
+                ['JSON request body', 'json'],
+                ['URL encoded form', 'url_encoded_form'],
+                ['Mutipart form', 'multipart'],
+                ['Raw request body', 'raw']
+              ]
+            }
+          end,
+          {
+            name: 'response_type',
+            default: 'json',
+            sticky: false,
+            extends_schema: true,
+            control_type: 'select',
+            pick_list: [['JSON response', 'json'], ['Raw response', 'raw']]
+          },
+          if %w[get options delete].include?(verb)
+            {
+              name: 'input',
+              label: 'Request URL parameters',
+              sticky: true,
+              add_field_label: 'Add URL parameter',
+              control_type: 'form-schema-builder',
+              type: 'object',
+              properties: [
+                {
+                  name: 'schema',
+                  sticky: input_schema.blank?,
+                  extends_schema: true
+                },
+                input_data
+              ].compact
+            }
+          else
+            {
+              name: 'input',
+              label: 'Request body parameters',
+              sticky: true,
+              type: 'object',
+              properties:
+                if config_fields['request_type'] == 'raw'
+                  [{
+                    name: 'data',
+                    sticky: true,
+                    control_type: 'text-area',
+                    type: 'string'
+                  }]
+                else
+                  [
+                    {
+                      name: 'schema',
+                      sticky: input_schema.blank?,
+                      extends_schema: true,
+                      schema_neutral: true,
+                      control_type: 'schema-designer',
+                      sample_data_type: 'json_input',
+                      custom_properties:
+                        if config_fields['request_type'] == 'multipart'
+                          [{
+                            name: 'binary_content',
+                            label: 'File attachment',
+                            default: false,
+                            optional: true,
+                            sticky: true,
+                            render_input: 'boolean_conversion',
+                            parse_output: 'boolean_conversion',
+                            control_type: 'checkbox',
+                            type: 'boolean'
+                          }]
+                        end
+                    },
+                    input_data
+                  ].compact
+                end
+            }
+          end,
+          {
+            name: 'request_headers',
+            sticky: false,
+            extends_schema: true,
+            control_type: 'key_value',
+            empty_list_title: 'Does this HTTP request require headers?',
+            empty_list_text: 'Refer to the API documentation and add ' \
+            'required headers to this HTTP request',
+            item_label: 'Header',
+            type: 'array',
+            of: 'object',
+            properties: [{ name: 'key' }, { name: 'value' }]
+          },
+          unless config_fields['response_type'] == 'raw'
+            {
+              name: 'output',
+              label: 'Response body',
+              sticky: true,
+              extends_schema: true,
+              schema_neutral: true,
+              control_type: 'schema-designer',
+              sample_data_type: 'json_input'
+            }
+          end,
+          {
+            name: 'response_headers',
+            sticky: false,
+            extends_schema: true,
+            schema_neutral: true,
+            control_type: 'schema-designer',
+            sample_data_type: 'json_input'
+          }
+        ].compact
+      end
+    },
+  
+    custom_action_output: {
+      fields: lambda do |_connection, config_fields|
+        response_body = { name: 'body' }
+  
+        [
+          if config_fields['response_type'] == 'raw'
+            response_body
+          elsif (output = config_fields['output'])
+            output_schema = call('format_schema', parse_json(output))
+            if output_schema.dig(0, 'type') == 'array' &&
+              output_schema.dig(0, 'details', 'fake_array')
+              response_body[:type] = 'array'
+              response_body[:properties] = output_schema.dig(0, 'properties')
+            else
+              response_body[:type] = 'object'
+              response_body[:properties] = output_schema
+            end
+  
+            response_body
+          end,
+          if (headers = config_fields['response_headers'])
+            header_props = parse_json(headers)&.map do |field|
+              if field[:name].present?
+                field[:name] = field[:name].gsub(/\W/, '_').downcase
+              elsif field['name'].present?
+                field['name'] = field['name'].gsub(/\W/, '_').downcase
+              end
+              field
+            end
+  
+            { name: 'headers', type: 'object', properties: header_props }
+          end
+        ].compact
+      end
+    },
+  
     'api.tasks.v1.CreateTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
@@ -425,11 +626,132 @@
   },
 
   actions: {  
+    custom_action: {
+      title: 'Custom Action',
+      subtitle: 'Build your own My Workato Connector action with a HTTP request',
+  
+      description: lambda do |object_value, _object_label|
+        "<span class='provider'>" \
+        "#{object_value[:action_name] || 'Custom action'}</span> in " \
+        "<span class='provider'>My Workato Connector</span>"
+      end,
+  
+      help: {
+        body: 'Build your own My Workato Connector action with a HTTP request. ' \
+        'The request will be authorized with your My Workato Connector connection.',
+        learn_more_url: 'https://developer.example.com',
+        learn_more_text: 'My Workato Connector API documentation'
+      },
+  
+      config_fields: [
+        {
+          name: 'action_name',
+          hint: "Give this action you're building a descriptive name, e.g. " \
+          'create record, get record',
+          default: 'Custom action',
+          optional: false,
+          schema_neutral: true
+        },
+        {
+          name: 'verb',
+          label: 'Method',
+          hint: 'Select HTTP method of the request',
+          optional: false,
+          control_type: 'select',
+          pick_list: %w[get post put patch options delete]
+            .map { |verb| [verb.upcase, verb] }
+        }
+      ],
+  
+      input_fields: lambda do |object_definition|
+        object_definition['custom_action_input']
+      end,
+  
+      execute: lambda do |_connection, input|
+        verb = input['verb']
+        if %w[get post put patch options delete].exclude?(verb)
+          error("#{verb.upcase} not supported")
+        end
+        path = input['path']
+        data = input.dig('input', 'data') || {}
+        if input['request_type'] == 'multipart'
+          data = data.each_with_object({}) do |(key, val), hash|
+            hash[key] = if val.is_a?(Hash)
+                          [val[:file_content],
+                          val[:content_type],
+                          val[:original_filename]]
+                        else
+                          val
+                        end
+          end
+        end
+        request_headers = input['request_headers']
+          &.each_with_object({}) do |item, hash|
+          hash[item['key']] = item['value']
+        end || {}
+        request = case verb
+                  when 'get'
+                    get(path, data)
+                  when 'post'
+                    if input['request_type'] == 'raw'
+                      post(path).request_body(data)
+                    else
+                      post(path, data)
+                    end
+                  when 'put'
+                    if input['request_type'] == 'raw'
+                      put(path).request_body(data)
+                    else
+                      put(path, data)
+                    end
+                  when 'patch'
+                    if input['request_type'] == 'raw'
+                      patch(path).request_body(data)
+                    else
+                      patch(path, data)
+                    end
+                  when 'options'
+                    options(path, data)
+                  when 'delete'
+                    delete(path, data)
+                  end.headers(request_headers)
+        request = case input['request_type']
+                  when 'url_encoded_form'
+                    request.request_format_www_form_urlencoded
+                  when 'multipart'
+                    request.request_format_multipart_form
+                  else
+                    request
+                  end
+        response =
+          if input['response_type'] == 'raw'
+            request.response_format_raw
+          else
+            request
+          end
+          .after_error_response(/.*/) do |code, body, headers, message|
+            error({ code: code, message: message, body: body, headers: headers }
+              .to_json)
+          end
+  
+        response.after_response do |_code, res_body, res_headers|
+          {
+            body: res_body ? call('format_response', res_body) : nil,
+            headers: res_headers
+          }
+        end
+      end,
+  
+      output_fields: lambda do |object_definition|
+        object_definition['custom_action_output']
+      end
+    },
+  
     "action_tasks": {
       title: "Tasks",
-      subtitle: "Interact with Tasks in iAuditor",
+      subtitle: "Interact with Tasks in My Workato Connector",
       description: lambda do |input, picklist_label|
-        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tasks'}</span> in <span class='provider'>iAuditor</span>"
+        "#{'<span class='provider'>' + picklist_label['action_name'] + '</span>' || 'Interact with <span class='provider'>Tasks</span>'} in <span class='provider'>My Workato Connector</span>"
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
@@ -554,9 +876,9 @@
   
     "action_task_comments": {
       title: "Task Comments",
-      subtitle: "Interact with Task Comments in iAuditor",
+      subtitle: "Interact with Task Comments in My Workato Connector",
       description: lambda do |input, picklist_label|
-        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Task Comments'}</span> in <span class='provider'>iAuditor</span>"
+        "#{'<span class='provider'>' + picklist_label['action_name'] + '</span>' || 'Interact with <span class='provider'>Task Comments</span>'} in <span class='provider'>My Workato Connector</span>"
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
@@ -710,6 +1032,80 @@
         end
       end
       val.encode_www_form
+    end,
+  
+    # This method is for Custom action
+    make_schema_builder_fields_sticky: lambda do |schema|
+      schema.map do |field|
+        if field['properties'].present?
+          field['properties'] = call('make_schema_builder_fields_sticky',
+                                     field['properties'])
+        end
+        field['sticky'] = true
+  
+        field
+      end
+    end,
+  
+    # Formats input/output schema to replace any special characters in name,
+    # without changing other attributes (method required for custom action)
+    format_schema: lambda do |input|
+      input&.map do |field|
+        if (props = field[:properties])
+          field[:properties] = call('format_schema', props)
+        elsif (props = field['properties'])
+          field['properties'] = call('format_schema', props)
+        end
+        if (name = field[:name])
+          field[:label] = field[:label].presence || name.labelize
+          field[:name] = name
+                         .gsub(/\W/) { |spl_chr| "__#{spl_chr.encode_hex}__" }
+        elsif (name = field['name'])
+          field['label'] = field['label'].presence || name.labelize
+          field['name'] = name
+                          .gsub(/\W/) { |spl_chr| "__#{spl_chr.encode_hex}__" }
+        end
+  
+        field
+      end
+    end,
+  
+    # Formats payload to inject any special characters that previously removed
+    format_payload: lambda do |payload|
+      if payload.is_a?(Array)
+        payload.map do |array_value|
+          call('format_payload', array_value)
+        end
+      elsif payload.is_a?(Hash)
+        payload.each_with_object({}) do |(key, value), hash|
+          key = key.gsub(/__[0-9a-fA-F]+__/) do |string|
+            string.gsub(/__/, '').decode_hex.as_utf8
+          end
+          value = call('format_payload', value) if value.is_a?(Array) || value.is_a?(Hash)
+          hash[key] = value
+        end
+      end
+    end,
+  
+    # Formats response to replace any special characters with valid strings
+    # (method required for custom action)
+    format_response: lambda do |response|
+      response = response&.compact unless response.is_a?(String) || response
+      if response.is_a?(Array)
+        response.map do |array_value|
+          call('format_response', array_value)
+        end
+      elsif response.is_a?(Hash)
+        response.each_with_object({}) do |(key, value), hash|
+          key = key.gsub(/\W/) { |spl_chr| "__#{spl_chr.encode_hex}__" }
+          if value.is_a?(Array) || value.is_a?(Hash)
+            value = call('format_response', value)
+          end
+          hash[key] = value
+        end
+      else
+        response
+      end
     end,
     "does_a_thing": lambda do |param_1, param_2|
       param_1 + param_2

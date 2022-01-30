@@ -67,6 +67,10 @@ type WorkatoTemplate struct {
 
 	// Name is the name of the connector
 	Name string
+	// AppBaseURl is the base URL to connect to for the application
+	AppBaseURL string
+	// DeveloperDocsURL is the URL to view the API docs on
+	DeveloperDocsURL string
 
 	// ObjectDefinitions are Workato formatted definitions of messages
 	ObjectDefinitions []*schema.ObjectDefinition
@@ -93,6 +97,8 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 		groupedActionMap:   make(map[string]*ActionGroup),
 		dynamicPicklistMap: make(map[string]*schema.PicklistDefinition),
 		Name:               cfg.Name,
+		AppBaseURL:         cfg.AppBaseURL,
+		DeveloperDocsURL:   cfg.DeveloperDocsURL,
 		Methods:            cfg.CustomMethods,
 	}
 

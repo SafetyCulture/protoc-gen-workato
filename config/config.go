@@ -23,10 +23,12 @@ type Action struct {
 
 // Config is the configuration of the plugin
 type Config struct {
-	Name          string                     `yaml:"name"`
-	TemplateFile  string                     `yaml:"template_file"`
-	Action        map[string]Action          `yaml:"action"`
-	Method        map[string]Method          `yaml:"method"`
-	Message       map[string]Message         `yaml:"message"`
-	CustomMethods []*schema.MethodDefinition `yaml:"custom_methods"`
+	Name             string                     `yaml:"name"`
+	AppBaseURL       string                     `yaml:"app_base_url"`
+	DeveloperDocsURL string                     `yaml:"developer_docs_url"`
+	TemplateFile     string                     `yaml:"template_file"`
+	Action           map[string]Action          `yaml:"action"`
+	Method           map[string]Method          `yaml:"method"`
+	Message          map[string]Message         `yaml:"message"`
+	CustomMethods    []*schema.MethodDefinition `yaml:"custom_methods"`
 }
