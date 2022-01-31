@@ -79,7 +79,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 			Name:        "action_" + escapeKeyName(actionGroup.Name),
 			Title:       actionGroup.Name,
 			Subtitle:    fmt.Sprintf("Interact with %s in %s", actionGroup.Name, t.Name),
-			Description: fmt.Sprintf("#{'<span class='provider'>' + picklist_label['action_name'] + '</span>' || 'Interact with <span class='provider'>%s</span>'} in <span class='provider'>%s</span>", actionGroup.Name, t.Name),
+			Description: fmt.Sprintf("<span class='provider'>#{picklist_label['action_name'] || 'Interact with %s'}</span> in <span class='provider'>%s</span>", actionGroup.Name, t.Name),
 			ConfigFields: []*schema.FieldDefinition{
 				{
 					Name:        "action_name",
