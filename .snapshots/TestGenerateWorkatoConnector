@@ -1014,7 +1014,7 @@
     end,
     "enum_api_tasks_v1_triggertaskrequest_triggerevent": lambda do
       [
-        ['Task Started', 'TRIGGER_EVENT_TASK_CREATED'],
+        ['Task \'Started\'', 'TRIGGER_EVENT_TASK_CREATED'],
         ['Task Updated', 'TRIGGER_EVENT_TASK_UPDATED'],
         ['Task Closed', 'TRIGGER_EVENT_TASK_CLOSED'],
         ['Task Deleted', 'TRIGGER_EVENT_TASK_DELETED'],

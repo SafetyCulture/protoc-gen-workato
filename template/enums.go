@@ -16,7 +16,10 @@ func (t *WorkatoTemplate) generateEnumPicklists() {
 			if desc == "" {
 				desc = value.Name
 			}
-			pickListDef.Values = append(pickListDef.Values, schema.PicklistValue{value.Name, desc})
+			pickListDef.Values = append(pickListDef.Values, schema.PicklistValue{
+				Key:   value.Name,
+				Value: escapeStringValue(desc),
+			})
 		}
 
 		t.Picklists = append(t.Picklists, pickListDef)
