@@ -24,6 +24,15 @@ var keyNameReplacer = strings.NewReplacer(
 	"&", "and",
 )
 
+var stringValueReplacer = strings.NewReplacer(
+	"'", `\'`,
+	`"`, `\"`,
+)
+
+func escapeStringValue(s string) string {
+	return stringValueReplacer.Replace(s)
+}
+
 func escapeKeyName(s string) string {
 	return strings.ToLower(keyNameReplacer.Replace(s))
 }

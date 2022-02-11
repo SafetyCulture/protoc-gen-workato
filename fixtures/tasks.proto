@@ -253,7 +253,7 @@ message TriggerTaskRequest {
   enum TriggerEvent {
     // Unspecified Event
     TRIGGER_EVENT_UNSPECIFIED = 0;
-    // Task Started
+    // Task 'Started'
     TRIGGER_EVENT_TASK_CREATED = 1;
     // Task Updated
     TRIGGER_EVENT_TASK_UPDATED = 2;
