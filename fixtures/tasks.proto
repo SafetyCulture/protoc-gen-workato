@@ -3,6 +3,7 @@ syntax = "proto3";
 import "s12/protobuf/workato/annotations.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
+import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 package api.tasks.v1;
@@ -141,6 +142,17 @@ service TasksService {
       body: "*"
     };
   }
+
+  rpc UpdateStatus(UpdateStatusRequest) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      post: "/v1/tasks/{task_id}/status"
+      body: "*"
+    };
+  }
 }
 
 message Task {
@@ -275,6 +287,10 @@ message CustomActionRequest {
 
 }
 message CustomActionResponse {
+
+}
+
+message UpdateStatusRequest {
 
 }
 
