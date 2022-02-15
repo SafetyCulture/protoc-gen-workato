@@ -25,7 +25,7 @@ func TestGenerateWorkatoConnector(t *testing.T) {
 	set, err := utils.LoadDescriptorSet("fixtures", "image.bin")
 	assert.NilError(t, err)
 
-	req := utils.CreateGenRequest(set, "fixtures/tasks.proto")
+	req := utils.CreateGenRequest(set, "fixtures/tasks.proto", "google/protobuf/empty.proto")
 	result := protokit.ParseCodeGenRequest(req)
 
 	template := gendoc.NewTemplate(result)
