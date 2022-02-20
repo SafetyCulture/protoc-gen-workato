@@ -130,7 +130,7 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 			}
 
 			toggleFieldDef := *fieldDef
-			toggleFieldDef.ControlType = ""
+			toggleFieldDef.ControlType = "text"
 			toggleFieldDef.Picklist = ""
 			toggleFieldDef.ToggleHint = "Use ID"
 

@@ -371,6 +371,7 @@
               type: "string",
               hint: "<p>The ID of the task</p>",
               
+              control_type: "text",
               toggle_hint: "Use ID",
               
               sticky: true,
@@ -521,6 +522,7 @@
               label: "Timezone",
               type: "string",
               
+              control_type: "text",
               toggle_hint: "Use ID",
               
               sticky: true,
