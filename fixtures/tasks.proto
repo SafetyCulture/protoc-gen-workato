@@ -153,6 +153,17 @@ service TasksService {
       body: "*"
     };
   }
+
+  rpc GetTaskIDsForUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["Public", "Tasks"]
+    };
+
+    option (google.api.http) = {
+      get: "/v1/tasks/{user_id}"
+      body: "*"
+    };
+  }
 }
 
 message Task {

@@ -801,6 +801,12 @@
             learn_more_url: '',
             learn_more_text: ''
           }
+        when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
         when 'api_tasks_v1_tasksservice_updatestatus'
           {
             body: '',
@@ -854,6 +860,8 @@
           object_definitions['api.tasks.v1.DeleteTaskRequest']
         when 'api_tasks_v1_tasksservice_gettask'
           object_definitions['api.tasks.v1.GetTaskRequest']
+        when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['api.tasks.v1.UpdateStatusRequest']
         when 'api_tasks_v1_tasksservice_updatetask'
@@ -878,6 +886,10 @@
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
+        when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          exclude_keys = ["user_id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          get("/v1/tasks/#{input['user_id']}").payload(body)
         when 'api_tasks_v1_tasksservice_updatestatus'
           exclude_keys = ["task_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
@@ -898,6 +910,8 @@
           object_definitions['api.tasks.v1.DeleteTaskResponse']
         when 'api_tasks_v1_tasksservice_gettask'
           object_definitions['api.tasks.v1.GetTaskResponse']
+        when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatetask'
@@ -1037,6 +1051,7 @@
         ['Delete task', 'api_tasks_v1_tasksservice_deletetask'],
         ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
         ['Update status', 'api_tasks_v1_tasksservice_updatestatus'],
+        ['Get task ids for user', 'api_tasks_v1_tasksservice_gettaskidsforuser'],
       ]
     end,
     "action_name_task_comments": lambda do
