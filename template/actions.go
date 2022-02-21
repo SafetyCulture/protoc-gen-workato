@@ -139,7 +139,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 				}
 			}
 
-			title = getTitle(title)
+			title = GetTitle(title)
 
 			picklistDef.Values = append(picklistDef.Values, schema.PicklistValue{
 				Key:   name,
@@ -160,7 +160,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 	}
 }
 
-func getTitle(old string) string {
+func GetTitle(old string) string {
 	var dict = map[string]string{"ID": "Id"}
 	var title = old
 	for key, val := range dict {
