@@ -160,6 +160,8 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 	}
 }
 
+// GetTitle converts a joined word in multiple words, lower-cased
+// Example: GetStatus -> Get status
 func GetTitle(old string) string {
 	var dict = map[string]string{"ID": "Id"}
 	var title = old
