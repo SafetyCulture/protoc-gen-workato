@@ -2,6 +2,7 @@ package template
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
@@ -138,7 +139,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 				}
 			}
 
-			title = upperFirst(strcase.ToDelimited(title, ' '))
+			title = GetTitle(title)
 
 			picklistDef.Values = append(picklistDef.Values, schema.PicklistValue{
 				Key:   name,
@@ -157,4 +158,15 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 		t.Actions = append(t.Actions, actionDef)
 		t.Picklists = append(t.Picklists, picklistDef)
 	}
+}
+
+// GetTitle converts a joined word in multiple words, lower-cased
+// Example: GetStatus -> Get status
+func GetTitle(old string) string {
+	var dict = map[string]string{"ID": "Id"}
+	var title = old
+	for key, val := range dict {
+		title = strings.ReplaceAll(title, key, val)
+	}
+	return upperFirst(strcase.ToDelimited(title, ' '))
 }
