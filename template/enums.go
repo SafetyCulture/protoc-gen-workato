@@ -12,6 +12,10 @@ func (t *WorkatoTemplate) generateEnumPicklists() {
 		removeUnspecifiedValue(enum)
 
 		for _, value := range enum.Values {
+			if !t.checkVisibility(value.Option("google.api.value_visibility")) {
+				continue
+			}
+
 			desc := value.Description
 			if desc == "" {
 				desc = value.Name

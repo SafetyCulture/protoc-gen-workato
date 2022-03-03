@@ -16,13 +16,15 @@ message PicklistOptions {
 message MethodOptionsWorkato {
   bool trigger = 1;
   PicklistOptions picklist = 2;
-  bool excluded = 3;
+  // @deprecated use google.api.method_visibility instead
+  bool excluded = 3 [deprecated = true];
 }
 
 // FieldOptionsWorkato
 message FieldOptionsWorkato {
   string dynamic_picklist = 1;
-  bool excluded = 2;
+  // @deprecated use google.api.field_visibility instead
+  bool excluded = 2 [deprecated = true];
   string picklist = 3;
 }
 

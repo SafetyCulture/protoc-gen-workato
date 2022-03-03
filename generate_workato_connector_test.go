@@ -78,6 +78,9 @@ data.map ...`,
 .body(param_2)`,
 			},
 		},
+		VisibilityRules: []string{
+			"WORKATO",
+		},
 	})
 	assert.NilError(t, err)
 

@@ -562,6 +562,58 @@
       end
     },
   
+    'api.tasks.v1.GenerateReportRequest': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "active_tasks_only",
+            label: "Active Tasks Only",
+            type: "boolean",
+            convert_input: "boolean_conversion",
+            hint: "<p>Include active tasks only</p>",
+            
+            control_type: "checkbox",
+            
+            sticky: true,
+            
+          },
+          {
+            name: "format",
+            label: "Format",
+            type: "string",
+            hint: "<p>Report format</p>",
+            
+            control_type: "select",
+            
+            pick_list: "enum_api_tasks_v1_generatereportrequest_reportformatwrapper_reportformat",
+            sticky: true,
+            
+          },
+          {
+            name: "delivery",
+            label: "Delivery",
+            type: "string",
+            hint: "<p>Report delivery method</p>",
+            
+            control_type: "select",
+            
+            pick_list: "enum_api_tasks_v1_generatereportrequest_deliverymethodwrapper_deliverymethod",
+            sticky: true,
+            
+          },
+        ]
+        definition
+      end
+    },
+  
+    'api.tasks.v1.GenerateReportResponse': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+        ]
+        definition
+      end
+    },
+  
     'api.tasks.v1.UpdateStatusRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
@@ -793,6 +845,12 @@
             learn_more_url: 'https://google.com',
             learn_more_text: 'Check out these docs to learn more'
           }
+        when 'api_tasks_v1_tasksservice_generatereport'
+          {
+            body: '<p>Generate tasks report</p>',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
         when 'api_tasks_v1_tasksservice_gettask'
           {
             body: '<p>This description comes from the OpenAPI tag<br>
@@ -802,6 +860,12 @@
             learn_more_text: ''
           }
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           {
             body: '',
             learn_more_url: '',
@@ -858,9 +922,13 @@
           object_definitions['api.tasks.v1.CustomActionRequest']
         when 'api_tasks_v1_tasksservice_deletetask'
           object_definitions['api.tasks.v1.DeleteTaskRequest']
+        when 'api_tasks_v1_tasksservice_generatereport'
+          object_definitions['api.tasks.v1.GenerateReportRequest']
         when 'api_tasks_v1_tasksservice_gettask'
           object_definitions['api.tasks.v1.GetTaskRequest']
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['api.tasks.v1.UpdateStatusRequest']
@@ -882,11 +950,19 @@
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           delete("/v1/tasks/#{input['id']}").params(body)
+        when 'api_tasks_v1_tasksservice_generatereport'
+          exclude_keys = ["custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          post("/v1/tasks/action=generateReport").payload(body)
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           get("/v1/tasks/#{input['id']}").params(body)
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          exclude_keys = ["user_id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          get("/v1/tasks/#{input['user_id']}").payload(body)
+        when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           get("/v1/tasks/#{input['user_id']}").payload(body)
@@ -908,9 +984,13 @@
           object_definitions['api.tasks.v1.CustomActionResponse']
         when 'api_tasks_v1_tasksservice_deletetask'
           object_definitions['api.tasks.v1.DeleteTaskResponse']
+        when 'api_tasks_v1_tasksservice_generatereport'
+          object_definitions['api.tasks.v1.GenerateReportResponse']
         when 'api_tasks_v1_tasksservice_gettask'
           object_definitions['api.tasks.v1.GetTaskResponse']
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['google.protobuf.Empty']
@@ -1050,14 +1130,30 @@
         ['Update task', 'api_tasks_v1_tasksservice_updatetask'],
         ['Delete task', 'api_tasks_v1_tasksservice_deletetask'],
         ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
+        ['Generate report', 'api_tasks_v1_tasksservice_generatereport'],
         ['Update status', 'api_tasks_v1_tasksservice_updatestatus'],
         ['Get task ids for user', 'api_tasks_v1_tasksservice_gettaskidsforuser'],
+        ['Get task privately but in workato', 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'],
       ]
     end,
     "action_name_task_comments": lambda do
       [
         ['Add comment', 'api_tasks_v1_tasksservice_addcomment'],
         ['Update comment', 'api_tasks_v1_tasksservice_updatecomment'],
+      ]
+    end,
+    "enum_api_tasks_v1_generatereportrequest_reportformatwrapper_reportformat": lambda do
+      [
+        ['UNKNOWN', 'UNKNOWN'],
+        ['CSV Format', 'CSV'],
+        ['TSV Format', 'TSV'],
+      ]
+    end,
+    "enum_api_tasks_v1_generatereportrequest_deliverymethodwrapper_deliverymethod": lambda do
+      [
+        ['UNKNOWN', 'UNKNOWN'],
+        ['PDF Format', 'EMAIL_PDF'],
+        ['HTML Format', 'EMAIL_HTML'],
       ]
     end,
     "enum_api_tasks_v1_triggertaskrequest_triggerevent": lambda do
