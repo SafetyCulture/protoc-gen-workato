@@ -124,6 +124,10 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 
 		// Find all the actions we want to expose
 		for _, service := range file.Services {
+			if !workatoTemplate.checkVisibility(service.Option("google.api.api_visibility")) {
+				continue
+			}
+
 			for _, method := range service.Methods {
 				seviceMethod := &ServiceMethod{service, method}
 
@@ -167,14 +171,12 @@ func (t *WorkatoTemplate) checkVisibility(r interface{}) bool {
 
 	if rule, ok := r.(*visibility.VisibilityRule); ok && rule != nil {
 		restrictions := strings.Split(strings.TrimSpace(rule.Restriction), ",")
-
 		if len(restrictions) != 0 {
 			isVisible = false
 		}
 		for _, restriction := range restrictions {
 			if t.visibilityRestrictionSelectorsMap[strings.TrimSpace(restriction)] {
-				isVisible = true
-				break
+				return true
 			}
 		}
 	}

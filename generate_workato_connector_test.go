@@ -78,7 +78,7 @@ data.map ...`,
 .body(param_2)`,
 			},
 		},
-		VisibilityRules: []string{
+		VisibilityRestrictionSelectors: []string{
 			"WORKATO",
 		},
 	})
