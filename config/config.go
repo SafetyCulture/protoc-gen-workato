@@ -39,8 +39,8 @@ type Config struct {
 	Message map[string]Message `yaml:"message"`
 	// CustomMethods is a set of custom methods to push into the connector
 	CustomMethods []*schema.MethodDefinition `yaml:"custom_methods"`
-	// VisibilityRules define the set of google.api.VisibilityRule that are included in connector generation
+	// VisibilityRestrictionSelectors define the set of google.api.VisibilityRule that are included in connector generation
 	// By default APIs, Fields, Enum Values with no VisibilityRule will always be included, adding a restriction like
 	// INTERNAL will prevent it from being generated, including INTERNAL in this slice will begin generating it again.
-	VisibilityRules []string
+	VisibilityRestrictionSelectors []string `yaml:"visibility_restriction_selectors"`
 }

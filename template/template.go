@@ -45,7 +45,7 @@ type WorkatoTemplate struct {
 	config *config.Config
 
 	// A map of visibility rules that should be included in the connector
-	visibilityRulesMap map[string]bool
+	visibilityRestrictionSelectorsMap map[string]bool
 
 	// All of the messages from the proto files
 	messageMap map[string]*gendoc.Message
@@ -94,22 +94,22 @@ type WorkatoTemplate struct {
 // FromGenDoc converts a protoc-gen-doc template to our template file
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate, error) {
 	workatoTemplate := &WorkatoTemplate{
-		config:             cfg,
-		visibilityRulesMap: make(map[string]bool),
-		messageMap:         make(map[string]*gendoc.Message),
-		enumMap:            make(map[string]*gendoc.Enum),
-		usedMessageMap:     make(map[string]*gendoc.Message),
-		usedEnumMap:        make(map[string]*gendoc.Enum),
-		groupedActionMap:   make(map[string]*ActionGroup),
-		dynamicPicklistMap: make(map[string]*schema.PicklistDefinition),
-		Name:               cfg.Name,
-		AppBaseURL:         cfg.AppBaseURL,
-		DeveloperDocsURL:   cfg.DeveloperDocsURL,
-		Methods:            cfg.CustomMethods,
+		config:                            cfg,
+		visibilityRestrictionSelectorsMap: make(map[string]bool),
+		messageMap:                        make(map[string]*gendoc.Message),
+		enumMap:                           make(map[string]*gendoc.Enum),
+		usedMessageMap:                    make(map[string]*gendoc.Message),
+		usedEnumMap:                       make(map[string]*gendoc.Enum),
+		groupedActionMap:                  make(map[string]*ActionGroup),
+		dynamicPicklistMap:                make(map[string]*schema.PicklistDefinition),
+		Name:                              cfg.Name,
+		AppBaseURL:                        cfg.AppBaseURL,
+		DeveloperDocsURL:                  cfg.DeveloperDocsURL,
+		Methods:                           cfg.CustomMethods,
 	}
 
-	for _, rule := range cfg.VisibilityRules {
-		workatoTemplate.visibilityRulesMap[rule] = true
+	for _, rule := range cfg.VisibilityRestrictionSelectors {
+		workatoTemplate.visibilityRestrictionSelectorsMap[rule] = true
 	}
 
 	for _, file := range template.Files {
@@ -172,7 +172,7 @@ func (t *WorkatoTemplate) checkVisibility(r interface{}) bool {
 			isVisible = false
 		}
 		for _, restriction := range restrictions {
-			if t.visibilityRulesMap[strings.TrimSpace(restriction)] {
+			if t.visibilityRestrictionSelectorsMap[strings.TrimSpace(restriction)] {
 				isVisible = true
 				break
 			}
