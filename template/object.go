@@ -47,10 +47,8 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 		}
 
 		for _, field := range message.Fields {
-			if opts, ok := field.Option("s12.protobuf.workato.field").(*workato.FieldOptionsWorkato); ok {
-				if opts.Excluded {
-					continue
-				}
+			if !t.checkVisibility(field.Option("google.api.field_visibility")) {
+				continue
 			}
 			obj.Fields = append(obj.Fields, t.getFieldDef(field))
 		}

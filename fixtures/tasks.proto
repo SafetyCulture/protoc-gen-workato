@@ -1,22 +1,19 @@
 syntax = "proto3";
 
-import "s12/protobuf/workato/annotations.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
+import "google/api/visibility.proto";
 import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "s12/protobuf/workato/annotations.proto";
 
 package api.tasks.v1;
 
 service TasksService {
   // Task Event
   rpc TriggerTask(TriggerTaskRequest) returns (TriggerTaskResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Tasks"]
-    };
-    option (s12.protobuf.workato.method) = {
-      trigger: true
-    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+    option (s12.protobuf.workato.method).trigger = true;
   }
 
   // List all of the tasks
@@ -37,9 +34,7 @@ service TasksService {
   //
   // Allows the user to create a new task and this is a really long multiline description.
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
-    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
 
     option (google.api.http) = {
       post: "/v1/tasks"
@@ -52,7 +47,7 @@ service TasksService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get a task"
       description: "This description comes from the OpenAPI tag\nabc\n123"
-      tags: ["Public", "Tasks"]
+      tags: ["Tasks"]
     };
 
     option (google.api.http) = {
@@ -70,9 +65,7 @@ service TasksService {
   // Update a task by ID
   // This hint includes a [link](https://google.com)
   rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
-    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
 
     option (google.api.http) = {
       put: "/v1/tasks/{id}"
@@ -83,7 +76,7 @@ service TasksService {
   // Delete a task by ID
   rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
+      tags: ["Tasks"]
       external_docs: {
         url: "https://google.com"
         description: "Check out these docs to learn more"
@@ -98,7 +91,7 @@ service TasksService {
   // Add a comment to a task
   rpc AddComment(AddCommentRequest) returns (AddCommentResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Task Comments"]
+      tags: ["Task Comments"]
       external_docs: {
         url: "https://google.com"
       }
@@ -112,10 +105,7 @@ service TasksService {
 
   // Update a comment on a task
   rpc UpdateComment(UpdateCommentRequest) returns (UpdateCommentResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Task Comments"]
-    };
-
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Task Comments";
     option (google.api.http) = {
       put: "/v1/tasks/{task_id}/comment/{comment_id}"
       body: "*"
@@ -124,19 +114,12 @@ service TasksService {
 
   // Custom Action with custom code
   rpc CustomAction(CustomActionRequest) returns (CustomActionResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
-    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
   }
 
   // Generate tasks report
   rpc GenerateReport(GenerateReportRequest) returns (GenerateReportResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
-    };
-    option (s12.protobuf.workato.method) = {
-      excluded: true
-    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
     option (google.api.http) = {
       post: "/v1/tasks/action=generateReport"
       body: "*"
@@ -144,10 +127,7 @@ service TasksService {
   }
 
   rpc UpdateStatus(UpdateStatusRequest) returns (google.protobuf.Empty) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
-    };
-
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
     option (google.api.http) = {
       post: "/v1/tasks/{task_id}/status"
       body: "*"
@@ -155,9 +135,26 @@ service TasksService {
   }
 
   rpc GetTaskIDsForUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      tags: ["Public", "Tasks"]
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+    option (google.api.http) = {
+      get: "/v1/tasks/{user_id}"
+      body: "*"
     };
+  }
+
+  rpc GetTaskPrivately(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.method_visibility).restriction = "INTERNAL";
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+
+    option (google.api.http) = {
+      get: "/v1/tasks/{user_id}"
+      body: "*"
+    };
+  }
+
+  rpc GetTaskPrivatelyButInWorkato(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.method_visibility).restriction = "INTERNAL,WORKATO";
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
 
     option (google.api.http) = {
       get: "/v1/tasks/{user_id}"
@@ -228,7 +225,7 @@ message CreateTaskRequest {
   string name = 1;
 
   // The description of the task
-  string description = 2 [(s12.protobuf.workato.field) = { excluded: true }];
+  string description = 2 [(google.api.field_visibility).restriction = "INTERNAL"];
 
   // Should send sms confirmation
   bool sms_confirmation = 3;
@@ -326,6 +323,9 @@ message GenerateReportRequest {
 
       // TSV Format
       TSV = 2;
+
+      // Hidden format
+      HIDDEN = 3 [(google.api.value_visibility).restriction = "INTERNAL"];
     }
   }
 

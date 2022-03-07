@@ -2,12 +2,14 @@ package template
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/SafetyCulture/protoc-gen-workato/config"
 	workato "github.com/SafetyCulture/protoc-gen-workato/s12/protobuf/workato"
 	"github.com/SafetyCulture/protoc-gen-workato/template/schema"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
+	"google.golang.org/genproto/googleapis/api/visibility"
 )
 
 // ServiceMethod is a combined service and method defintion
@@ -41,6 +43,9 @@ func (t *ServiceMethod) extractFirstTag() (string, error) {
 // https://docs.workato.com/developing-connectors/sdk/sdk-reference.html
 type WorkatoTemplate struct {
 	config *config.Config
+
+	// A map of visibility rules that should be included in the connector
+	visibilityRestrictionSelectorsMap map[string]bool
 
 	// All of the messages from the proto files
 	messageMap map[string]*gendoc.Message
@@ -89,17 +94,22 @@ type WorkatoTemplate struct {
 // FromGenDoc converts a protoc-gen-doc template to our template file
 func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate, error) {
 	workatoTemplate := &WorkatoTemplate{
-		config:             cfg,
-		messageMap:         make(map[string]*gendoc.Message),
-		enumMap:            make(map[string]*gendoc.Enum),
-		usedMessageMap:     make(map[string]*gendoc.Message),
-		usedEnumMap:        make(map[string]*gendoc.Enum),
-		groupedActionMap:   make(map[string]*ActionGroup),
-		dynamicPicklistMap: make(map[string]*schema.PicklistDefinition),
-		Name:               cfg.Name,
-		AppBaseURL:         cfg.AppBaseURL,
-		DeveloperDocsURL:   cfg.DeveloperDocsURL,
-		Methods:            cfg.CustomMethods,
+		config:                            cfg,
+		visibilityRestrictionSelectorsMap: make(map[string]bool),
+		messageMap:                        make(map[string]*gendoc.Message),
+		enumMap:                           make(map[string]*gendoc.Enum),
+		usedMessageMap:                    make(map[string]*gendoc.Message),
+		usedEnumMap:                       make(map[string]*gendoc.Enum),
+		groupedActionMap:                  make(map[string]*ActionGroup),
+		dynamicPicklistMap:                make(map[string]*schema.PicklistDefinition),
+		Name:                              cfg.Name,
+		AppBaseURL:                        cfg.AppBaseURL,
+		DeveloperDocsURL:                  cfg.DeveloperDocsURL,
+		Methods:                           cfg.CustomMethods,
+	}
+
+	for _, rule := range cfg.VisibilityRestrictionSelectors {
+		workatoTemplate.visibilityRestrictionSelectorsMap[rule] = true
 	}
 
 	for _, file := range template.Files {
@@ -114,6 +124,10 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 
 		// Find all the actions we want to expose
 		for _, service := range file.Services {
+			if !workatoTemplate.checkVisibility(service.Option("google.api.api_visibility")) {
+				continue
+			}
+
 			for _, method := range service.Methods {
 				seviceMethod := &ServiceMethod{service, method}
 
@@ -133,16 +147,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 					continue
 				}
 
-				isPublic := false
-				if openapiOpt, ok := method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation); ok {
-					for _, tag := range openapiOpt.Tags {
-						if tag == "Public" {
-							isPublic = true
-						}
-					}
-				}
-
-				if isPublic {
+				if workatoTemplate.checkVisibility(method.Option("google.api.method_visibility")) {
 					workatoTemplate.actions = append(workatoTemplate.actions, seviceMethod)
 				}
 			}
@@ -159,4 +164,22 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 	workatoTemplate.generateEnumPicklists()
 
 	return workatoTemplate, nil
+}
+
+func (t *WorkatoTemplate) checkVisibility(r interface{}) bool {
+	isVisible := true
+
+	if rule, ok := r.(*visibility.VisibilityRule); ok && rule != nil {
+		restrictions := strings.Split(strings.TrimSpace(rule.Restriction), ",")
+		if len(restrictions) != 0 {
+			isVisible = false
+		}
+		for _, restriction := range restrictions {
+			if t.visibilityRestrictionSelectorsMap[strings.TrimSpace(restriction)] {
+				return true
+			}
+		}
+	}
+
+	return isVisible
 }
