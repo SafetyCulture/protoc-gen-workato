@@ -3,6 +3,7 @@ syntax = "proto3";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/visibility.proto";
+import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "s12/protobuf/workato/annotations.proto";
@@ -195,6 +196,8 @@ message ListTasksResponse {
 message GetTaskRequest {
   // The ID of the task
   string id = 1;
+
+  Wrappers wrappers = 2;
 }
 
 message GetTaskResponse {
@@ -354,4 +357,17 @@ message GenerateReportRequest {
 
 // Response object for GenerateReport
 message GenerateReportResponse {
+}
+
+// A bunch of wrapper messages
+message Wrappers {
+  google.protobuf.DoubleValue double_value = 1;
+  google.protobuf.FloatValue float_value = 2;
+  google.protobuf.Int64Value int64_value = 3;
+  google.protobuf.UInt64Value uint64_value = 4;
+  google.protobuf.Int32Value int32_value = 5;
+  google.protobuf.UInt32Value uint32_value = 6;
+  google.protobuf.BoolValue bool_value = 7;
+  google.protobuf.StringValue string_value = 8;
+  google.protobuf.BytesValue bytes_value = 9;
 }

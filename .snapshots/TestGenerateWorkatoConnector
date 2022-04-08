@@ -304,6 +304,110 @@
             sticky: true,
             
           },
+          {
+            name: "wrappers",
+            label: "Wrappers",
+            type: "object",
+            properties: object_definitions['api.tasks.v1.Wrappers'],
+            
+            sticky: true,
+            
+          },
+        ]
+        definition
+      end
+    },
+  
+    'api.tasks.v1.Wrappers': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "double_value",
+            label: "Double Value",
+            type: "number",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "float_value",
+            label: "Float Value",
+            type: "number",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "int64_value",
+            label: "Int64 Value",
+            type: "integer",
+            convert_input: "integer_conversion",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "uint64_value",
+            label: "Uint64 Value",
+            type: "integer",
+            convert_input: "integer_conversion",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "int32_value",
+            label: "Int32 Value",
+            type: "integer",
+            convert_input: "integer_conversion",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "uint32_value",
+            label: "Uint32 Value",
+            type: "integer",
+            convert_input: "integer_conversion",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "bool_value",
+            label: "Bool Value",
+            type: "boolean",
+            convert_input: "boolean_conversion",
+            
+            control_type: "checkbox",
+            
+            sticky: true,
+            
+          },
+          {
+            name: "string_value",
+            label: "String Value",
+            type: "string",
+            
+            
+            sticky: true,
+            
+          },
+          {
+            name: "bytes_value",
+            label: "Bytes Value",
+            type: "string",
+            
+            
+            sticky: true,
+            
+          },
         ]
         definition
       end
