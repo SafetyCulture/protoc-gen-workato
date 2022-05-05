@@ -238,34 +238,34 @@
           {
             name: "name",
             label: "Name",
+            sticky: false,
             type: "string",
             hint: "<p>The name of the task</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "sms_confirmation",
             label: "Sms Confirmation",
+            sticky: false,
             type: "boolean",
             convert_input: "boolean_conversion",
             hint: "<p>Should send sms confirmation</p>",
             
             control_type: "checkbox",
             
-            sticky: true,
             
           },
           {
             name: "sms_retries",
             label: "Sms Retries",
+            sticky: false,
             type: "integer",
             convert_input: "integer_conversion",
             hint: "<p>Number of SMS retries</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -279,11 +279,11 @@
           {
             name: "id",
             label: "Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -297,20 +297,20 @@
           {
             name: "id",
             label: "Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "wrappers",
             label: "Wrappers",
+            sticky: false,
             type: "object",
             properties: object_definitions['api.tasks.v1.Wrappers'],
             
-            sticky: true,
             
           },
         ]
@@ -324,88 +324,88 @@
           {
             name: "double_value",
             label: "Double Value",
+            sticky: false,
             type: "number",
             
             
-            sticky: true,
             
           },
           {
             name: "float_value",
             label: "Float Value",
+            sticky: false,
             type: "number",
             
             
-            sticky: true,
             
           },
           {
             name: "int64_value",
             label: "Int64 Value",
+            sticky: false,
             type: "integer",
             convert_input: "integer_conversion",
             
             
-            sticky: true,
             
           },
           {
             name: "uint64_value",
             label: "Uint64 Value",
+            sticky: false,
             type: "integer",
             convert_input: "integer_conversion",
             
             
-            sticky: true,
             
           },
           {
             name: "int32_value",
             label: "Int32 Value",
+            sticky: false,
             type: "integer",
             convert_input: "integer_conversion",
             
             
-            sticky: true,
             
           },
           {
             name: "uint32_value",
             label: "Uint32 Value",
+            sticky: false,
             type: "integer",
             convert_input: "integer_conversion",
             
             
-            sticky: true,
             
           },
           {
             name: "bool_value",
             label: "Bool Value",
+            sticky: false,
             type: "boolean",
             convert_input: "boolean_conversion",
             
             control_type: "checkbox",
             
-            sticky: true,
             
           },
           {
             name: "string_value",
             label: "String Value",
+            sticky: false,
             type: "string",
             
             
-            sticky: true,
             
           },
           {
             name: "bytes_value",
             label: "Bytes Value",
+            sticky: false,
             type: "string",
             
             
-            sticky: true,
             
           },
         ]
@@ -419,10 +419,10 @@
           {
             name: "task",
             label: "Task",
+            sticky: false,
             type: "object",
             properties: object_definitions['api.tasks.v1.Task'],
             
-            sticky: true,
             
           },
         ]
@@ -436,21 +436,21 @@
           {
             name: "id",
             label: "Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "name",
             label: "Name",
+            sticky: false,
             type: "string",
             hint: "<p>The name of the task</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -464,6 +464,7 @@
           {
             name: "id",
             label: "Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
@@ -472,27 +473,26 @@
             toggle_field:   {
               name: "id",
               label: "Id",
+              sticky: false,
               type: "string",
               hint: "<p>The ID of the task</p>",
               
               control_type: "text",
               toggle_hint: "Use ID",
               
-              sticky: true,
               
             },
             pick_list: "dynamic_api_tasks_v1_tasksservice_listtasks",
-            sticky: true,
             
           },
           {
             name: "name",
             label: "Name",
+            sticky: false,
             type: "string",
             hint: "<p>The name of the task</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -514,11 +514,11 @@
           {
             name: "id",
             label: "Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -541,21 +541,21 @@
             name: "task_id",
             label: "Task Id",
             optional: false,
+            sticky: true,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "comment",
             label: "Comment",
+            sticky: false,
             type: "string",
             hint: "<p>The comment to add</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -569,11 +569,11 @@
           {
             name: "comment_id",
             label: "Comment Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the comment</p>",
             
             
-            sticky: true,
             
           },
         ]
@@ -587,36 +587,37 @@
           {
             name: "task_id",
             label: "Task Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID of the task</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "comment_id",
             label: "Comment Id",
+            sticky: false,
             type: "string",
             hint: "<p>The ID comment to update</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "comment",
             label: "Comment",
+            sticky: false,
             type: "string",
             hint: "<p>The updated comment</p>",
             
             
-            sticky: true,
             
           },
           {
             name: "timezone",
             label: "Timezone",
+            sticky: false,
             type: "string",
             
             control_type: "select",
@@ -624,16 +625,15 @@
             toggle_field:   {
               name: "timezone",
               label: "Timezone",
+              sticky: false,
               type: "string",
               
               control_type: "text",
               toggle_hint: "Use ID",
               
-              sticky: true,
               
             },
             pick_list: "timezones",
-            sticky: true,
             
           },
         ]
@@ -672,37 +672,37 @@
           {
             name: "active_tasks_only",
             label: "Active Tasks Only",
+            sticky: false,
             type: "boolean",
             convert_input: "boolean_conversion",
             hint: "<p>Include active tasks only</p>",
             
             control_type: "checkbox",
             
-            sticky: true,
             
           },
           {
             name: "format",
             label: "Format",
+            sticky: false,
             type: "string",
             hint: "<p>Report format</p>",
             
             control_type: "select",
             
             pick_list: "enum_api_tasks_v1_generatereportrequest_reportformatwrapper_reportformat",
-            sticky: true,
             
           },
           {
             name: "delivery",
             label: "Delivery",
+            sticky: false,
             type: "string",
             hint: "<p>Report delivery method</p>",
             
             control_type: "select",
             
             pick_list: "enum_api_tasks_v1_generatereportrequest_deliverymethodwrapper_deliverymethod",
-            sticky: true,
             
           },
         ]
@@ -740,13 +740,13 @@
           {
             name: "trigger",
             label: "Trigger",
+            sticky: false,
             type: "string",
             hint: "<p>Trigger event to subscribe to.</p>",
             
             control_type: "select",
             
             pick_list: "enum_api_tasks_v1_triggertaskrequest_triggerevent",
-            sticky: true,
             
           },
         ]
@@ -760,19 +760,19 @@
           {
             name: "webhook_id",
             label: "Webhook Id",
+            sticky: false,
             type: "string",
             
             
-            sticky: true,
             
           },
           {
             name: "task_id",
             label: "Task Id",
+            sticky: false,
             type: "string",
             
             
-            sticky: true,
             
           },
         ]
@@ -786,10 +786,10 @@
           {
             name: "abc",
             label: "Abc",
+            sticky: false,
             type: "string",
             
             
-            sticky: true,
             
           },
         ]
@@ -1005,7 +1005,6 @@
           control_type: "select",
           
           pick_list: "action_name_tasks",
-          sticky: true,
           
         },
         {
@@ -1013,7 +1012,6 @@
           type: "text",
           
           
-          sticky: true,
           ngIf: "input['action'] == 'api_tasks_v1_tasksservice_customaction'",
           
         },
@@ -1141,7 +1139,6 @@
           control_type: "select",
           
           pick_list: "action_name_task_comments",
-          sticky: true,
           
         },
       ],
