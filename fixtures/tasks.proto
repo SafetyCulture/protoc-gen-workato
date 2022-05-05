@@ -245,7 +245,8 @@ message CreateTaskResponse {
 message AddCommentRequest {
   // The ID of the task
   string task_id = 1 [
-    (google.api.field_behavior) = REQUIRED
+    (google.api.field_behavior) = REQUIRED,
+    (s12.protobuf.workato.field) = { important: true }
   ];
 
   // The comment to add

@@ -3,6 +3,7 @@
   {{ field_key "name" .Name -}}
   {{ field_key "label" .Label -}}
   {{ field_key "optional" .Optional -}}
+  {{ field_key "sticky" .Sticky -}}
   {{ field_key "type" .Type -}}
   {{ field_key "convert_input" .ConvertInput -}}
   {{ field_key "hint" .Hint -}}
@@ -14,7 +15,6 @@
   {{ field_key "default" .Default -}}
   {{ field_key "pick_list" .Picklist -}}
   {{ field_key "delimiter" .Delimiter -}}
-  sticky: true,
   {{ field_key "render_input" .RenderInput -}}
   {{ field_key "parse_output" .ParseOutput -}}
   {{ field_key "change_on_blur" .ChangeOnBlur -}}

@@ -68,10 +68,11 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 
 func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldDefinition {
 	fieldDef := &schema.FieldDefinition{
-		Name:  field.Name,
-		Label: fieldTitleFromName(field.Name),
-		Hint:  markdownToHTML(field.Description),
-		Type:  "string",
+		Name:   field.Name,
+		Label:  fieldTitleFromName(field.Name),
+		Hint:   markdownToHTML(field.Description),
+		Type:   "string",
+		Sticky: boolPtr(false),
 	}
 
 	if opts, ok := field.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field").(*options.JSONSchema); ok {
@@ -143,6 +144,8 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 
 			fieldDef.ToggleField = &toggleFieldDef
 		}
+
+		fieldDef.Sticky = boolPtr(opts.Important)
 	}
 
 	if fieldBehavior, ok := field.Option("google.api.field_behavior").([]annotations.FieldBehavior); ok {
