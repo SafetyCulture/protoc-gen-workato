@@ -88,7 +88,7 @@ func (t *WorkatoTemplate) generateActionDefinitions() {
 					Type:        "string",
 					ControlType: "select",
 					Picklist:    picklistDef.Name,
-					Sticky:      boolPtr(true),
+					Optional:    boolPtr(false),
 				},
 			},
 			InputFields:  make(map[string]string),

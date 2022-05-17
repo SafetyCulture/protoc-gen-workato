@@ -1000,7 +1000,7 @@
         {
           name: "action_name",
           label: "Action",
-          sticky: true,
+          optional: false,
           type: "string",
           
           control_type: "select",
@@ -1135,7 +1135,7 @@
         {
           name: "action_name",
           label: "Action",
-          sticky: true,
+          optional: false,
           type: "string",
           
           control_type: "select",
