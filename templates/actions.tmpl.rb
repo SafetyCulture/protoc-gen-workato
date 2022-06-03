@@ -175,6 +175,8 @@
       {{- end }}
       end
     end,
+    retry_on_response: [500,524],
+    max_retries: 3,
   },
 {{end}}
 {{- end }}

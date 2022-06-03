@@ -1102,6 +1102,8 @@
           object_definitions['api.tasks.v1.UpdateTaskResponse']
         end
       end,
+      retry_on_response: [500,524],
+      max_retries: 3,
     },
   
     "action_task_comments": {
@@ -1174,6 +1176,8 @@
           object_definitions['api.tasks.v1.UpdateCommentResponse']
         end
       end,
+      retry_on_response: [500,524],
+      max_retries: 3,
     },
   
   },
