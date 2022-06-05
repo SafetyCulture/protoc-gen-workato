@@ -118,7 +118,7 @@
     output_fields: lambda do |object_definition|
       object_definition['custom_action_output']
     end
-    retry_on_response: [429, 500, 502, 503, 504, 507,524],
+    retry_on_response: [429, 500, 502, 503, 504, 507, 524],
     max_retries: 3,
   },
 {{ range $action := .Actions }}
@@ -177,7 +177,7 @@
       {{- end }}
       end
     end,
-    retry_on_response: [429, 500, 502, 503, 504, 507,524],
+    retry_on_response: [429, 500, 502, 503, 504, 507, 524],
     max_retries: 3,
   },
 {{end}}
