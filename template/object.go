@@ -69,7 +69,7 @@ func (t *WorkatoTemplate) generateObjectDefinitions() {
 func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldDefinition {
 	fieldDef := &schema.FieldDefinition{
 		Name:   field.Name,
-		Label:  fieldTitleFromName(field.Name),
+		Label:  getFieldTitle(field),
 		Hint:   markdownToHTML(field.Description),
 		Type:   "string",
 		Sticky: boolPtr(false),

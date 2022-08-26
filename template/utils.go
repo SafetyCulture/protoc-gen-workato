@@ -53,8 +53,12 @@ func dynamicPicklistName(actionName string) string {
 	return fmt.Sprintf("%s_%s", "dynamic", actionName)
 }
 
-func fieldTitleFromName(name string) string {
-	return strings.Title(strings.ReplaceAll(name, "_", " "))
+func getFieldTitle(field *gendoc.MessageField) string {
+	title := strings.Title(strings.ReplaceAll(field.Name, "_", " "))
+	if field.Options["deprecated"] == true {
+		title = title + "  ⛔ Deprecated - Please do not use ⛔ "
+	}
+	return title
 }
 
 // enumValueShouldBeExcluded returns true if the name ends in _UNSPECIFIED or in _UNKNOWN.
