@@ -235,6 +235,12 @@ message CreateTaskRequest {
 
   // Number of SMS retries
   uint32 sms_retries = 4;
+
+  // Deprecated: Do not use
+  string task_type = 5 [
+    deprecated = true
+  ];
+
 }
 
 message CreateTaskResponse {
