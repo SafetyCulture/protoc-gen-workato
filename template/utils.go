@@ -2,6 +2,8 @@ package template
 
 import (
 	"fmt"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -54,7 +56,8 @@ func dynamicPicklistName(actionName string) string {
 }
 
 func getFieldTitle(field *gendoc.MessageField) string {
-	title := strings.Title(strings.ReplaceAll(field.Name, "_", " "))
+	c := cases.Title(language.AmericanEnglish)
+	title := c.String(strings.ReplaceAll(field.Name, "_", " "))
 	if field.Options["deprecated"] == true {
 		title = title + "  ⛔ Deprecated - Please do not use ⛔ "
 	}
