@@ -56,7 +56,7 @@ func dynamicPicklistName(actionName string) string {
 }
 
 func getFieldTitle(field *gendoc.MessageField) string {
-	c := cases.Title(language.AmericanEnglish, cases.NoLower)
+	c := cases.Title(language.AmericanEnglish)
 	title := c.String(strings.ReplaceAll(field.Name, "_", " "))
 	if field.Options["deprecated"] == true {
 		title = title + "  ⛔ Deprecated - Please do not use ⛔ "
