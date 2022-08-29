@@ -183,3 +183,23 @@ func (t *WorkatoTemplate) checkVisibility(r interface{}) bool {
 
 	return isVisible
 }
+
+func (t *ServiceMethod) extractAllTag() ([]string, error) {
+	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
+	if !ok {
+		return nil, fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
+	}
+	var tagNames []string
+	for _, tag := range opts.Tags {
+		if tag != "Public" {
+			tagNames = append(tagNames, tag)
+			break
+		}
+	}
+
+	if len(tagNames) == 0 {
+		return nil, fmt.Errorf("couldn't find any tags for method %s", t.Method.Name)
+	}
+
+	return tagNames, nil
+}

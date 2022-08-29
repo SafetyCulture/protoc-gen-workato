@@ -20,22 +20,27 @@ type ActionGroup struct {
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
 		// Group methods by their first tag
-		resource, err := action.extractFirstTag()
+		// resource, err := action.extractFirstTag()
+		// add new function extract all tag with public
+		resources, err := action.extractAllTag()
 		if err != nil {
 			continue
 		}
+		// loop each tag
+		for _, resource := range resources {
+			actionGroup := t.groupedActionMap[resource]
 
-		actionGroup := t.groupedActionMap[resource]
-
-		if actionGroup == nil {
-			actionGroup = &ActionGroup{
-				Name:    resource,
-				Actions: make([]*ServiceMethod, 0),
+			if actionGroup == nil {
+				actionGroup = &ActionGroup{
+					Name:    resource,
+					Actions: make([]*ServiceMethod, 0),
+				}
+				t.groupedActionMap[resource] = actionGroup
+				t.groupedActions = append(t.groupedActions, actionGroup)
 			}
-			t.groupedActionMap[resource] = actionGroup
-			t.groupedActions = append(t.groupedActions, actionGroup)
+
+			actionGroup.Actions = append(actionGroup.Actions, action)
 		}
-		actionGroup.Actions = append(actionGroup.Actions, action)
 
 		t.recordUsedAction(action)
 	}
