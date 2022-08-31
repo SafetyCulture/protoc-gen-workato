@@ -24,7 +24,7 @@ func (t *WorkatoTemplate) groupActions() {
 		if err != nil {
 			continue
 		}
-		// loop each tag
+
 		for _, resource := range resources {
 			actionGroup := t.groupedActionMap[resource]
 
