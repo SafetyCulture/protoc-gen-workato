@@ -44,8 +44,9 @@ func (t *ServiceMethod) extractAllTags() ([]string, error) {
 	if !ok {
 		return nil, fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
 	}
+	optsTags := opts.Tags
 	var tagNames []string
-	for _, tagName := range opts.Tags {
+	for _, tagName := range optsTags {
 		tagNames = append(tagNames, tagName)
 	}
 
