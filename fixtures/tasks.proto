@@ -48,7 +48,7 @@ service TasksService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Get a task"
       description: "This description comes from the OpenAPI tag\nabc\n123"
-      tags: ["Tasks"]
+      tags: ["Tickets","Tasks", "Issues"]
     };
 
     option (google.api.http) = {

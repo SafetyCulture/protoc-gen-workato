@@ -19,10 +19,8 @@ type ActionGroup struct {
 // Group actions based on their shared resource name
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
-		// Group methods by their first tag
-		// resource, err := action.extractFirstTag()
-		// add new function extract all tag with public
-		resources, err := action.extractAllTag()
+		// Group methods by their tag
+		resources, err := action.extractAllTags()
 		if err != nil {
 			continue
 		}

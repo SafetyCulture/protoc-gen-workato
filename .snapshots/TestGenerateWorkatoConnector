@@ -1108,6 +1108,130 @@
       max_retries: 3,
     },
   
+    "action_tickets": {
+      title: "Tickets",
+      subtitle: "Interact with Tickets in My Workato Connector",
+      description: lambda do |input, picklist_label|
+        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tickets'}</span> in <span class='provider'>My Workato Connector</span>"
+      end,
+      help: lambda do |input, picklist_label|
+        case input['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          {
+            body: '<p>This description comes from the OpenAPI tag<br>
+  abc<br>
+  123</p>',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        else
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        end
+      end,
+      config_fields: [
+        {
+          name: "action_name",
+          label: "Action",
+          optional: false,
+          sticky: true,
+          type: "string",
+          
+          control_type: "select",
+          
+          pick_list: "action_name_tickets",
+          
+        },
+      ],
+      input_fields: lambda do |object_definitions, connection, config_fields|
+        case config_fields['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskRequest']
+        end
+      end,
+      execute: lambda do |connection, input, eis, eos, continue|
+        case input['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          exclude_keys = ["id"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          get("/v1/tasks/#{input['id']}").params(body)
+        end
+      end,
+      output_fields: lambda do |object_definitions, connection, config_fields|
+        case config_fields['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskResponse']
+        end
+      end,
+      retry_on_response: [429, 500, 502, 503, 504, 507, 520, 521, 522, 523, 524],
+      max_retries: 3,
+    },
+  
+    "action_issues": {
+      title: "Issues",
+      subtitle: "Interact with Issues in My Workato Connector",
+      description: lambda do |input, picklist_label|
+        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Issues'}</span> in <span class='provider'>My Workato Connector</span>"
+      end,
+      help: lambda do |input, picklist_label|
+        case input['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          {
+            body: '<p>This description comes from the OpenAPI tag<br>
+  abc<br>
+  123</p>',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        else
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        end
+      end,
+      config_fields: [
+        {
+          name: "action_name",
+          label: "Action",
+          optional: false,
+          sticky: true,
+          type: "string",
+          
+          control_type: "select",
+          
+          pick_list: "action_name_issues",
+          
+        },
+      ],
+      input_fields: lambda do |object_definitions, connection, config_fields|
+        case config_fields['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskRequest']
+        end
+      end,
+      execute: lambda do |connection, input, eis, eos, continue|
+        case input['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          exclude_keys = ["id"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          get("/v1/tasks/#{input['id']}").params(body)
+        end
+      end,
+      output_fields: lambda do |object_definitions, connection, config_fields|
+        case config_fields['action_name']
+        when 'api_tasks_v1_tasksservice_gettask'
+          object_definitions['api.tasks.v1.GetTaskResponse']
+        end
+      end,
+      retry_on_response: [429, 500, 502, 503, 504, 507, 520, 521, 522, 523, 524],
+      max_retries: 3,
+    },
+  
     "action_task_comments": {
       title: "Task Comments",
       subtitle: "Interact with Task Comments in My Workato Connector",
@@ -1245,6 +1369,16 @@
         ['Update status', 'api_tasks_v1_tasksservice_updatestatus'],
         ['Get task ids for user', 'api_tasks_v1_tasksservice_gettaskidsforuser'],
         ['Get task privately but in workato', 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'],
+      ]
+    end,
+    "action_name_tickets": lambda do
+      [
+        ['Get a task', 'api_tasks_v1_tasksservice_gettask'],
+      ]
+    end,
+    "action_name_issues": lambda do
+      [
+        ['Get a task', 'api_tasks_v1_tasksservice_gettask'],
       ]
     end,
     "action_name_task_comments": lambda do
