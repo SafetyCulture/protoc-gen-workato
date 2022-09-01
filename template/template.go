@@ -39,6 +39,16 @@ func (t *ServiceMethod) extractFirstTag() (string, error) {
 	return tagName, nil
 }
 
+func (t *ServiceMethod) extractAllTags() ([]string, error) {
+	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
+	if !ok {
+		return nil, fmt.Errorf("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation from method %s", t.Method.Name)
+	}
+	var tagNames []string
+	tagNames = append(tagNames, opts.Tags...)
+	return tagNames, nil
+}
+
 // WorkatoTemplate is an interface to use when rendering a workato connector
 // https://docs.workato.com/developing-connectors/sdk/sdk-reference.html
 type WorkatoTemplate struct {
