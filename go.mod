@@ -13,7 +13,7 @@ require (
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/text v0.8.0
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
-	google.golang.org/protobuf v1.29.0
+	google.golang.org/protobuf v1.29.1
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools v2.2.0+incompatible
 )
