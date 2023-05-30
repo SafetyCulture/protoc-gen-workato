@@ -10,7 +10,7 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pseudomuto/protokit v0.2.1
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	golang.org/x/text v0.9.0
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
 	google.golang.org/protobuf v1.30.0
