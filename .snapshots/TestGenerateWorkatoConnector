@@ -518,6 +518,23 @@
       end
     },
   
+    'api.tasks.v1.UpdateTaskNestedRequest': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "task",
+            label: "Task",
+            sticky: false,
+            type: "object",
+            properties: object_definitions['api.tasks.v1.Task'],
+            
+            
+          },
+        ]
+        definition
+      end
+    },
+  
     'api.tasks.v1.DeleteTaskRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
@@ -1000,6 +1017,12 @@
             learn_more_url: '',
             learn_more_text: ''
           }
+        when 'api_tasks_v1_tasksservice_updatetasknested'
+          {
+            body: '<p>Update a task by ID</p>',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
         else
           {
             body: 'Tasks allow you to define work to be done an assign it to someone.',
@@ -1050,6 +1073,8 @@
           object_definitions['api.tasks.v1.UpdateStatusRequest']
         when 'api_tasks_v1_tasksservice_updatetask'
           object_definitions['api.tasks.v1.UpdateTaskRequest']
+        when 'api_tasks_v1_tasksservice_updatetasknested'
+          object_definitions['api.tasks.v1.UpdateTaskNestedRequest']
         end
       end,
       execute: lambda do |connection, input, eis, eos, continue|
@@ -1065,7 +1090,7 @@
         when 'api_tasks_v1_tasksservice_deletetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          delete("/v1/tasks/#{input['id']}").params(body)
+          delete("/v1/tasks/#{input.dig(:id)}").params(body)
         when 'api_tasks_v1_tasksservice_generatereport'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
@@ -1073,23 +1098,27 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input['id']}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body)
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input['user_id']}").payload(body)
+          get("/v1/tasks/#{input.dig(:user_id)}").payload(body)
         when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input['user_id']}").payload(body)
+          get("/v1/tasks/#{input.dig(:user_id)}").payload(body)
         when 'api_tasks_v1_tasksservice_updatestatus'
           exclude_keys = ["task_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input['task_id']}/status").payload(body)
+          post("/v1/tasks/#{input.dig(:task_id)}/status").payload(body)
         when 'api_tasks_v1_tasksservice_updatetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input['id']}").payload(body)
+          put("/v1/tasks/#{input.dig(:id)}").payload(body)
+        when 'api_tasks_v1_tasksservice_updatetasknested'
+          exclude_keys = ["task.id","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          put("/v1/tasks/#{input.dig(:task, :id)}").payload(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1111,6 +1140,8 @@
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatetask'
+          object_definitions['api.tasks.v1.UpdateTaskResponse']
+        when 'api_tasks_v1_tasksservice_updatetasknested'
           object_definitions['api.tasks.v1.UpdateTaskResponse']
         end
       end,
@@ -1167,7 +1198,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input['id']}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1229,7 +1260,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input['id']}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1297,11 +1328,11 @@
         when 'api_tasks_v1_tasksservice_addcomment'
           exclude_keys = ["task_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input['task_id']}/comment").payload(body)
+          post("/v1/tasks/#{input.dig(:task_id)}/comment").payload(body)
         when 'api_tasks_v1_tasksservice_updatecomment'
           exclude_keys = ["task_id","comment_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input['task_id']}/comment/#{input['comment_id']}").payload(body)
+          put("/v1/tasks/#{input.dig(:task_id)}/comment/#{input.dig(:comment_id)}").payload(body)
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1373,6 +1404,7 @@
         ['Create task', 'api_tasks_v1_tasksservice_createtask'],
         ['Get a task', 'api_tasks_v1_tasksservice_gettask'],
         ['Update task', 'api_tasks_v1_tasksservice_updatetask'],
+        ['Update task nested', 'api_tasks_v1_tasksservice_updatetasknested'],
         ['Delete task', 'api_tasks_v1_tasksservice_deletetask'],
         ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
         ['Generate report', 'api_tasks_v1_tasksservice_generatereport'],

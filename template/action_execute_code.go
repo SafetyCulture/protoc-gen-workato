@@ -13,7 +13,7 @@ import (
 const pbRepeated = "repeated"
 
 // Used to identify parameters in a path e.g. `/users/{used_id}`
-var paramMatch = regexp.MustCompile(`({\w+})`)
+var paramMatch = regexp.MustCompile(`({[\.\w]+})`)
 
 func hasRepeatedType(message *gendoc.Message) bool {
 	if !message.HasFields {
@@ -48,7 +48,12 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 					param := match[1 : len(match)-1]
 					params = append(params, param)
 
-					path = strings.ReplaceAll(path, match, fmt.Sprintf("#{input['%s']}", param))
+					vals := strings.Split(param, ".")
+					for i, val := range vals {
+						vals[i] = fmt.Sprintf(":%s", val) // Convert the string into a ruby symbol
+					}
+
+					path = strings.ReplaceAll(path, match, fmt.Sprintf("#{input.dig(%s)}", strings.Join(vals, ", ")))
 				}
 			}
 
