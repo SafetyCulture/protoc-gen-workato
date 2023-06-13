@@ -10,6 +10,8 @@ import "s12/protobuf/workato/annotations.proto";
 
 package api.tasks.v1;
 
+option go_package = "fixtures/tasks;tasks";
+
 service TasksService {
   // Task Event
   rpc TriggerTask(TriggerTaskRequest) returns (TriggerTaskResponse) {
@@ -70,6 +72,16 @@ service TasksService {
 
     option (google.api.http) = {
       put: "/v1/tasks/{id}"
+      body: "*"
+    };
+  }
+
+  // Update a task by ID
+  rpc UpdateTaskNested(UpdateTaskNestedRequest) returns (UpdateTaskResponse) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+
+    option (google.api.http) = {
+      put: "/v1/tasks/{task.id}"
       body: "*"
     };
   }
@@ -222,6 +234,10 @@ message UpdateTaskRequest {
 }
 
 message UpdateTaskResponse {}
+
+message UpdateTaskNestedRequest {
+  Task task = 1;
+}
 
 message CreateTaskRequest {
   // The name of the task
