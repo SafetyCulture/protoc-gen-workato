@@ -1,24 +1,24 @@
 package template
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetTitle(t *testing.T) {
-	tests := []struct {
+	tests := map[string]struct {
 		have string
 		want string
 	}{
-		{"GetStatus", "Get status"},
-		{"GetTaskIDsForUser", "Get task ids for user"},
+		"should replace space #1": {"GetStatus", "Get status"},
+		"should replace space #2": {"GetTaskIDsForUser", "Get task ids for user"},
 	}
 
-	for _, tt := range tests {
-		t.Run(fmt.Sprintf("Testing %s", tt.have), func(t *testing.T) {
-			if got := GetTitle(tt.have); got != tt.want {
-				t.Errorf("GetTitle() = %v, want %v", got, tt.want)
-			}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			res := GetTitle(tt.have)
+			assert.Equal(t, tt.want, res)
 		})
 	}
 }
