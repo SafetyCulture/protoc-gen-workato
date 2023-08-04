@@ -2,13 +2,14 @@ package template
 
 import (
 	"fmt"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
 	"github.com/gomarkdown/markdown"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gomarkdown/markdown/parser"
 	gendoc "github.com/pseudomuto/protoc-gen-doc"
@@ -24,6 +25,10 @@ var keyNameReplacer = strings.NewReplacer(
 	"/", "_",
 	" ", "_",
 	"&", "and",
+	"(", "_",
+	")", "_",
+	"[", "_",
+	"]", "_",
 )
 
 var stringValueReplacer = strings.NewReplacer(
