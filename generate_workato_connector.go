@@ -3,12 +3,10 @@ package genworkato
 import (
 	"bytes"
 	"embed"
-	"io/ioutil"
-
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
-
 	tmpl "text/template"
 
 	"github.com/Masterminds/sprig/v3"
@@ -87,7 +85,7 @@ func GenerateWorkatoConnector(gendoctemplate *gendoc.Template, cfg *config.Confi
 	if cfg.TemplateFile != "" {
 		templateName = "custom_template"
 		customTp := tp.New(templateName)
-		b, err := ioutil.ReadFile(cfg.TemplateFile)
+		b, err := os.ReadFile(cfg.TemplateFile)
 		if err != nil {
 			return nil, err
 		}
