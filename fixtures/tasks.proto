@@ -37,7 +37,10 @@ service TasksService {
   //
   // Allows the user to create a new task and this is a really long multiline description.
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Tasks (NEW)";
+      operation_id: "Tasks";
+    };
 
     option (google.api.http) = {
       post: "/v1/tasks"

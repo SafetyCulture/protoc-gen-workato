@@ -20,20 +20,32 @@ type ActionGroup struct {
 func (t *WorkatoTemplate) groupActions() {
 	for _, action := range t.actions {
 		// Group methods by their tag
-		resources, err := action.extractAllTags()
+		tags, operationID, err := action.extractAllTags()
 		if err != nil {
 			continue
 		}
 
-		for _, resource := range resources {
-			actionGroup := t.groupedActionMap[resource]
+		// We encountered problems where teams renamed tags and caused the workato recipes to fail for customers.
+		// Our immediate solution was to use operationID to overwrite tags where is possible (single tag).
+		// Having multiple tags and operationID will revert to the previous behaviour of using tags.
+		useOperationID := false
+		if len(tags) == 1 && operationID != "" {
+			useOperationID = true
+		}
 
+		for _, tag := range tags {
+			tagName := tag
+			if useOperationID {
+				tagName = operationID
+			}
+
+			actionGroup := t.groupedActionMap[tagName]
 			if actionGroup == nil {
 				actionGroup = &ActionGroup{
-					Name:    resource,
+					Name:    tagName,
 					Actions: make([]*ServiceMethod, 0),
 				}
-				t.groupedActionMap[resource] = actionGroup
+				t.groupedActionMap[tagName] = actionGroup
 				t.groupedActions = append(t.groupedActions, actionGroup)
 			}
 
