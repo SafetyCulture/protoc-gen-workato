@@ -40,11 +40,9 @@ service TasksService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: "Tasks (NEW)";
     };
-    
     option (s12.protobuf.workato.method) = {
       actionGroupName: "Tasks"
     };
-
     option (google.api.http) = {
       post: "/v1/tasks"
       body: "*"
