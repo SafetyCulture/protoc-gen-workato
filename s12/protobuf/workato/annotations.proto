@@ -18,6 +18,7 @@ message MethodOptionsWorkato {
   PicklistOptions picklist = 2;
   // @deprecated use google.api.method_visibility instead
   bool excluded = 3 [deprecated = true];
+  string actionGroupName = 4;
 }
 
 // FieldOptionsWorkato
