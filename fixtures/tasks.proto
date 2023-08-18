@@ -39,9 +39,10 @@ service TasksService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: "Tasks (NEW)";
-      operation_id: "Tasks";
     };
-
+    option (s12.protobuf.workato.method) = {
+      actionGroupName: "Tasks"
+    };
     option (google.api.http) = {
       post: "/v1/tasks"
       body: "*"

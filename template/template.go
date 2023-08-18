@@ -47,7 +47,14 @@ func (t *ServiceMethod) extractAllTags() ([]string, string, error) {
 	}
 	var tagNames []string
 	tagNames = append(tagNames, opts.Tags...)
-	return tagNames, opts.OperationId, nil
+
+	var actionGroupName = ""
+	workatoMethodOpt, ok := t.Method.Option("s12.protobuf.workato.method").(*workato.MethodOptionsWorkato)
+	if ok {
+		actionGroupName = workatoMethodOpt.GetActionGroupName()
+	}
+
+	return tagNames, actionGroupName, nil
 }
 
 // WorkatoTemplate is an interface to use when rendering a workato connector
