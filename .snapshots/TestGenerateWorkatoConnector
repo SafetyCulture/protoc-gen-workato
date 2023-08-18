@@ -951,10 +951,10 @@
     },
   
     "action_tasks": {
-      title: "Tasks",
-      subtitle: "Interact with Tasks in My Workato Connector",
+      title: "Tasks (NEW)",
+      subtitle: "Interact with Tasks (NEW) in My Workato Connector",
       description: lambda do |input, picklist_label|
-        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tasks'}</span> in <span class='provider'>My Workato Connector</span>"
+        "<span class='provider'>#{picklist_label['action_name'] || 'Interact with Tasks (NEW)'}</span> in <span class='provider'>My Workato Connector</span>"
       end,
       help: lambda do |input, picklist_label|
         case input['action_name']
