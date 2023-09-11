@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.3
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/gomarkdown/markdown v0.0.0-20230716120725-531d2d74bc12
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.17.1
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pseudomuto/protokit v0.2.1
