@@ -748,6 +748,32 @@
     'api.tasks.v1.UpdateStatusRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
+          {
+            name: "status",
+            label: "Status",
+            sticky: false,
+            type: "object",
+            properties: object_definitions['api.tasks.v1.UpdateStatusRequest.Status'],
+            
+            
+          },
+        ]
+        definition
+      end
+    },
+  
+    'api.tasks.v1.UpdateStatusRequest.Status': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "abc",
+            label: "Abc",
+            sticky: false,
+            type: "string",
+            
+            
+            
+          },
         ]
         definition
       end
@@ -1010,6 +1036,18 @@
             learn_more_url: '',
             learn_more_text: ''
           }
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
         when 'api_tasks_v1_tasksservice_updatetask'
           {
             body: '<p>Update a task by ID<br>
@@ -1071,6 +1109,10 @@
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['api.tasks.v1.UpdateStatusRequest']
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          object_definitions['api.tasks.v1.UpdateStatusRequest']
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          object_definitions['api.tasks.v1.UpdateStatusRequest']
         when 'api_tasks_v1_tasksservice_updatetask'
           object_definitions['api.tasks.v1.UpdateTaskRequest']
         when 'api_tasks_v1_tasksservice_updatetasknested'
@@ -1111,6 +1153,14 @@
           exclude_keys = ["task_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
           post("/v1/tasks/#{input.dig(:task_id)}/status").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          exclude_keys = ["custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          post("/api.tasks.v1.TasksService/UpdateStatusNoHttpOption").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          exclude_keys = ["task_id","status","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          post("/v1/tasks/#{input.dig(:task_id)}/status").payload(input['status']).params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
@@ -1138,6 +1188,10 @@
         when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatetask'
           object_definitions['api.tasks.v1.UpdateTaskResponse']
@@ -1409,6 +1463,8 @@
         ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
         ['Generate report', 'api_tasks_v1_tasksservice_generatereport'],
         ['Update status', 'api_tasks_v1_tasksservice_updatestatus'],
+        ['Update status with body', 'api_tasks_v1_tasksservice_updatestatuswithbody'],
+        ['Update status no http option', 'api_tasks_v1_tasksservice_updatestatusnohttpoption'],
         ['Get task ids for user', 'api_tasks_v1_tasksservice_gettaskidsforuser'],
         ['Get task privately but in workato', 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'],
       ]
