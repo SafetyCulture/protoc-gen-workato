@@ -12,6 +12,8 @@ import (
 
 const pbRepeated = "repeated"
 
+const errorHandling = `.after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end`
+
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({[\.\w]+})`)
 
@@ -60,14 +62,14 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 			if rule.Body == "*" {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
-					Func:             fmt.Sprintf(`%s("%s").payload(body)`, mthd, path),
+					Func:             fmt.Sprintf(`%s("%s").payload(body)%s`, mthd, path, errorHandling),
 				}
 			}
 
 			if rule.Body != "" {
 				return schema.ExecCode{
 					ExcludeFromQuery: append(params, rule.Body),
-					Func:             fmt.Sprintf(`%s("%s").payload(input['%s']).params(body)`, mthd, path, rule.Body),
+					Func:             fmt.Sprintf(`%s("%s").payload(input['%s']).params(body)%s`, mthd, path, rule.Body, errorHandling),
 				}
 			}
 
@@ -75,18 +77,18 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
 					Body:             "qparams = call('encode_array_to_query_params', body)",
-					Func:             fmt.Sprintf(`%s("%s?#{qparams}")`, mthd, path),
+					Func:             fmt.Sprintf(`%s("%s?#{qparams}")%s`, mthd, path, errorHandling),
 				}
 			} else {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
-					Func:             fmt.Sprintf(`%s("%s").params(body)`, mthd, path),
+					Func:             fmt.Sprintf(`%s("%s").params(body)%s`, mthd, path, errorHandling),
 				}
 			}
 		}
 	}
 
 	return schema.ExecCode{
-		Func: fmt.Sprintf(`post("/%s/%s").payload(body)`, service.FullName, method.Name),
+		Func: fmt.Sprintf(`post("/%s/%s").payload(body)%s`, service.FullName, method.Name, errorHandling),
 	}
 }

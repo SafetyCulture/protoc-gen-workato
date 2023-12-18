@@ -1,4 +1,19 @@
 {{ define "methods" }}
+  # Default after_error_response handler, can be overwritten by defining a new method after this one.
+  after_error_response: lambda do |code, body, headers, message|
+    err = [
+      message,
+      body,
+    ].join("\n\n")
+
+    trace = headers.dig('traceparent') || headers.dig('grpc_metadata_traceparent')
+    if trace.present?
+      err = "#{err}\n\nTrace ID: #{trace}"
+    end
+
+    error(err)
+  end,
+
   "encode_array_to_query_params": lambda do |val|
     val.each do |key, value|
       if (value.is_a? String) && (value[0] == '[') && (value[-1] == ']')
