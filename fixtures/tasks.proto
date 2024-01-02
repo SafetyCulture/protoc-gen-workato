@@ -151,6 +151,18 @@ service TasksService {
     };
   }
 
+  rpc UpdateStatusWithBody(UpdateStatusRequest) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+    option (google.api.http) = {
+      post: "/v1/tasks/{task_id}/status"
+      body: "status"
+    };
+  }
+
+  rpc UpdateStatusNoHttpOption(UpdateStatusRequest) returns (google.protobuf.Empty) {
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
+  }
+
   rpc GetTaskIDsForUser(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation).tags = "Tasks";
     option (google.api.http) = {
@@ -329,7 +341,11 @@ message CustomActionResponse {
 }
 
 message UpdateStatusRequest {
+  message Status {
+    string abc = 123;
+  }
 
+  Status status = 1;
 }
 
 message UnusedButIncluded {

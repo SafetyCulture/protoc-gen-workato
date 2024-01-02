@@ -748,6 +748,32 @@
     'api.tasks.v1.UpdateStatusRequest': {
       fields: lambda do |connection, config_fields, object_definitions|
         definition = [
+          {
+            name: "status",
+            label: "Status",
+            sticky: false,
+            type: "object",
+            properties: object_definitions['api.tasks.v1.UpdateStatusRequest.Status'],
+            
+            
+          },
+        ]
+        definition
+      end
+    },
+  
+    'api.tasks.v1.UpdateStatusRequest.Status': {
+      fields: lambda do |connection, config_fields, object_definitions|
+        definition = [
+          {
+            name: "abc",
+            label: "Abc",
+            sticky: false,
+            type: "string",
+            
+            
+            
+          },
         ]
         definition
       end
@@ -1010,6 +1036,18 @@
             learn_more_url: '',
             learn_more_text: ''
           }
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          {
+            body: '',
+            learn_more_url: '',
+            learn_more_text: ''
+          }
         when 'api_tasks_v1_tasksservice_updatetask'
           {
             body: '<p>Update a task by ID<br>
@@ -1071,6 +1109,10 @@
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
           object_definitions['api.tasks.v1.UpdateStatusRequest']
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          object_definitions['api.tasks.v1.UpdateStatusRequest']
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          object_definitions['api.tasks.v1.UpdateStatusRequest']
         when 'api_tasks_v1_tasksservice_updatetask'
           object_definitions['api.tasks.v1.UpdateTaskRequest']
         when 'api_tasks_v1_tasksservice_updatetasknested'
@@ -1082,7 +1124,7 @@
         when 'api_tasks_v1_tasksservice_createtask'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks").payload(body)
+          post("/v1/tasks").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_customaction'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
@@ -1090,35 +1132,43 @@
         when 'api_tasks_v1_tasksservice_deletetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          delete("/v1/tasks/#{input.dig(:id)}").params(body)
+          delete("/v1/tasks/#{input.dig(:id)}").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_generatereport'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/action=generateReport").payload(body)
+          post("/v1/tasks/action=generateReport").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:user_id)}").payload(body)
+          get("/v1/tasks/#{input.dig(:user_id)}").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:user_id)}").payload(body)
+          get("/v1/tasks/#{input.dig(:user_id)}").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatestatus'
           exclude_keys = ["task_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input.dig(:task_id)}/status").payload(body)
+          post("/v1/tasks/#{input.dig(:task_id)}/status").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          exclude_keys = ["custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          post("/api.tasks.v1.TasksService/UpdateStatusNoHttpOption").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
+          exclude_keys = ["task_id","status","custom_field"]
+          body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
+          post("/v1/tasks/#{input.dig(:task_id)}/status").payload(input['status']).params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:id)}").payload(body)
+          put("/v1/tasks/#{input.dig(:id)}").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatetasknested'
           exclude_keys = ["task.id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:task, :id)}").payload(body)
+          put("/v1/tasks/#{input.dig(:task, :id)}").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1138,6 +1188,10 @@
         when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatestatus'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
+          object_definitions['google.protobuf.Empty']
+        when 'api_tasks_v1_tasksservice_updatestatuswithbody'
           object_definitions['google.protobuf.Empty']
         when 'api_tasks_v1_tasksservice_updatetask'
           object_definitions['api.tasks.v1.UpdateTaskResponse']
@@ -1198,7 +1252,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1260,7 +1314,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").params(body)
+          get("/v1/tasks/#{input.dig(:id)}").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1328,11 +1382,11 @@
         when 'api_tasks_v1_tasksservice_addcomment'
           exclude_keys = ["task_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input.dig(:task_id)}/comment").payload(body)
+          post("/v1/tasks/#{input.dig(:task_id)}/comment").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatecomment'
           exclude_keys = ["task_id","comment_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:task_id)}/comment/#{input.dig(:comment_id)}").payload(body)
+          put("/v1/tasks/#{input.dig(:task_id)}/comment/#{input.dig(:comment_id)}").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1396,7 +1450,7 @@
     "dynamic_api_tasks_v1_tasksservice_listtasks": lambda do    
       body = {}
       qparams = call('encode_array_to_query_params', body)
-      resp = get("/v1/tasks?#{qparams}")
+      resp = get("/v1/tasks?#{qparams}").after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
       resp['tasks'].pluck('name', 'id')
     end,
     "action_name_tasks": lambda do
@@ -1409,6 +1463,8 @@
         ['Custom action', 'api_tasks_v1_tasksservice_customaction'],
         ['Generate report', 'api_tasks_v1_tasksservice_generatereport'],
         ['Update status', 'api_tasks_v1_tasksservice_updatestatus'],
+        ['Update status with body', 'api_tasks_v1_tasksservice_updatestatuswithbody'],
+        ['Update status no http option', 'api_tasks_v1_tasksservice_updatestatusnohttpoption'],
         ['Get task ids for user', 'api_tasks_v1_tasksservice_gettaskidsforuser'],
         ['Get task privately but in workato', 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'],
       ]
@@ -1456,6 +1512,21 @@
   # Reusable methods can be called from object_definitions, picklists or actions
   # See more at https://docs.workato.com/developing-connectors/sdk/sdk-reference/methods.html
   methods: {  
+    # Default after_error_response handler, can be overwritten by defining a new method after this one.
+    after_error_response: lambda do |code, body, headers, message|
+      err = [
+        message,
+        body,
+      ].join("\n\n")
+  
+      trace = headers.dig('traceparent') || headers.dig('grpc_metadata_traceparent')
+      if trace.present?
+        err = "#{err}\n\nTrace ID: #{trace}"
+      end
+  
+      error(err)
+    end,
+  
     "encode_array_to_query_params": lambda do |val|
       val.each do |key, value|
         if (value.is_a? String) && (value[0] == '[') && (value[-1] == ']')
