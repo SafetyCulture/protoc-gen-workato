@@ -33,7 +33,7 @@ jobs:
           ./cc-test-reporter after-build --prefix $(go list -m)
 
       - name: Upload Coverage Result Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: codeclimate-unit
           path: codeclimate.json
