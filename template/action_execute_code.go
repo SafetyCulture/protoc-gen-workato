@@ -12,7 +12,8 @@ import (
 
 const pbRepeated = "repeated"
 
-const errorHandling = `.after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end`
+const errorHandling = `after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end`
+const headers = `headers("Accept-Encoding": "identity")`
 
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({[\.\w]+})`)
@@ -62,14 +63,14 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 			if rule.Body == "*" {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
-					Func:             fmt.Sprintf(`%s("%s").payload(body)%s`, mthd, path, errorHandling),
+					Func:             fmt.Sprintf(`%s("%s").%s.payload(body).%s`, mthd, path, headers, errorHandling),
 				}
 			}
 
 			if rule.Body != "" {
 				return schema.ExecCode{
 					ExcludeFromQuery: append(params, rule.Body),
-					Func:             fmt.Sprintf(`%s("%s").payload(input['%s']).params(body)%s`, mthd, path, rule.Body, errorHandling),
+					Func:             fmt.Sprintf(`%s("%s").%s.payload(input['%s']).params(body).%s`, mthd, path, headers, rule.Body, errorHandling),
 				}
 			}
 
@@ -77,18 +78,18 @@ func (t *WorkatoTemplate) getExecuteCode(service *gendoc.Service, method *gendoc
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
 					Body:             "qparams = call('encode_array_to_query_params', body)",
-					Func:             fmt.Sprintf(`%s("%s?#{qparams}")%s`, mthd, path, errorHandling),
+					Func:             fmt.Sprintf(`%s("%s?#{qparams}").%s.%s`, mthd, path, headers, errorHandling),
 				}
 			} else {
 				return schema.ExecCode{
 					ExcludeFromQuery: params,
-					Func:             fmt.Sprintf(`%s("%s").params(body)%s`, mthd, path, errorHandling),
+					Func:             fmt.Sprintf(`%s("%s").%s.params(body).%s`, mthd, path, headers, errorHandling),
 				}
 			}
 		}
 	}
 
 	return schema.ExecCode{
-		Func: fmt.Sprintf(`post("/%s/%s").payload(body)%s`, service.FullName, method.Name, errorHandling),
+		Func: fmt.Sprintf(`post("/%s/%s").%s.payload(body).%s`, service.FullName, method.Name, headers, errorHandling),
 	}
 }
