@@ -13,7 +13,7 @@ import (
 const pbRepeated = "repeated"
 
 const errorHandling = `after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end`
-const headers = `headers("Accept-Encoding": "identity")`
+const headers = `headers("Accept-encoding": "identity")`
 
 // Used to identify parameters in a path e.g. `/users/{used_id}`
 var paramMatch = regexp.MustCompile(`({[\.\w]+})`)
