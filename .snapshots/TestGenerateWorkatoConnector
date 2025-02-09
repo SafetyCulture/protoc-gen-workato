@@ -1124,7 +1124,7 @@
         when 'api_tasks_v1_tasksservice_createtask'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/v1/tasks").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_customaction'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
@@ -1132,43 +1132,43 @@
         when 'api_tasks_v1_tasksservice_deletetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          delete("/v1/tasks/#{input.dig(:id)}").headers("Accept-Encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          delete("/v1/tasks/#{input.dig(:id)}").headers("Accept-encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_generatereport'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/action=generateReport").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/v1/tasks/action=generateReport").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-Encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettaskidsforuser'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:user_id)}").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          get("/v1/tasks/#{input.dig(:user_id)}").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_gettaskprivatelybutinworkato'
           exclude_keys = ["user_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:user_id)}").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          get("/v1/tasks/#{input.dig(:user_id)}").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatestatus'
           exclude_keys = ["task_id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input.dig(:task_id)}/status").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/v1/tasks/#{input.dig(:task_id)}/status").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatestatusnohttpoption'
           exclude_keys = ["custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/api.tasks.v1.TasksService/UpdateStatusNoHttpOption").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/api.tasks.v1.TasksService/UpdateStatusNoHttpOption").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatestatuswithbody'
           exclude_keys = ["task_id","status","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input.dig(:task_id)}/status").headers("Accept-Encoding": "identity").payload(input['status']).params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/v1/tasks/#{input.dig(:task_id)}/status").headers("Accept-encoding": "identity").payload(input['status']).params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatetask'
           exclude_keys = ["id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:id)}").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          put("/v1/tasks/#{input.dig(:id)}").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatetasknested'
           exclude_keys = ["task.id","custom_field"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:task, :id)}").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          put("/v1/tasks/#{input.dig(:task, :id)}").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1252,7 +1252,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-Encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1314,7 +1314,7 @@
         when 'api_tasks_v1_tasksservice_gettask'
           exclude_keys = ["id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-Encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          get("/v1/tasks/#{input.dig(:id)}").headers("Accept-encoding": "identity").params(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1382,11 +1382,11 @@
         when 'api_tasks_v1_tasksservice_addcomment'
           exclude_keys = ["task_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          post("/v1/tasks/#{input.dig(:task_id)}/comment").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          post("/v1/tasks/#{input.dig(:task_id)}/comment").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         when 'api_tasks_v1_tasksservice_updatecomment'
           exclude_keys = ["task_id","comment_id"]
           body = input.select { |k, v| k != 'action_name' and not exclude_keys.include? k }
-          put("/v1/tasks/#{input.dig(:task_id)}/comment/#{input.dig(:comment_id)}").headers("Accept-Encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+          put("/v1/tasks/#{input.dig(:task_id)}/comment/#{input.dig(:comment_id)}").headers("Accept-encoding": "identity").payload(body).after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
         end
       end,
       output_fields: lambda do |object_definitions, connection, config_fields|
@@ -1450,7 +1450,7 @@
     "dynamic_api_tasks_v1_tasksservice_listtasks": lambda do    
       body = {}
       qparams = call('encode_array_to_query_params', body)
-      resp = get("/v1/tasks?#{qparams}").headers("Accept-Encoding": "identity").after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
+      resp = get("/v1/tasks?#{qparams}").headers("Accept-encoding": "identity").after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end
       resp['tasks'].pluck('name', 'id')
     end,
     "action_name_tasks": lambda do
