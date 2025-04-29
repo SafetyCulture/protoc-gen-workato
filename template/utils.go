@@ -29,6 +29,7 @@ var keyNameReplacer = strings.NewReplacer(
 	")", "_",
 	"[", "_",
 	"]", "_",
+	"-", "_",
 )
 
 var stringValueReplacer = strings.NewReplacer(
