@@ -29,6 +29,8 @@ message FieldOptionsWorkato {
   string picklist = 3;
   // marks a field `sticky`
   bool important = 4;
+  // allows overriding the default control type
+  string control_type = 5;
 }
 
 extend google.protobuf.MethodOptions {

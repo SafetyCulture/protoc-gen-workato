@@ -278,6 +278,29 @@
             
             
           },
+          {
+            name: "priority_levels",
+            label: "Priority Levels",
+            sticky: false,
+            type: "string",
+            hint: "<p>Test field for control_type functionality - should render as string input</p>",
+            
+            control_type: "string",
+            
+            
+          },
+          {
+            name: "status_filters",
+            label: "Status Filters",
+            sticky: false,
+            type: "string",
+            hint: "<p>Test field for backwards compatibility - should render as multiselect (default)</p>",
+            
+            control_type: "multiselect",
+            
+            pick_list: "enum_api_tasks_v1_listtasksrequest_status",
+            
+          },
         ]
         definition
       end
@@ -1483,6 +1506,13 @@
       [
         ['Add comment', 'api_tasks_v1_tasksservice_addcomment'],
         ['Update comment', 'api_tasks_v1_tasksservice_updatecomment'],
+      ]
+    end,
+    "enum_api_tasks_v1_listtasksrequest_status": lambda do
+      [
+        ['UNKNOWN', 'UNKNOWN'],
+        ['ACTIVE', 'ACTIVE'],
+        ['ARCHIVED', 'ARCHIVED'],
       ]
     end,
     "enum_api_tasks_v1_generatereportrequest_reportformatwrapper_reportformat": lambda do

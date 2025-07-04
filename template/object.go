@@ -118,6 +118,14 @@ func (t *WorkatoTemplate) getFieldDef(field *gendoc.MessageField) *schema.FieldD
 	}
 
 	if opts, ok := field.Option("s12.protobuf.workato.field").(*workato.FieldOptionsWorkato); ok {
+		// Check if control_type is specified and override the default behavior
+		if opts.ControlType != "" {
+			fieldDef.ControlType = opts.ControlType
+			// If overriding to string for an enum, clear the picklist
+			if opts.ControlType == "string" && t.enumMap[field.FullType] != nil {
+				fieldDef.Picklist = ""
+			}
+		}
 		if opts.DynamicPicklist != "" || opts.Picklist != "" {
 			picklistName := opts.Picklist
 			if opts.DynamicPicklist != "" {

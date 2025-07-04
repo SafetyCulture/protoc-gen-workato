@@ -273,6 +273,12 @@ message CreateTaskRequest {
     deprecated = true
   ];
 
+  // Test field for control_type functionality - should render as string input
+  repeated ListTasksRequest.Status priority_levels = 6 [(s12.protobuf.workato.field) = { control_type: "string" }];
+
+  // Test field for backwards compatibility - should render as multiselect (default)
+  repeated ListTasksRequest.Status status_filters = 7;
+
 }
 
 message CreateTaskResponse {

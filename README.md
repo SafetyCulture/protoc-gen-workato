@@ -54,3 +54,28 @@ This will enable you to manually check the generated file and compare to the one
 ```bash
 make workato
 ```
+
+
+## Field Options
+
+### Control Type Override
+
+You can override the default control type for fields using the `control_type` option:
+
+```proto
+message MyRequest {
+  // This repeated enum field will be rendered as a string input instead of multiselect
+  repeated MyEnum status_list = 1 [(s12.protobuf.workato.field) = { control_type: "string" }];
+}
+```
+
+This is particularly useful when you want to:
+- Allow users to input comma-separated values instead of using a multiselect dropdown
+- Provide more flexibility in how enum values are entered
+- Override the default UI behavior for specific fields
+
+**Examples:**
+- `control_type: "string"` - renders as a text input
+- `control_type: "text"` - renders as a text input  
+- `control_type: "multiselect"` - renders as a multiselect dropdown (default for repeated enums)
+- `control_type: "select"` - renders as a single select dropdown
