@@ -25,13 +25,6 @@ jobs:
         run: |
           go test ./...
 
-      - name: Upload Coverage Result Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: codeclimate-unit
-          path: codeclimate.json
-          retention-days: 1
-
       - uses: actions/setup-python@v2
       - name: Run pre commit linting
         uses: pre-commit/action@v3.0.1
