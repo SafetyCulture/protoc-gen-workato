@@ -22,15 +22,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test & Coverage
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-          go test -coverprofile c.out.tmp -coverpkg ./... ./...
-          cat c.out.tmp | grep -v "pb.go" > c.out
-          ./cc-test-reporter after-build --prefix $(go list -m)
+          go test ./...
 
       - name: Upload Coverage Result Artifact
         uses: actions/upload-artifact@v4
