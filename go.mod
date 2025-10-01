@@ -1,6 +1,6 @@
 module github.com/SafetyCulture/protoc-gen-workato
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -13,9 +13,9 @@ require (
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pseudomuto/protokit v0.2.1
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/text v0.28.0
+	golang.org/x/text v0.29.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c
-	google.golang.org/protobuf v1.36.7
+	google.golang.org/protobuf v1.36.9
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools v2.2.0+incompatible
 )
