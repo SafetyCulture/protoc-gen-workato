@@ -8,14 +8,14 @@ require (
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/gomarkdown/markdown v0.0.0-20230716120725-531d2d74bc12
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.4
 	github.com/iancoleman/strcase v0.3.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pseudomuto/protokit v0.2.1
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/text v0.31.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20250929231259-57b25ae835d4
-	google.golang.org/protobuf v1.36.10
+	golang.org/x/text v0.32.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20251222181119-0a764e51fe1b
+	google.golang.org/protobuf v1.36.11
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools v2.2.0+incompatible
 )
