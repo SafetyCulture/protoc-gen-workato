@@ -11,7 +11,7 @@ require (
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
 	github.com/pseudomuto/protokit v0.2.1
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/text v0.36.0
+	golang.org/x/text v0.37.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/yaml.v3 v3.0.1
