@@ -1,6 +1,6 @@
 module github.com/SafetyCulture/protoc-gen-workato
 
-go 1.25.0
+go 1.26.4
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
@@ -9,9 +9,9 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
-	github.com/pseudomuto/protokit v0.2.1
+	github.com/pseudomuto/protokit v0.3.0
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/text v0.38.0
+	golang.org/x/text v0.40.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/protobuf v1.36.11
 	gopkg.in/yaml.v3 v3.0.1
