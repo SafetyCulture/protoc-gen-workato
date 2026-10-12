@@ -1,19 +1,19 @@
 module github.com/SafetyCulture/protoc-gen-workato
 
-go 1.25.0
+go 1.26.4
 
 require (
 	github.com/Masterminds/sprig/v3 v3.3.0
 	github.com/bradleyjkemp/cupaloy v2.3.0+incompatible
 	github.com/gomarkdown/markdown v0.0.0-20230716120725-531d2d74bc12
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
-	github.com/pseudomuto/protokit v0.2.1
-	github.com/stretchr/testify v1.11.1
-	golang.org/x/text v0.38.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
-	google.golang.org/protobuf v1.36.11
+	github.com/pseudomuto/protokit v0.3.0
+	github.com/stretchr/testify v1.12.1
+	golang.org/x/text v0.40.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d
+	google.golang.org/protobuf v1.36.12
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools v2.2.0+incompatible
 )
@@ -37,5 +37,6 @@ require (
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
 )
