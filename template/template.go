@@ -12,13 +12,13 @@ import (
 	"google.golang.org/genproto/googleapis/api/visibility"
 )
 
-// ServiceMethod is a combined service and method defintion
+// ServiceMethod is a combined service and method definition
 type ServiceMethod struct {
 	Service *gendoc.Service
 	Method  *gendoc.ServiceMethod
 }
 
-// ExtractFirstTag Extract and Converts first non-public tag
+// ExtractFirstTag Extracts and converts first non-public tag
 func (t *ServiceMethod) extractFirstTag() (string, error) {
 	opts, ok := t.Method.Option("grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation").(*options.Operation)
 	if !ok {
@@ -90,14 +90,14 @@ type WorkatoTemplate struct {
 
 	// Name is the name of the connector
 	Name string
-	// AppBaseURl is the base URL to connect to for the application
+	// AppBaseURL is the base URL to connect to for the application
 	AppBaseURL string
 	// DeveloperDocsURL is the URL to view the API docs on
 	DeveloperDocsURL string
 
 	// ObjectDefinitions are Workato formatted definitions of messages
 	ObjectDefinitions []*schema.ObjectDefinition
-	// Actions are Workato formatted defintions of grouped methods
+	// Actions are Workato formatted definitions of grouped methods
 	Actions []*schema.ActionDefinition
 	// Picklists are Workato formatted definitions of enums and action groups
 	Picklists []*schema.PicklistDefinition
@@ -147,7 +147,7 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 			}
 
 			for _, method := range service.Methods {
-				seviceMethod := &ServiceMethod{service, method}
+				serviceMethod := &ServiceMethod{service, method}
 
 				workatoOpt, _ := method.Option("s12.protobuf.workato.method").(*workato.MethodOptionsWorkato)
 
@@ -157,16 +157,16 @@ func FromGenDoc(template *gendoc.Template, cfg *config.Config) (*WorkatoTemplate
 				}
 
 				if workatoOpt != nil && workatoOpt.Picklist != nil {
-					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.recordDynamicPicklist(seviceMethod, workatoOpt))
+					workatoTemplate.Picklists = append(workatoTemplate.Picklists, workatoTemplate.recordDynamicPicklist(serviceMethod, workatoOpt))
 				}
 
 				if workatoOpt != nil && workatoOpt.Trigger {
-					workatoTemplate.triggers = append(workatoTemplate.triggers, seviceMethod)
+					workatoTemplate.triggers = append(workatoTemplate.triggers, serviceMethod)
 					continue
 				}
 
 				if workatoTemplate.checkVisibility(method.Option("google.api.method_visibility")) {
-					workatoTemplate.actions = append(workatoTemplate.actions, seviceMethod)
+					workatoTemplate.actions = append(workatoTemplate.actions, serviceMethod)
 				}
 			}
 		}

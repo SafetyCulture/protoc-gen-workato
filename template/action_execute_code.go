@@ -15,7 +15,7 @@ const pbRepeated = "repeated"
 const errorHandling = `after_error_response(/.*/) do |code, body, headers, message| call('after_error_response', code, body, headers, message) end`
 const headers = `case_sensitive_headers("Accept-Encoding": "identity")`
 
-// Used to identify parameters in a path e.g. `/users/{used_id}`
+// Used to identify parameters in a path e.g. `/users/{user_id}`
 var paramMatch = regexp.MustCompile(`({[\.\w]+})`)
 
 func hasRepeatedType(message *gendoc.Message) bool {
