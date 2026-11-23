@@ -9,7 +9,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.30.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/pseudomuto/protoc-gen-doc v1.5.1
-	github.com/pseudomuto/protokit v0.3.0
+	github.com/pseudomuto/protokit v0.2.1
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/text v0.40.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d
